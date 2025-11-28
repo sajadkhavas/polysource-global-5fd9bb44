@@ -188,6 +188,128 @@
   "breadcrumb": {
     "home": "الرئيسية"
   },
+  "productDetail": {
+    "backToProducts": "العودة للمنتجات",
+    "inStock": "متوفر",
+    "outOfStock": "غير متوفر",
+    "requestQuote": "اطلب عرض سعر",
+    "requestSample": "اطلب عينة",
+    "downloadTds": "تحميل البيانات الفنية",
+    "quickQuote": {
+      "title": "طلب عرض سعر سريع",
+      "subtitle": "احصل على رد خلال 48 ساعة",
+      "yourName": "اسمك *",
+      "namePlaceholder": "محمد أحمد",
+      "email": "البريد الإلكتروني *",
+      "emailPlaceholder": "name@company.com",
+      "company": "الشركة *",
+      "companyPlaceholder": "اسم الشركة",
+      "quantity": "الكمية التقريبية (طن)",
+      "quantityPlaceholder": "مثال: 20",
+      "requirements": "متطلبات إضافية",
+      "requirementsPlaceholder": "تفضيلات الألوان، الشهادات المطلوبة، مواعيد التسليم...",
+      "submit": "إرسال الطلب",
+      "privacy": "بياناتك آمنة ولن تُستخدم إلا لمعالجة طلب عرض السعر."
+    },
+    "tabs": {
+      "overview": "نظرة عامة",
+      "specifications": "المواصفات",
+      "quality": "الجودة والامتثال",
+      "applications": "التطبيقات",
+      "processing": "المعالجة",
+      "packaging": "التعبئة والخدمات اللوجستية",
+      "faq": "الأسئلة الشائعة"
+    },
+    "overview": {
+      "title": "نظرة عامة على المنتج",
+      "consistentQuality": "جودة متسقة",
+      "consistentQualityDesc": "اتساق من دفعة لدفعة مع إمكانية التتبع الكامل",
+      "technicalSupport": "الدعم الفني",
+      "technicalSupportDesc": "إرشادات المعالجة والمساعدة في استكشاف الأخطاء",
+      "globalShipping": "الشحن العالمي",
+      "globalShippingDesc": "تسليم موثوق من مركزنا في دبي إلى جميع أنحاء العالم",
+      "certifiedSupply": "سلسلة توريد معتمدة",
+      "certifiedSupplyDesc": "شركاء معتمدون ISO ومصادر قابلة للتتبع"
+    },
+    "documentation": {
+      "title": "الوثائق الفنية",
+      "subtitle": "تحميل أوراق البيانات ومعلومات السلامة والشهادات",
+      "tds": "البيانات الفنية",
+      "tdsDesc": "ورقة البيانات التقنية",
+      "sds": "بيانات السلامة",
+      "sdsDesc": "ورقة بيانات السلامة",
+      "certificate": "الشهادة",
+      "certificateDesc": "شهادة الامتثال"
+    },
+    "specifications": {
+      "title": "المواصفات الفنية",
+      "subtitle": "خصائص المواد الرئيسية وظروف الاختبار",
+      "property": "الخاصية",
+      "value": "القيمة",
+      "mfi": "مؤشر تدفق الذوبان (MFI)",
+      "density": "الكثافة",
+      "tensileStrength": "قوة الشد",
+      "elongation": "الاستطالة عند الكسر",
+      "meltingPoint": "نقطة الانصهار",
+      "testMethods": "طرق الاختبار: جميع المواصفات محددة وفقاً لمعايير ASTM وISO. اتصل بفريقنا الفني للحصول على تقارير الاختبار الكاملة وتفاصيل المنهجية."
+    },
+    "quality": {
+      "title": "الجودة والامتثال",
+      "certifications": "الشهادات",
+      "qualityAssurance": "ضمان الجودة",
+      "batchTested": "كل دفعة يتم اختبارها واعتمادها مع توثيق كامل",
+      "materialPassports": "جوازات سفر المواد متاحة مع إمكانية التتبع الكامل",
+      "thirdParty": "تقارير اختبار المختبرات الخارجية متاحة عند الطلب"
+    },
+    "applications": {
+      "title": "التطبيقات الموصى بها"
+    },
+    "processing": {
+      "title": "إرشادات المعالجة",
+      "temperature": "درجة الحرارة",
+      "mouldTemp": "درجة حرارة القالب",
+      "backPressure": "الضغط الخلفي",
+      "screwSpeed": "سرعة البرغي",
+      "note": "ملاحظة: قد تختلف معايير المعالجة بناءً على معداتك المحددة ومتطلبات المنتج. اتصل بفريقنا الفني للحصول على دعم التحسين."
+    },
+    "packaging": {
+      "title": "التعبئة والخدمات اللوجستية",
+      "standardOptions": "خيارات التعبئة القياسية",
+      "standard": "قياسي",
+      "bulk": "بالجملة",
+      "container": "حاوية",
+      "shipping": "الشحن",
+      "dubaiPorts": "الشحن من موانئ دبي إلى جميع الوجهات حول العالم",
+      "fclLcl": "خيارات FCL وLCL متاحة",
+      "leadTime": "وقت التسليم النموذجي: 2-4 أسابيع من تأكيد الطلب"
+    },
+    "faq": {
+      "title": "الأسئلة الشائعة",
+      "subtitle": "أسئلة شائعة حول هذا المنتج",
+      "stillQuestions": "لا يزال لديك أسئلة؟",
+      "contactUs": "اتصل بنا"
+    },
+    "relatedProducts": {
+      "title": "منتجات ذات صلة",
+      "recycled": "مُعاد تدويره",
+      "viewDetails": "عرض التفاصيل"
+    },
+    "addedToRfq": "تمت الإضافة لطلب السعر",
+    "addedToRfqDesc": "تمت إضافة {name} إلى طلب عرض السعر الخاص بك."
+  },
+  "blogArticle": {
+    "backToBlog": "العودة للمدونة",
+    "share": "مشاركة المقالة",
+    "readTime": "دقيقة قراءة",
+    "by": "بواسطة",
+    "relatedArticles": "مقالات ذات صلة",
+    "minRead": "دقائق للقراءة",
+    "technicalQuestions": {
+      "title": "هل لديك أسئلة تقنية؟",
+      "description": "يمكن لفريقنا الهندسي تقديم إرشادات المعالجة وتوصيات المواد لتطبيقك المحدد.",
+      "button": "تواصل مع الدعم الفني"
+    }
+  },
   "common": {
     "learnMore": "اعرف المزيد",
     "getStarted": "ابدأ الآن",

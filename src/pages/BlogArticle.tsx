@@ -1,21 +1,25 @@
 import { Link, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { SEO } from '@/components/SEO';
 import { generateArticleSchema } from '@/lib/structured-data';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
-import { ArrowLeft, Calendar, Clock, Share2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Calendar, Clock, Share2 } from 'lucide-react';
+import { useDirection } from '@/hooks/useDirection';
 
 export default function BlogArticle() {
   const { id } = useParams();
+  const { t, i18n } = useTranslation();
+  const { isRTL } = useDirection();
 
   // Mock article data
   const article = {
     title: 'Understanding MFI (Melt Flow Index) and Its Impact on Processing',
     category: 'Technical Guide',
     date: '2024-02-15',
-    readTime: '8 min',
+    readTime: '8',
     author: 'Engineering Team',
     content: `
       <h2>What is Melt Flow Index (MFI)?</h2>
@@ -79,6 +83,17 @@ export default function BlogArticle() {
     }
   });
 
+  const BackArrow = isRTL ? ArrowRight : ArrowLeft;
+
+  const formatDate = (dateStr: string) => {
+    const locale = i18n.language === 'ar' ? 'ar-SA' : 'en-US';
+    return new Date(dateStr).toLocaleDateString(locale, { 
+      month: 'long', 
+      day: 'numeric', 
+      year: 'numeric' 
+    });
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <SEO
@@ -99,8 +114,8 @@ export default function BlogArticle() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <Button asChild variant="ghost" size="sm">
             <Link to="/blog">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Blog
+              <BackArrow className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('blogArticle.backToBlog')}
             </Link>
           </Button>
         </div>
@@ -118,24 +133,20 @@ export default function BlogArticle() {
             <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
               {article.title}
             </h1>
-            <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-6">
-              <div className="flex items-center">
-                <Calendar className="h-4 w-4 mr-2" />
-                {new Date(article.date).toLocaleDateString('en-US', { 
-                  month: 'long', 
-                  day: 'numeric', 
-                  year: 'numeric' 
-                })}
+            <div className={`flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-6 ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <div className={`flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <Calendar className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {formatDate(article.date)}
               </div>
-              <div className="flex items-center">
-                <Clock className="h-4 w-4 mr-2" />
-                {article.readTime} read
+              <div className={`flex items-center ${isRTL ? 'flex-row-reverse' : ''}`}>
+                <Clock className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                {article.readTime} {t('blogArticle.readTime')}
               </div>
-              <div>By {article.author}</div>
+              <div>{t('blogArticle.by')} {article.author}</div>
             </div>
             <Button variant="outline" size="sm">
-              <Share2 className="h-4 w-4 mr-2" />
-              Share Article
+              <Share2 className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('blogArticle.share')}
             </Button>
           </motion.div>
         </div>
@@ -167,7 +178,7 @@ export default function BlogArticle() {
       <section className="py-12 bg-muted/50 border-t border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6 text-foreground">Related Articles</h2>
+            <h2 className="text-2xl font-bold mb-6 text-foreground">{t('blogArticle.relatedArticles')}</h2>
             <div className="grid md:grid-cols-2 gap-6">
               <Card className="hover:shadow-lg transition-shadow">
                 <CardContent className="pt-6">
@@ -180,7 +191,7 @@ export default function BlogArticle() {
                   <p className="text-sm text-muted-foreground mb-3">
                     Breaking down the real performance differences between recycled and virgin HDPE grades...
                   </p>
-                  <div className="text-xs text-muted-foreground">6 min read</div>
+                  <div className="text-xs text-muted-foreground">6 {t('blogArticle.minRead')}</div>
                 </CardContent>
               </Card>
               <Card className="hover:shadow-lg transition-shadow">
@@ -194,7 +205,7 @@ export default function BlogArticle() {
                   <p className="text-sm text-muted-foreground mb-3">
                     Practical solutions for warping, surface defects, and inconsistent cycle times...
                   </p>
-                  <div className="text-xs text-muted-foreground">7 min read</div>
+                  <div className="text-xs text-muted-foreground">7 {t('blogArticle.minRead')}</div>
                 </CardContent>
               </Card>
             </div>
@@ -208,13 +219,13 @@ export default function BlogArticle() {
           <Card className="max-w-3xl mx-auto text-center">
             <CardContent className="pt-8 pb-8">
               <h3 className="text-2xl font-bold mb-4 text-foreground">
-                Have Technical Questions?
+                {t('blogArticle.technicalQuestions.title')}
               </h3>
               <p className="text-muted-foreground mb-6">
-                Our engineering team can provide processing guidance and material recommendations for your specific application.
+                {t('blogArticle.technicalQuestions.description')}
               </p>
               <Button asChild size="lg">
-                <Link to="/contact">Contact Technical Support</Link>
+                <Link to="/contact">{t('blogArticle.technicalQuestions.button')}</Link>
               </Button>
             </CardContent>
           </Card>
