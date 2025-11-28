@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { SEO } from '@/components/SEO';
+import { generateBreadcrumbSchema, generateLocalBusinessSchema } from '@/lib/structured-data';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -49,12 +50,32 @@ export default function Contact() {
     clearProducts();
   };
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: 'https://polysource.global' },
+    { name: 'Contact', url: 'https://polysource.global/contact' }
+  ]);
+
+  const localBusinessSchema = generateLocalBusinessSchema({
+    name: 'PolySource Global',
+    description: 'Dubai-based B2B polymer supplier specializing in recycled and virgin polymers with global shipping capabilities.',
+    url: 'https://polysource.global',
+    logo: 'https://polysource.global/logo.png',
+    address: {
+      addressLocality: 'Dubai',
+      addressCountry: 'UAE'
+    },
+    telephone: '+971 4 XXX XXXX',
+    email: 'hello@polysource.global',
+    openingHours: ['Su-Th 09:00-18:00']
+  });
+
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Request a Quote"
-        description="Get a detailed polymer quotation within 48 hours. No WhatsApp chaos. Professional RFQ process for recycled and virgin polymers with clear pricing and specifications."
-        keywords="request quote, rfq polymer, polymer quotation, buy polymers, contact supplier"
+        title="Request a Quote - Contact PolySource Global"
+        description="Get a detailed polymer quotation within 48 hours. Professional RFQ process for recycled and virgin polymers. Contact Dubai's leading B2B polymer supplier for competitive pricing."
+        keywords="polymer quote request, RFQ polymers, buy recycled polymers, polymer supplier contact, Dubai polymer trader"
+        structuredData={[breadcrumbSchema, localBusinessSchema]}
       />
       {/* Hero */}
       <section className="bg-muted/50 py-12 border-b border-border">

@@ -117,9 +117,9 @@ export default function Products() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Product Catalog"
-        description="Browse our complete range of recycled and virgin polymers including rPE, rPP, rPET. All materials come with full technical data sheets and batch traceability."
-        keywords="polymer catalog, recycled polymers, virgin polymers, PE grades, PP grades, polymer materials"
+        title="Polymer Catalog - Recycled & Virgin PE, PP, HDPE Materials"
+        description="Browse PolySource Global's complete catalog of recycled and virgin polymers. rPE, rPP, rPET, HDPE, LDPE, and compounds with full technical data sheets and batch traceability. Request quotes online."
+        keywords="polymer catalog, recycled polymers, virgin polymers, PE grades, PP grades, HDPE, LDPE, rPE, rPP, polymer materials catalog, plastic raw materials"
         structuredData={breadcrumbSchema}
       />
       {/* Header */}

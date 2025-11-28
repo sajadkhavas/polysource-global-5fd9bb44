@@ -108,9 +108,9 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <SEO
-        title="Recycled-First Polymer Supply"
-        description="Dubai-based polymer supplier. Technical-grade recycled PE, PP, and virgin polymers with traceable quality. Serving 18+ countries with <48hr quote turnaround."
-        keywords="recycled polymers, virgin polymers, PE, PP, rPE, rPP, Dubai polymer supplier, polymer trading, plastic materials"
+        title="Recycled Polymer Supplier Dubai | Virgin PE, PP, HDPE Materials"
+        description="PolySource Global - Dubai's leading B2B polymer supplier. Technical-grade recycled PE, PP, rPET and virgin polymers. Serving 18+ countries with batch traceability and 48hr quote turnaround."
+        keywords="recycled polymers Dubai, virgin polymers UAE, PE supplier, PP supplier, HDPE materials, rPE, rPP, B2B polymer trading, plastic raw materials, polymer distributor MENA"
         structuredData={[organizationSchema, websiteSchema]}
       />
       {/* Hero Section */}
