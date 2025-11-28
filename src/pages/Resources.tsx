@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { SEO } from '@/components/SEO';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -103,6 +104,11 @@ export default function Resources() {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title="Technical Resources"
+        description="Download technical data sheets (TDS), safety data sheets (SDS), and certificates of analysis for all PolySource polymer products. Regularly updated and compliant with international standards."
+        keywords="polymer TDS, polymer SDS, technical data sheet, safety data sheet, material certification"
+      />
       {/* Hero */}
       <section className="bg-muted/50 py-12 border-b border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">

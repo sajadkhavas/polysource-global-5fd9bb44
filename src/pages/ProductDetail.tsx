@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { SEO } from '@/components/SEO';
+import { generateProductSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/structured-data';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -93,8 +95,33 @@ export default function ProductDetail() {
     });
   };
 
+  // Generate structured data for SEO
+  const productSchema = generateProductSchema({
+    name: product.name,
+    description: product.description,
+    brand: 'PolySource Global',
+    offers: {
+      availability: product.inStock ? 'InStock' : 'OutOfStock'
+    }
+  });
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: 'https://polysource.global' },
+    { name: 'Products', url: 'https://polysource.global/products' },
+    { name: product.name, url: `https://polysource.global/products/${product.id}` }
+  ]);
+
+  const faqSchema = generateFAQSchema(product.faqs);
+
   return (
     <div className="min-h-screen bg-background">
+      <SEO
+        title={`${product.name} - ${product.grade}`}
+        description={product.description.slice(0, 155)}
+        keywords={`${product.type}, ${product.recycled ? 'recycled polymer' : 'polymer'}, ${product.applications.join(', ')}`}
+        type="product"
+        structuredData={[productSchema, breadcrumbSchema, faqSchema]}
+      />
       {/* Breadcrumb */}
       <section className="bg-muted/50 py-4 border-b border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
