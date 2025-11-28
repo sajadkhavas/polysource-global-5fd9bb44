@@ -1,4 +1,5 @@
 import { Helmet } from 'react-helmet-async';
+import { useTranslation } from 'react-i18next';
 
 interface SEOProps {
   title: string;
@@ -29,6 +30,10 @@ export function SEO({
   structuredData,
   noIndex = false
 }: SEOProps) {
+  const { i18n } = useTranslation();
+  const currentLang = i18n.language;
+  const isArabic = currentLang === 'ar';
+  
   const siteName = 'PolySource Global';
   const fullTitle = `${title} | ${siteName}`;
   const siteUrl = 'https://testwebs.lovable.app';
@@ -49,6 +54,9 @@ export function SEO({
 
   return (
     <Helmet>
+      {/* Language and Direction */}
+      <html lang={currentLang} dir={isArabic ? 'rtl' : 'ltr'} />
+      
       {/* Primary Meta Tags */}
       <title>{fullTitle}</title>
       <meta name="title" content={fullTitle} />
@@ -58,13 +66,19 @@ export function SEO({
       {/* Robots */}
       <meta name="robots" content={noIndex ? 'noindex, nofollow' : 'all'} />
 
+      {/* Hreflang for multilingual SEO */}
+      <link rel="alternate" hrefLang="en" href={`${siteUrl}/`} />
+      <link rel="alternate" hrefLang="ar" href={`${siteUrl}/ar`} />
+      <link rel="alternate" hrefLang="x-default" href={`${siteUrl}/`} />
+
       {/* Open Graph / Facebook */}
       <meta property="og:type" content={type} />
-      <meta property="og:url" content={siteUrl} />
+      <meta property="og:url" content={fullUrl} />
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={image} />
       <meta property="og:site_name" content={siteName} />
+      <meta property="og:locale" content={isArabic ? 'ar_AE' : 'en_US'} />
 
       {/* Article specific tags */}
       {type === 'article' && article && (
@@ -94,7 +108,7 @@ export function SEO({
       <link rel="canonical" href={fullUrl} />
 
       {/* Additional SEO tags */}
-      <meta name="language" content="English" />
+      <meta name="language" content={isArabic ? 'Arabic' : 'English'} />
       <meta name="revisit-after" content="7 days" />
 
       {/* Structured Data */}

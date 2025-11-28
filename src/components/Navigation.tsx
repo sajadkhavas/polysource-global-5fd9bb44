@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ShoppingCart, Globe } from 'lucide-react';
+import { Menu, X, ShoppingCart } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { useRFQ } from '@/contexts/RFQContext';
@@ -11,15 +12,18 @@ import { MegaMenu } from './MegaMenu';
 import { MobileNav } from './MobileNav';
 import { DesktopDropdown } from './DesktopDropdown';
 import { ThemeToggle } from './ThemeToggle';
+import { LanguageSwitcher } from './LanguageSwitcher';
 
 export function Navigation() {
   const location = useLocation();
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
   const { products } = useRFQ();
   const [scrolled, setScrolled] = useState(false);
-  const isHomePage = location.pathname === '/';
+  const isHomePage = location.pathname === '/' || location.pathname === '/ar';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -49,34 +53,45 @@ export function Navigation() {
         {/* Desktop: Two-layer header */}
         <div className="hidden lg:block">
           {/* Top layer: Brand + Trust signals */}
-          <div className="flex items-center justify-between py-3 border-b border-border/50">
-            <div className="flex items-center space-x-4">
-              <Link to="/" className="flex items-center space-x-2.5">
+          <div className={cn(
+            "flex items-center justify-between py-3 border-b border-border/50",
+            isRTL && "flex-row-reverse"
+          )}>
+            <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-4" : "space-x-4")}>
+              <Link to="/" className={cn("flex items-center", isRTL ? "space-x-reverse space-x-2.5" : "space-x-2.5")}>
                 <div className="h-9 w-9 rounded-lg bg-primary" aria-hidden="true" />
                 <div>
                   <span className="text-xl font-bold text-foreground block leading-none">PolySource Global</span>
-                  <span className="text-xs text-muted-foreground block mt-0.5">Recycled-first polymer supply from Dubai</span>
+                  <span className="text-xs text-muted-foreground block mt-0.5">
+                    {isRTL ? 'توريد البوليمر المُعاد تدويره من دبي' : 'Recycled-first polymer supply from Dubai'}
+                  </span>
                 </div>
               </Link>
             </div>
             
-            <div className="flex items-center space-x-6 text-xs text-muted-foreground">
-              <div className="flex items-center space-x-1.5">
+            <div className={cn(
+              "flex items-center text-xs text-muted-foreground",
+              isRTL ? "space-x-reverse space-x-6" : "space-x-6"
+            )}>
+              <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-1.5" : "space-x-1.5")}>
                 <span className="font-semibold text-foreground">18+</span>
-                <span>countries</span>
+                <span>{t('nav.trustBadge.countries')}</span>
               </div>
               <div className="h-3 w-px bg-border" />
-              <div className="flex items-center space-x-1.5">
+              <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-1.5" : "space-x-1.5")}>
                 <span className="font-semibold text-foreground">12,500+</span>
-                <span>tonnes delivered annually</span>
+                <span>{t('nav.trustBadge.tonnes')}</span>
               </div>
             </div>
           </div>
 
           {/* Bottom layer: Navigation + Actions */}
-          <div className="relative flex items-center justify-between h-14">
+          <div className={cn(
+            "relative flex items-center justify-between h-14",
+            isRTL && "flex-row-reverse"
+          )}>
             {/* Center: Main Navigation */}
-            <div className="flex items-center space-x-1">
+            <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-1" : "space-x-1")}>
               {/* Polymer Products with Mega Menu */}
               {polymerProductsItem && (
                 <div
@@ -92,7 +107,7 @@ export function Navigation() {
                         : 'text-foreground/90 hover:bg-muted hover:text-primary'
                     )}
                   >
-                    {polymerProductsItem.label.en}
+                    {isRTL ? polymerProductsItem.label.ar : polymerProductsItem.label.en}
                   </Link>
                 </div>
               )}
@@ -141,31 +156,27 @@ export function Navigation() {
                     : 'text-foreground/90 hover:bg-muted hover:text-primary'
                 )}
               >
-                Sustainability
+                {t('nav.sustainability')}
               </Link>
             </div>
 
             {/* Right: Actions */}
-            <div className="flex items-center space-x-3">
+            <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-3" : "space-x-3")}>
 
               {/* Browse Products Link */}
               <Button variant="outline" size="sm" asChild className={cn(
                 isHomePage && !scrolled && "border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
               )}>
-                <Link to="/products">Browse Products</Link>
+                <Link to="/products">{t('nav.browseProducts')}</Link>
               </Button>
 
               {/* Theme Toggle */}
               <ThemeToggle />
 
               {/* Language Switcher */}
-              <Button variant="ghost" size="sm" className={cn(
-                "gap-1",
-                isHomePage && !scrolled && "text-primary-foreground hover:bg-primary-foreground/10"
-              )}>
-                <Globe className="h-4 w-4" />
-                <span className="text-xs">EN</span>
-              </Button>
+              <LanguageSwitcher variant="compact" className={cn(
+                isHomePage && !scrolled && "[&_button]:text-primary-foreground [&_button]:hover:bg-primary-foreground/10"
+              )} />
 
               {/* RFQ Basket */}
               <Sheet>
@@ -179,13 +190,13 @@ export function Navigation() {
                     )}
                   </Button>
                 </SheetTrigger>
-                <SheetContent>
+                <SheetContent side={isRTL ? 'left' : 'right'}>
                   <SheetHeader>
-                    <SheetTitle>RFQ Basket</SheetTitle>
+                    <SheetTitle>{t('nav.rfqBasket')}</SheetTitle>
                   </SheetHeader>
                   <div className="mt-4 space-y-4">
                     {products.length === 0 ? (
-                      <p className="text-sm text-muted-foreground">No products added yet</p>
+                      <p className="text-sm text-muted-foreground">{t('nav.noProductsAdded')}</p>
                     ) : (
                       <>
                         {products.map((product) => (
@@ -197,7 +208,7 @@ export function Navigation() {
                           </div>
                         ))}
                         <Button asChild className="w-full">
-                          <Link to="/contact">Request Quote</Link>
+                          <Link to="/contact">{t('nav.requestQuote')}</Link>
                         </Button>
                       </>
                     )}
@@ -207,26 +218,27 @@ export function Navigation() {
 
               {/* Request Quote CTA */}
               <Button asChild>
-                <Link to="/contact">Request Quote</Link>
+                <Link to="/contact">{t('nav.requestQuote')}</Link>
               </Button>
             </div>
           </div>
         </div>
 
         {/* Mobile: Single row header */}
-        <div className="flex lg:hidden h-16 items-center justify-between">
+        <div className={cn(
+          "flex lg:hidden h-16 items-center justify-between",
+          isRTL && "flex-row-reverse"
+        )}>
           {/* Left: Brand */}
-          <Link to="/" className="flex items-center space-x-2">
+          <Link to="/" className={cn("flex items-center", isRTL ? "space-x-reverse space-x-2" : "space-x-2")}>
             <div className="h-8 w-8 rounded bg-primary" aria-hidden="true" />
             <span className="text-lg font-bold text-foreground">PolySource</span>
           </Link>
 
           {/* Right: Controls */}
-          <div className="flex items-center space-x-2">
-            {/* Language */}
-            <Button variant="ghost" size="sm">
-              <Globe className="h-4 w-4" />
-            </Button>
+          <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-2" : "space-x-2")}>
+            {/* Language Switcher */}
+            <LanguageSwitcher variant="compact" />
 
             {/* RFQ Basket */}
             <Sheet>
@@ -240,13 +252,13 @@ export function Navigation() {
                   )}
                 </Button>
               </SheetTrigger>
-              <SheetContent>
+              <SheetContent side={isRTL ? 'left' : 'right'}>
                 <SheetHeader>
-                  <SheetTitle>RFQ Basket</SheetTitle>
+                  <SheetTitle>{t('nav.rfqBasket')}</SheetTitle>
                 </SheetHeader>
                 <div className="mt-4 space-y-4">
                   {products.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">No products added yet</p>
+                    <p className="text-sm text-muted-foreground">{t('nav.noProductsAdded')}</p>
                   ) : (
                     <>
                       {products.map((product) => (
@@ -258,7 +270,7 @@ export function Navigation() {
                         </div>
                       ))}
                       <Button asChild className="w-full">
-                        <Link to="/contact">Request Quote</Link>
+                        <Link to="/contact">{t('nav.requestQuote')}</Link>
                       </Button>
                     </>
                   )}

@@ -1,0 +1,184 @@
+{
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "products": "Products",
+    "services": "Services",
+    "sustainability": "Sustainability",
+    "contact": "Contact",
+    "blog": "Blog",
+    "resources": "Resources",
+    "faq": "FAQ",
+    "polymerProducts": "Polymer Products",
+    "insights": "Insights",
+    "browseProducts": "Browse Products",
+    "requestQuote": "Request Quote",
+    "rfqBasket": "RFQ Basket",
+    "noProductsAdded": "No products added yet",
+    "trustBadge": {
+      "countries": "countries",
+      "tonnes": "tonnes delivered annually"
+    }
+  },
+  "hero": {
+    "badge": "Dubai to the World",
+    "title": "Recycled-First Polymer Supply Chain",
+    "subtitle": "Global sourcing of high-quality recycled and virgin polymers with sustainability at the core. Technical-grade materials with traceable quality.",
+    "requestQuote": "Request Quote",
+    "viewMaterials": "View Materials",
+    "viewAllMaterials": "View All Materials",
+    "trustBadges": {
+      "countries": "18+ Countries",
+      "tons": "500+ Tons/month",
+      "certified": "Certified Recycled"
+    }
+  },
+  "stats": {
+    "tonnesDelivered": "Tonnes Delivered Annually",
+    "countriesServed": "Countries Served",
+    "recycledContent": "Recycled Content Available",
+    "quoteTurnaround": "Quote Turnaround"
+  },
+  "categories": {
+    "title": "Industrial-Grade Polymers, Simplified",
+    "subtitle": "From recycled materials to virgin grades and custom compounds, all with consistent quality you can rely on.",
+    "recycled": {
+      "title": "Recycled Polymers",
+      "description": "rPE, rPP, rPET with certified quality"
+    },
+    "virgin": {
+      "title": "Virgin Polymers",
+      "description": "PE, PP grades for demanding applications"
+    },
+    "compounds": {
+      "title": "Compounds & Masterbatches",
+      "description": "Custom-formulated for your specifications"
+    },
+    "parts": {
+      "title": "Finished Parts",
+      "description": "Injection molded and extruded components"
+    }
+  },
+  "whyUs": {
+    "title": "Why Leading Manufacturers Choose Us Over Traditional Traders",
+    "subtitle": "We're not another commodity trader. We're a technical partner focused on solving the real problems in recycled polymer supply.",
+    "batch": {
+      "title": "Batch Consistency",
+      "description": "Every shipment meets spec. No surprises, no rework, no excuses."
+    },
+    "rfq": {
+      "title": "Digital RFQ Process",
+      "description": "Quote requests processed in under 48 hours. No WhatsApp chaos."
+    },
+    "support": {
+      "title": "Technical Support",
+      "description": "Material selection guidance, processing parameters, troubleshooting."
+    },
+    "sourcing": {
+      "title": "Transparent Sourcing",
+      "description": "Traceable material origins, certifications on demand, no greenwashing."
+    }
+  },
+  "industries": {
+    "title": "Trusted Across Industries",
+    "subtitle": "Supplying production-grade polymers to manufacturers worldwide",
+    "packaging": "Packaging",
+    "automotive": "Automotive",
+    "construction": "Construction",
+    "consumer": "Consumer Goods",
+    "agriculture": "Agriculture",
+    "industrial": "Industrial"
+  },
+  "sustainability": {
+    "badge": "Sustainability",
+    "title": "Recycled-First. Traceable. Certified.",
+    "subtitle": "We prioritize recycled polymers not as a marketing gimmick, but as a technical solution. Every batch comes with traceable sourcing data and third-party certifications.",
+    "points": {
+      "pcr": "Post-consumer and post-industrial recycled content available",
+      "iso": "ISO 14001 certified supply chain partners",
+      "co2": "CO₂ footprint data available per shipment"
+    },
+    "learnMore": "Learn About Our Approach"
+  },
+  "cta": {
+    "title": "Ready to Source Smarter?",
+    "subtitle": "Let's discuss your material requirements. Technical consultation included.",
+    "button": "Get Started Today"
+  },
+  "footer": {
+    "company": "Company",
+    "aboutUs": "About Us",
+    "sustainability": "Sustainability",
+    "services": "Services",
+    "blog": "Blog",
+    "products": "Products",
+    "recycledPolymers": "Recycled Polymers",
+    "virginPolymers": "Virgin Polymers",
+    "compoundsMasterbatches": "Compounds & Masterbatches",
+    "resources": "Resources",
+    "tdsSds": "TDS & SDS",
+    "faq": "FAQ",
+    "requestQuote": "Request Quote",
+    "contact": "Contact",
+    "copyright": "© {year} PolySource Global. All rights reserved.",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service"
+  },
+  "contact": {
+    "title": "Contact Us",
+    "subtitle": "Get in touch with our team",
+    "form": {
+      "name": "Full Name",
+      "namePlaceholder": "Enter your name",
+      "company": "Company",
+      "companyPlaceholder": "Your company name",
+      "email": "Email",
+      "emailPlaceholder": "your@email.com",
+      "phone": "Phone",
+      "phonePlaceholder": "+971 XX XXX XXXX",
+      "material": "Material Needed",
+      "materialPlaceholder": "e.g., rPET, rHDPE, virgin PP",
+      "message": "Message",
+      "messagePlaceholder": "Tell us about your requirements...",
+      "submit": "Send Message",
+      "submitting": "Sending..."
+    },
+    "success": {
+      "title": "Message sent!",
+      "description": "We'll get back to you within 48 hours."
+    }
+  },
+  "products": {
+    "title": "Polymer Products",
+    "subtitle": "Browse our catalog of recycled and virgin polymers",
+    "loading": "Loading products...",
+    "error": "Failed to load products",
+    "retry": "Try again",
+    "search": "Search products...",
+    "filter": "Filter",
+    "all": "All",
+    "recycled": "Recycled",
+    "virgin": "Virgin",
+    "compounds": "Compounds",
+    "viewDetails": "View Details",
+    "addToRfq": "Add to RFQ"
+  },
+  "blog": {
+    "title": "Blog & Insights",
+    "subtitle": "Latest news and articles from the polymer industry",
+    "loading": "Loading articles...",
+    "error": "Failed to load articles",
+    "readMore": "Read More"
+  },
+  "about": {
+    "title": "About PolySource Global",
+    "subtitle": "Your trusted partner for recycled and virgin polymers"
+  },
+  "common": {
+    "learnMore": "Learn More",
+    "getStarted": "Get Started",
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Try Again"
+  }
+}
