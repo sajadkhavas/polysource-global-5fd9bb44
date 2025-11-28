@@ -503,15 +503,6 @@ export const navigationData: NavigationItem[] = [
         href: '/about'
       },
       {
-        id: 'sustainability',
-        label: {
-          en: 'Sustainability',
-          fa: 'پایداری',
-          ar: 'الاستدامة'
-        },
-        href: '/sustainability'
-      },
-      {
         id: 'faq',
         label: {
           en: 'FAQ',
