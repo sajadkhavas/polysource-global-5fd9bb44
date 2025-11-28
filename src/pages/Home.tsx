@@ -114,30 +114,38 @@ export default function Home() {
         structuredData={[organizationSchema, websiteSchema]}
       />
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-[hsl(var(--hero-gradient-start))] to-[hsl(var(--hero-gradient-end))] text-primary-foreground py-20 md:py-32">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="relative text-primary-foreground py-20 md:py-32 overflow-hidden">
+        {/* Background Image */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ backgroundImage: 'url(/images/hero-home-polymers.jpg)' }}
+        />
+        {/* Overlay for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-[hsl(var(--hero-gradient-start)/0.85)] via-[hsl(var(--hero-gradient-start)/0.7)] to-transparent" />
+        
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <motion.div 
             className="max-w-4xl"
             {...fadeInUp}
           >
-            <Badge variant="secondary" className="mb-4 bg-primary-foreground/10 text-primary-foreground border-primary-foreground/20">
+            <Badge variant="secondary" className="mb-4 bg-primary-foreground/10 text-primary-foreground border-primary-foreground/20 backdrop-blur-sm">
               Dubai to the World
             </Badge>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight">
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 leading-tight drop-shadow-lg">
               Recycled-First Polymer Supply, Engineered for Production-Level Reliability
             </h1>
-            <p className="text-xl md:text-2xl mb-8 text-primary-foreground/90 max-w-3xl">
+            <p className="text-xl md:text-2xl mb-8 text-primary-foreground/90 max-w-3xl drop-shadow-md">
               Dubai-based, globally shipping. Technical-grade recycled PE, PP, and virgin polymers with traceable quality. No WhatsApp RFQs. No batch surprises.
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
               <Button asChild size="lg" variant="secondary">
                 <Link to="/products">Browse Products</Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
+              <Button asChild size="lg" variant="outline" className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary backdrop-blur-sm">
                 <Link to="/contact">Request Quote</Link>
               </Button>
             </div>
-            <p className="mt-6 text-sm text-primary-foreground/80 flex items-center">
+            <p className="mt-6 text-sm text-primary-foreground/80 flex items-center drop-shadow-sm">
               <Globe className="h-4 w-4 mr-2" />
               Serving 18+ countries across MENA, Europe, Asia & Africa
             </p>
