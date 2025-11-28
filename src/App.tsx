@@ -8,6 +8,7 @@ import { RFQProvider } from "./contexts/RFQContext";
 import { Navigation } from "./components/Navigation";
 import { Footer } from "./components/Footer";
 import { SkipToContent } from "./components/SkipToContent";
+import WhatsAppButton from "./components/WhatsAppButton";
 
 // Lazy load pages for code splitting
 const Home = lazy(() => import("./pages/Home"));
@@ -58,6 +59,7 @@ const App = () => (
               </Suspense>
             </main>
             <Footer />
+            <WhatsAppButton />
           </div>
         </BrowserRouter>
       </TooltipProvider>
