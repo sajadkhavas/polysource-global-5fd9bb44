@@ -51,7 +51,7 @@ export default function Sustainability() {
         structuredData={breadcrumbSchema}
       />
       {/* Hero */}
-      <section className="bg-gradient-to-br from-success/20 to-success/5 py-20 border-b border-success/20">
+      <section className="bg-gradient-to-br from-success/20 to-success/5 pt-32 pb-20 border-b border-success/20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

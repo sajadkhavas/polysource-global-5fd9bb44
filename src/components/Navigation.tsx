@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ShoppingCart, Globe } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -10,6 +10,7 @@ import { navigationData } from '@/data/navigation';
 import { MegaMenu } from './MegaMenu';
 import { MobileNav } from './MobileNav';
 import { DesktopDropdown } from './DesktopDropdown';
+import { ThemeToggle } from './ThemeToggle';
 
 export function Navigation() {
   const location = useLocation();
@@ -17,6 +18,16 @@ export function Navigation() {
   const [megaMenuOpen, setMegaMenuOpen] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
   const { products } = useRFQ();
+  const [scrolled, setScrolled] = useState(false);
+  const isHomePage = location.pathname === '/';
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const polymerProductsItem = navigationData.find(item => item.id === 'polymer-products');
   const servicesItem = navigationData.find(item => item.id === 'services');
@@ -28,7 +39,12 @@ export function Navigation() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-border bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <nav className={cn(
+      "fixed top-0 z-50 w-full transition-all duration-300",
+      isHomePage && !scrolled
+        ? "bg-transparent border-transparent"
+        : "bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border"
+    )}>
       <div className="relative container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Desktop: Two-layer header */}
         <div className="hidden lg:block">
@@ -133,12 +149,20 @@ export function Navigation() {
             <div className="flex items-center space-x-3">
 
               {/* Browse Products Link */}
-              <Button variant="outline" size="sm" asChild>
+              <Button variant="outline" size="sm" asChild className={cn(
+                isHomePage && !scrolled && "border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
+              )}>
                 <Link to="/products">Browse Products</Link>
               </Button>
 
+              {/* Theme Toggle */}
+              <ThemeToggle />
+
               {/* Language Switcher */}
-              <Button variant="ghost" size="sm" className="gap-1">
+              <Button variant="ghost" size="sm" className={cn(
+                "gap-1",
+                isHomePage && !scrolled && "text-primary-foreground hover:bg-primary-foreground/10"
+              )}>
                 <Globe className="h-4 w-4" />
                 <span className="text-xs">EN</span>
               </Button>

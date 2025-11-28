@@ -95,7 +95,7 @@ export default function BlogArticle() {
         structuredData={articleSchema}
       />
       {/* Back Button */}
-      <section className="bg-muted/50 py-4 border-b border-border">
+      <section className="bg-muted/50 pt-28 pb-4 border-b border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <Button asChild variant="ghost" size="sm">
             <Link to="/blog">

@@ -78,7 +78,7 @@ export default function Contact() {
         structuredData={[breadcrumbSchema, localBusinessSchema]}
       />
       {/* Hero */}
-      <section className="bg-muted/50 py-12 border-b border-border">
+      <section className="bg-muted/50 pt-32 pb-12 border-b border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
