@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { SEO } from '@/components/SEO';
 import { generateProductSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/structured-data';
 import { Button } from '@/components/ui/button';
@@ -12,17 +13,20 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { ArrowLeft, Download, Leaf, Shield, Package, Truck, FileText, CheckCircle2 } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Download, Leaf, Shield, Package, Truck, FileText, CheckCircle2 } from 'lucide-react';
 import { useRFQ } from '@/contexts/RFQContext';
 import { useToast } from '@/hooks/use-toast';
 import { LazyImage } from '@/components/LazyImage';
 import { getProductImage, getProductAltText } from '@/data/product-images';
+import { useDirection } from '@/hooks/useDirection';
 import type { ProductCategory } from '@/data/product-taxonomy';
 
 export default function ProductDetail() {
   const { id } = useParams();
   const { addProduct } = useRFQ();
   const { toast } = useToast();
+  const { t, i18n } = useTranslation();
+  const { isRTL } = useDirection();
   const [quantity, setQuantity] = useState('');
 
   // Mock product data
@@ -93,8 +97,8 @@ export default function ProductDetail() {
       grade: product.grade
     });
     toast({
-      title: "Added to RFQ",
-      description: `${product.name} has been added to your quote request.`,
+      title: t('productDetail.addedToRfq'),
+      description: t('productDetail.addedToRfqDesc', { name: product.name }),
     });
   };
 
@@ -109,12 +113,14 @@ export default function ProductDetail() {
   });
 
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: 'https://polysource.global' },
-    { name: 'Products', url: 'https://polysource.global/products' },
+    { name: t('breadcrumb.home'), url: 'https://polysource.global' },
+    { name: t('nav.products'), url: 'https://polysource.global/products' },
     { name: product.name, url: `https://polysource.global/products/${product.id}` }
   ]);
 
   const faqSchema = generateFAQSchema(product.faqs);
+
+  const BackArrow = isRTL ? ArrowRight : ArrowLeft;
 
   return (
     <div className="min-h-screen bg-background">
@@ -130,8 +136,8 @@ export default function ProductDetail() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <Button asChild variant="ghost" size="sm">
             <Link to="/products">
-              <ArrowLeft className="h-4 w-4 mr-2" />
-              Back to Products
+              <BackArrow className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+              {t('productDetail.backToProducts')}
             </Link>
           </Button>
         </div>
@@ -140,7 +146,7 @@ export default function ProductDetail() {
       {/* Product Header */}
       <section className="py-8 border-b border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col lg:flex-row gap-8">
+          <div className={`flex flex-col lg:flex-row gap-8 ${isRTL ? 'lg:flex-row-reverse' : ''}`}>
             {/* Product Image */}
             <div className="lg:w-96 flex-shrink-0">
               <Card className="overflow-hidden">
@@ -158,16 +164,16 @@ export default function ProductDetail() {
               <div className="flex flex-wrap gap-2 mb-4">
                 {product.recycled && (
                   <Badge variant="outline" className="border-success text-success">
-                    <Leaf className="h-3 w-3 mr-1" />
+                    <Leaf className={`h-3 w-3 ${isRTL ? 'ml-1' : 'mr-1'}`} />
                     {product.recycledContent}
                   </Badge>
                 )}
                 {product.inStock && (
-                  <Badge variant="secondary">In Stock</Badge>
+                  <Badge variant="secondary">{t('productDetail.inStock')}</Badge>
                 )}
                 {product.certifications.includes('FDA Contact Compliant') && (
                   <Badge variant="outline">
-                    <Shield className="h-3 w-3 mr-1" />
+                    <Shield className={`h-3 w-3 ${isRTL ? 'ml-1' : 'mr-1'}`} />
                     FDA Contact Compliant
                   </Badge>
                 )}
@@ -178,14 +184,14 @@ export default function ProductDetail() {
 
               <div className="mt-6 flex flex-wrap gap-3">
                 <Button onClick={handleAddToRFQ} size="lg">
-                  Request Quote
+                  {t('productDetail.requestQuote')}
                 </Button>
                 <Button variant="outline" size="lg">
-                  Request Sample
+                  {t('productDetail.requestSample')}
                 </Button>
                 <Button variant="outline" size="lg">
-                  <Download className="h-4 w-4 mr-2" />
-                  Download TDS
+                  <Download className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                  {t('productDetail.downloadTds')}
                 </Button>
               </div>
             </div>
@@ -193,38 +199,38 @@ export default function ProductDetail() {
             {/* Quick RFQ Panel */}
             <Card className="lg:w-96 flex-shrink-0">
               <CardHeader>
-                <CardTitle>Quick Quote Request</CardTitle>
-                <CardDescription>Get a response within 48 hours</CardDescription>
+                <CardTitle>{t('productDetail.quickQuote.title')}</CardTitle>
+                <CardDescription>{t('productDetail.quickQuote.subtitle')}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <Label htmlFor="name">Your Name *</Label>
-                  <Input id="name" placeholder="John Doe" />
+                  <Label htmlFor="name">{t('productDetail.quickQuote.yourName')}</Label>
+                  <Input id="name" placeholder={t('productDetail.quickQuote.namePlaceholder')} />
                 </div>
                 <div>
-                  <Label htmlFor="email">Email *</Label>
-                  <Input id="email" type="email" placeholder="john@company.com" />
+                  <Label htmlFor="email">{t('productDetail.quickQuote.email')}</Label>
+                  <Input id="email" type="email" placeholder={t('productDetail.quickQuote.emailPlaceholder')} />
                 </div>
                 <div>
-                  <Label htmlFor="company">Company *</Label>
-                  <Input id="company" placeholder="ABC Manufacturing" />
+                  <Label htmlFor="company">{t('productDetail.quickQuote.company')}</Label>
+                  <Input id="company" placeholder={t('productDetail.quickQuote.companyPlaceholder')} />
                 </div>
                 <div>
-                  <Label htmlFor="quantity">Approximate Quantity (MT)</Label>
+                  <Label htmlFor="quantity">{t('productDetail.quickQuote.quantity')}</Label>
                   <Input 
                     id="quantity" 
-                    placeholder="e.g., 20" 
+                    placeholder={t('productDetail.quickQuote.quantityPlaceholder')}
                     value={quantity}
                     onChange={(e) => setQuantity(e.target.value)}
                   />
                 </div>
                 <div>
-                  <Label htmlFor="notes">Additional Requirements</Label>
-                  <Textarea id="notes" placeholder="Color preferences, certifications needed, delivery timeline..." rows={3} />
+                  <Label htmlFor="notes">{t('productDetail.quickQuote.requirements')}</Label>
+                  <Textarea id="notes" placeholder={t('productDetail.quickQuote.requirementsPlaceholder')} rows={3} />
                 </div>
-                <Button className="w-full">Submit Request</Button>
+                <Button className="w-full">{t('productDetail.quickQuote.submit')}</Button>
                 <p className="text-xs text-muted-foreground text-center">
-                  Your data is secure and will only be used to process your quote request.
+                  {t('productDetail.quickQuote.privacy')}
                 </p>
               </CardContent>
             </Card>
@@ -237,49 +243,49 @@ export default function ProductDetail() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <Tabs defaultValue="overview" className="w-full">
             <TabsList className="w-full justify-start mb-8 flex-wrap h-auto">
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="specifications">Specifications</TabsTrigger>
-              <TabsTrigger value="quality">Quality & Compliance</TabsTrigger>
-              <TabsTrigger value="applications">Applications</TabsTrigger>
-              <TabsTrigger value="processing">Processing</TabsTrigger>
-              <TabsTrigger value="packaging">Packaging & Logistics</TabsTrigger>
-              <TabsTrigger value="faq">FAQ</TabsTrigger>
+              <TabsTrigger value="overview">{t('productDetail.tabs.overview')}</TabsTrigger>
+              <TabsTrigger value="specifications">{t('productDetail.tabs.specifications')}</TabsTrigger>
+              <TabsTrigger value="quality">{t('productDetail.tabs.quality')}</TabsTrigger>
+              <TabsTrigger value="applications">{t('productDetail.tabs.applications')}</TabsTrigger>
+              <TabsTrigger value="processing">{t('productDetail.tabs.processing')}</TabsTrigger>
+              <TabsTrigger value="packaging">{t('productDetail.tabs.packaging')}</TabsTrigger>
+              <TabsTrigger value="faq">{t('productDetail.tabs.faq')}</TabsTrigger>
             </TabsList>
 
             <TabsContent value="overview" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Product Overview</CardTitle>
+                  <CardTitle>{t('productDetail.overview.title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <p className="text-muted-foreground">{product.description}</p>
                   <div className="grid md:grid-cols-2 gap-4 mt-6">
-                    <div className="flex items-start">
-                      <CheckCircle2 className="h-5 w-5 text-success mr-3 mt-0.5 flex-shrink-0" />
+                    <div className={`flex items-start ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
+                      <CheckCircle2 className={`h-5 w-5 text-success ${isRTL ? 'ml-3' : 'mr-3'} mt-0.5 flex-shrink-0`} />
                       <div>
-                        <p className="font-medium">Consistent Quality</p>
-                        <p className="text-sm text-muted-foreground">Batch-to-batch consistency with full traceability</p>
+                        <p className="font-medium">{t('productDetail.overview.consistentQuality')}</p>
+                        <p className="text-sm text-muted-foreground">{t('productDetail.overview.consistentQualityDesc')}</p>
                       </div>
                     </div>
-                    <div className="flex items-start">
-                      <CheckCircle2 className="h-5 w-5 text-success mr-3 mt-0.5 flex-shrink-0" />
+                    <div className={`flex items-start ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
+                      <CheckCircle2 className={`h-5 w-5 text-success ${isRTL ? 'ml-3' : 'mr-3'} mt-0.5 flex-shrink-0`} />
                       <div>
-                        <p className="font-medium">Technical Support</p>
-                        <p className="text-sm text-muted-foreground">Processing guidance and troubleshooting assistance</p>
+                        <p className="font-medium">{t('productDetail.overview.technicalSupport')}</p>
+                        <p className="text-sm text-muted-foreground">{t('productDetail.overview.technicalSupportDesc')}</p>
                       </div>
                     </div>
-                    <div className="flex items-start">
-                      <CheckCircle2 className="h-5 w-5 text-success mr-3 mt-0.5 flex-shrink-0" />
+                    <div className={`flex items-start ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
+                      <CheckCircle2 className={`h-5 w-5 text-success ${isRTL ? 'ml-3' : 'mr-3'} mt-0.5 flex-shrink-0`} />
                       <div>
-                        <p className="font-medium">Global Shipping</p>
-                        <p className="text-sm text-muted-foreground">Reliable delivery from our Dubai hub worldwide</p>
+                        <p className="font-medium">{t('productDetail.overview.globalShipping')}</p>
+                        <p className="text-sm text-muted-foreground">{t('productDetail.overview.globalShippingDesc')}</p>
                       </div>
                     </div>
-                    <div className="flex items-start">
-                      <CheckCircle2 className="h-5 w-5 text-success mr-3 mt-0.5 flex-shrink-0" />
+                    <div className={`flex items-start ${isRTL ? 'flex-row-reverse text-right' : ''}`}>
+                      <CheckCircle2 className={`h-5 w-5 text-success ${isRTL ? 'ml-3' : 'mr-3'} mt-0.5 flex-shrink-0`} />
                       <div>
-                        <p className="font-medium">Certified Supply Chain</p>
-                        <p className="text-sm text-muted-foreground">ISO-certified partners and traceable sourcing</p>
+                        <p className="font-medium">{t('productDetail.overview.certifiedSupply')}</p>
+                        <p className="text-sm text-muted-foreground">{t('productDetail.overview.certifiedSupplyDesc')}</p>
                       </div>
                     </div>
                   </div>
@@ -291,36 +297,36 @@ export default function ProductDetail() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <FileText className="h-5 w-5" />
-                    Technical Documentation
+                    {t('productDetail.documentation.title')}
                   </CardTitle>
-                  <CardDescription>Download product datasheets, safety information, and certificates</CardDescription>
+                  <CardDescription>{t('productDetail.documentation.subtitle')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid sm:grid-cols-3 gap-4">
                     <Button variant="outline" className="w-full justify-start" asChild>
                       <a href={product.documents.tds} download>
-                        <Download className="h-4 w-4 mr-2" />
-                        <div className="text-left">
-                          <div className="font-medium">TDS</div>
-                          <div className="text-xs text-muted-foreground">Technical Datasheet</div>
+                        <Download className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                        <div className={isRTL ? 'text-right' : 'text-left'}>
+                          <div className="font-medium">{t('productDetail.documentation.tds')}</div>
+                          <div className="text-xs text-muted-foreground">{t('productDetail.documentation.tdsDesc')}</div>
                         </div>
                       </a>
                     </Button>
                     <Button variant="outline" className="w-full justify-start" asChild>
                       <a href={product.documents.sds} download>
-                        <Download className="h-4 w-4 mr-2" />
-                        <div className="text-left">
-                          <div className="font-medium">SDS</div>
-                          <div className="text-xs text-muted-foreground">Safety Datasheet</div>
+                        <Download className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                        <div className={isRTL ? 'text-right' : 'text-left'}>
+                          <div className="font-medium">{t('productDetail.documentation.sds')}</div>
+                          <div className="text-xs text-muted-foreground">{t('productDetail.documentation.sdsDesc')}</div>
                         </div>
                       </a>
                     </Button>
                     <Button variant="outline" className="w-full justify-start" asChild>
                       <a href={product.documents.certificate} download>
-                        <Download className="h-4 w-4 mr-2" />
-                        <div className="text-left">
-                          <div className="font-medium">Certificate</div>
-                          <div className="text-xs text-muted-foreground">Compliance Cert.</div>
+                        <Download className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                        <div className={isRTL ? 'text-right' : 'text-left'}>
+                          <div className="font-medium">{t('productDetail.documentation.certificate')}</div>
+                          <div className="text-xs text-muted-foreground">{t('productDetail.documentation.certificateDesc')}</div>
                         </div>
                       </a>
                     </Button>
@@ -332,37 +338,37 @@ export default function ProductDetail() {
             <TabsContent value="specifications" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Technical Specifications</CardTitle>
-                  <CardDescription>Key material properties and test conditions</CardDescription>
+                  <CardTitle>{t('productDetail.specifications.title')}</CardTitle>
+                  <CardDescription>{t('productDetail.specifications.subtitle')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="overflow-x-auto">
                     <Table>
                       <TableHeader>
                         <TableRow>
-                          <TableHead className="font-semibold">Property</TableHead>
-                          <TableHead className="font-semibold">Value</TableHead>
+                          <TableHead className="font-semibold">{t('productDetail.specifications.property')}</TableHead>
+                          <TableHead className="font-semibold">{t('productDetail.specifications.value')}</TableHead>
                         </TableRow>
                       </TableHeader>
                       <TableBody>
                         <TableRow>
-                          <TableCell className="font-medium">Melt Flow Index (MFI)</TableCell>
+                          <TableCell className="font-medium">{t('productDetail.specifications.mfi')}</TableCell>
                           <TableCell>{product.specifications.mfi}</TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell className="font-medium">Density</TableCell>
+                          <TableCell className="font-medium">{t('productDetail.specifications.density')}</TableCell>
                           <TableCell>{product.specifications.density}</TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell className="font-medium">Tensile Strength</TableCell>
+                          <TableCell className="font-medium">{t('productDetail.specifications.tensileStrength')}</TableCell>
                           <TableCell>{product.specifications.tensileStrength}</TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell className="font-medium">Elongation at Break</TableCell>
+                          <TableCell className="font-medium">{t('productDetail.specifications.elongation')}</TableCell>
                           <TableCell>{product.specifications.elongation}</TableCell>
                         </TableRow>
                         <TableRow>
-                          <TableCell className="font-medium">Melting Point</TableCell>
+                          <TableCell className="font-medium">{t('productDetail.specifications.meltingPoint')}</TableCell>
                           <TableCell>{product.specifications.meltingPoint}</TableCell>
                         </TableRow>
                       </TableBody>
@@ -370,7 +376,7 @@ export default function ProductDetail() {
                   </div>
                   <div className="mt-6 p-4 bg-muted/50 rounded-lg">
                     <p className="text-sm text-muted-foreground">
-                      <strong>Test Methods:</strong> All specifications determined according to ASTM and ISO standards. Contact our technical team for complete test reports and methodology details.
+                      {t('productDetail.specifications.testMethods')}
                     </p>
                   </div>
                 </CardContent>
@@ -380,11 +386,11 @@ export default function ProductDetail() {
             <TabsContent value="quality" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Quality & Compliance</CardTitle>
+                  <CardTitle>{t('productDetail.quality.title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div>
-                    <h4 className="font-semibold mb-3">Certifications</h4>
+                    <h4 className="font-semibold mb-3">{t('productDetail.quality.certifications')}</h4>
                     <div className="flex flex-wrap gap-2">
                       {product.certifications.map(cert => (
                         <Badge key={cert} variant="secondary">{cert}</Badge>
@@ -392,19 +398,19 @@ export default function ProductDetail() {
                     </div>
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-3">Quality Assurance</h4>
+                    <h4 className="font-semibold mb-3">{t('productDetail.quality.qualityAssurance')}</h4>
                     <ul className="space-y-2 text-muted-foreground">
-                      <li className="flex items-start">
-                        <CheckCircle2 className="h-4 w-4 mr-2 mt-0.5 text-success flex-shrink-0" />
-                        <span>Every batch tested and certified with full documentation</span>
+                      <li className={`flex items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <CheckCircle2 className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'} mt-0.5 text-success flex-shrink-0`} />
+                        <span>{t('productDetail.quality.batchTested')}</span>
                       </li>
-                      <li className="flex items-start">
-                        <CheckCircle2 className="h-4 w-4 mr-2 mt-0.5 text-success flex-shrink-0" />
-                        <span>Material passports available with complete traceability</span>
+                      <li className={`flex items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <CheckCircle2 className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'} mt-0.5 text-success flex-shrink-0`} />
+                        <span>{t('productDetail.quality.materialPassports')}</span>
                       </li>
-                      <li className="flex items-start">
-                        <CheckCircle2 className="h-4 w-4 mr-2 mt-0.5 text-success flex-shrink-0" />
-                        <span>Third-party laboratory testing reports on request</span>
+                      <li className={`flex items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <CheckCircle2 className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'} mt-0.5 text-success flex-shrink-0`} />
+                        <span>{t('productDetail.quality.thirdParty')}</span>
                       </li>
                     </ul>
                   </div>
@@ -415,13 +421,13 @@ export default function ProductDetail() {
             <TabsContent value="applications" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Recommended Applications</CardTitle>
+                  <CardTitle>{t('productDetail.applications.title')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="grid md:grid-cols-2 gap-4">
                     {product.applications.map(app => (
-                      <div key={app} className="flex items-center p-4 bg-muted/50 rounded-lg">
-                        <Package className="h-5 w-5 text-primary mr-3 flex-shrink-0" />
+                      <div key={app} className={`flex items-center p-4 bg-muted/50 rounded-lg ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <Package className={`h-5 w-5 text-primary ${isRTL ? 'ml-3' : 'mr-3'} flex-shrink-0`} />
                         <span className="font-medium">{app}</span>
                       </div>
                     ))}
@@ -433,20 +439,20 @@ export default function ProductDetail() {
             <TabsContent value="processing" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Processing Guidelines</CardTitle>
+                  <CardTitle>{t('productDetail.processing.title')}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
                     {Object.entries(product.processing).map(([key, value]) => (
-                      <div key={key} className="flex justify-between py-2 border-b border-border last:border-0">
-                        <span className="text-muted-foreground capitalize">{key.replace(/([A-Z])/g, ' $1').trim()}</span>
+                      <div key={key} className={`flex justify-between py-2 border-b border-border last:border-0 ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <span className="text-muted-foreground capitalize">{t(`productDetail.processing.${key}`)}</span>
                         <span className="font-medium">{value}</span>
                       </div>
                     ))}
                   </div>
                   <div className="mt-6 p-4 bg-muted/50 rounded-lg">
                     <p className="text-sm text-muted-foreground">
-                      <strong>Note:</strong> Processing parameters may vary based on your specific equipment and product requirements. Contact our technical team for optimization support.
+                      {t('productDetail.processing.note')}
                     </p>
                   </div>
                 </CardContent>
@@ -456,17 +462,17 @@ export default function ProductDetail() {
             <TabsContent value="packaging" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Packaging & Logistics</CardTitle>
+                  <CardTitle>{t('productDetail.packaging.title')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
                   <div>
-                    <h4 className="font-semibold mb-3">Standard Packaging Options</h4>
+                    <h4 className="font-semibold mb-3">{t('productDetail.packaging.standardOptions')}</h4>
                     <div className="space-y-3">
                       {Object.entries(product.packaging).map(([key, value]) => (
-                        <div key={key} className="flex items-start">
-                          <Truck className="h-4 w-4 mr-2 mt-0.5 text-primary flex-shrink-0" />
+                        <div key={key} className={`flex items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                          <Truck className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'} mt-0.5 text-primary flex-shrink-0`} />
                           <div>
-                            <span className="font-medium capitalize">{key}: </span>
+                            <span className="font-medium capitalize">{t(`productDetail.packaging.${key}`)}: </span>
                             <span className="text-muted-foreground">{value}</span>
                           </div>
                         </div>
@@ -474,19 +480,19 @@ export default function ProductDetail() {
                     </div>
                   </div>
                   <div>
-                    <h4 className="font-semibold mb-3">Shipping</h4>
+                    <h4 className="font-semibold mb-3">{t('productDetail.packaging.shipping')}</h4>
                     <ul className="space-y-2 text-muted-foreground">
-                      <li className="flex items-start">
-                        <CheckCircle2 className="h-4 w-4 mr-2 mt-0.5 text-success flex-shrink-0" />
-                        <span>Ships from Dubai ports to worldwide destinations</span>
+                      <li className={`flex items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <CheckCircle2 className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'} mt-0.5 text-success flex-shrink-0`} />
+                        <span>{t('productDetail.packaging.dubaiPorts')}</span>
                       </li>
-                      <li className="flex items-start">
-                        <CheckCircle2 className="h-4 w-4 mr-2 mt-0.5 text-success flex-shrink-0" />
-                        <span>FCL and LCL options available</span>
+                      <li className={`flex items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <CheckCircle2 className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'} mt-0.5 text-success flex-shrink-0`} />
+                        <span>{t('productDetail.packaging.fclLcl')}</span>
                       </li>
-                      <li className="flex items-start">
-                        <CheckCircle2 className="h-4 w-4 mr-2 mt-0.5 text-success flex-shrink-0" />
-                        <span>Typical lead time: 2-4 weeks from order confirmation</span>
+                      <li className={`flex items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                        <CheckCircle2 className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'} mt-0.5 text-success flex-shrink-0`} />
+                        <span>{t('productDetail.packaging.leadTime')}</span>
                       </li>
                     </ul>
                   </div>
@@ -497,14 +503,14 @@ export default function ProductDetail() {
             <TabsContent value="faq" className="space-y-6">
               <Card>
                 <CardHeader>
-                  <CardTitle>Frequently Asked Questions</CardTitle>
-                  <CardDescription>Common questions about this product</CardDescription>
+                  <CardTitle>{t('productDetail.faq.title')}</CardTitle>
+                  <CardDescription>{t('productDetail.faq.subtitle')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Accordion type="single" collapsible className="w-full">
                     {product.faqs.map((faq, index) => (
                       <AccordionItem key={index} value={`item-${index}`}>
-                        <AccordionTrigger className="text-left">
+                        <AccordionTrigger className={isRTL ? 'text-right' : 'text-left'}>
                           {faq.question}
                         </AccordionTrigger>
                         <AccordionContent className="text-muted-foreground">
@@ -515,7 +521,8 @@ export default function ProductDetail() {
                   </Accordion>
                   <div className="mt-6 p-4 bg-muted/50 rounded-lg">
                     <p className="text-sm text-muted-foreground">
-                      <strong>Still have questions?</strong> Our technical team is here to help. <Link to="/contact" className="text-primary hover:underline">Contact us</Link> for personalized assistance with your specific application.
+                      <strong>{t('productDetail.faq.stillQuestions')}</strong> {' '}
+                      <Link to="/contact" className="text-primary hover:underline">{t('productDetail.faq.contactUs')}</Link>
                     </p>
                   </div>
                 </CardContent>
@@ -528,21 +535,21 @@ export default function ProductDetail() {
       {/* Related Products */}
       <section className="py-12 bg-muted/50 border-t border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold mb-6">Related Products</h2>
+          <h2 className="text-2xl font-bold mb-6">{t('productDetail.relatedProducts.title')}</h2>
           <div className="grid md:grid-cols-3 gap-6">
             {[1, 2, 3].map(i => (
               <Card key={i} className="hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <Badge variant="outline" className="w-fit mb-2">
-                    <Leaf className="h-3 w-3 mr-1" />
-                    Recycled
+                    <Leaf className={`h-3 w-3 ${isRTL ? 'ml-1' : 'mr-1'}`} />
+                    {t('productDetail.relatedProducts.recycled')}
                   </Badge>
                   <CardTitle className="text-lg">Related Product {i}</CardTitle>
                   <CardDescription>Product grade code</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <Button asChild variant="outline" className="w-full">
-                    <Link to={`/products/related-${i}`}>View Details</Link>
+                    <Link to={`/products/related-${i}`}>{t('productDetail.relatedProducts.viewDetails')}</Link>
                   </Button>
                 </CardContent>
               </Card>
