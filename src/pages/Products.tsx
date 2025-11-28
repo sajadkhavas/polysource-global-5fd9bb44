@@ -16,6 +16,8 @@ import { useToast } from '@/hooks/use-toast';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { products, type Product } from '@/data/products';
 import { productCategories, polymerTypes } from '@/data/product-taxonomy';
+import { LazyImage } from '@/components/LazyImage';
+import { getProductImage, getProductAltText } from '@/data/product-images';
 
 export default function Products() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -197,21 +199,27 @@ export default function Products() {
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: index * 0.05 }}
                   >
-                    <Card className="h-full hover:shadow-lg transition-shadow flex flex-col">
-                      <CardHeader className="flex-1">
-                        <div className="flex items-start justify-between mb-2">
-                          <div className="flex gap-2">
-                            {product.recycled && (
-                              <Badge variant="outline" className="border-success text-success">
-                                <Leaf className="h-3 w-3 mr-1" />
-                                Recycled
-                              </Badge>
-                            )}
-                            {product.inStock && (
-                              <Badge variant="secondary">In Stock</Badge>
-                            )}
-                          </div>
+                    <Card className="h-full hover:shadow-lg transition-shadow flex flex-col overflow-hidden">
+                      {/* Product Image */}
+                      <div className="aspect-[4/3] relative overflow-hidden bg-muted">
+                        <LazyImage
+                          src={getProductImage(product.category)}
+                          alt={getProductAltText(product.name, product.category)}
+                          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                        />
+                        <div className="absolute top-2 left-2 flex gap-1.5 flex-wrap">
+                          {product.recycled && (
+                            <Badge variant="outline" className="bg-background/90 backdrop-blur-sm border-success text-success">
+                              <Leaf className="h-3 w-3 mr-1" />
+                              Recycled
+                            </Badge>
+                          )}
+                          {product.inStock && (
+                            <Badge variant="secondary" className="bg-background/90 backdrop-blur-sm">In Stock</Badge>
+                          )}
                         </div>
+                      </div>
+                      <CardHeader className="flex-1 pt-4">
                         <CardTitle className="text-lg">{product.name}</CardTitle>
                         <CardDescription>
                           <span className="font-mono text-xs">{product.grade}</span>
