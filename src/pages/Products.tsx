@@ -123,7 +123,7 @@ export default function Products() {
         structuredData={breadcrumbSchema}
       />
       {/* Header */}
-      <section className="bg-muted/50 py-12 border-b border-border">
+      <section className="bg-muted/50 pt-32 pb-12 border-b border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <h1 className="text-4xl font-bold mb-4 text-foreground">Product Catalog</h1>
           <p className="text-lg text-muted-foreground max-w-3xl">
