@@ -1,10 +1,12 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { SEO } from '@/components/SEO';
 import { generateOrganizationSchema, generateWebSiteSchema } from '@/lib/structured-data';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 import { 
   Package, 
   Shield, 
@@ -23,6 +25,9 @@ import {
 import { trackQuoteRequest } from '@/lib/analytics';
 
 export default function Home() {
+  const { t, i18n } = useTranslation();
+  const isRTL = i18n.language === 'ar';
+
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
     animate: { opacity: 1, y: 0 },
@@ -31,26 +36,26 @@ export default function Home() {
 
   const categories = [
     {
-      title: 'Recycled Polymers',
-      description: 'rPE, rPP, rPET with certified quality',
+      title: t('categories.recycled.title'),
+      description: t('categories.recycled.description'),
       icon: Leaf,
       link: '/products?category=recycled'
     },
     {
-      title: 'Virgin Polymers',
-      description: 'PE, PP grades for demanding applications',
+      title: t('categories.virgin.title'),
+      description: t('categories.virgin.description'),
       icon: Package,
       link: '/products?category=virgin'
     },
     {
-      title: 'Compounds & Masterbatches',
-      description: 'Custom-formulated for your specifications',
+      title: t('categories.compounds.title'),
+      description: t('categories.compounds.description'),
       icon: Target,
       link: '/products?category=compounds'
     },
     {
-      title: 'Finished Parts',
-      description: 'Injection molded and extruded components',
+      title: t('categories.parts.title'),
+      description: t('categories.parts.description'),
       icon: Shield,
       link: '/products?category=parts'
     }
@@ -58,34 +63,34 @@ export default function Home() {
 
   const valueProps = [
     {
-      title: 'Batch Consistency',
-      description: 'Every shipment meets spec. No surprises, no rework, no excuses.',
+      title: t('whyUs.batch.title'),
+      description: t('whyUs.batch.description'),
       icon: CheckCircle2
     },
     {
-      title: 'Digital RFQ Process',
-      description: 'Quote requests processed in under 48 hours. No WhatsApp chaos.',
+      title: t('whyUs.rfq.title'),
+      description: t('whyUs.rfq.description'),
       icon: Clock
     },
     {
-      title: 'Technical Support',
-      description: 'Material selection guidance, processing parameters, troubleshooting.',
+      title: t('whyUs.support.title'),
+      description: t('whyUs.support.description'),
       icon: Users
     },
     {
-      title: 'Transparent Sourcing',
-      description: 'Traceable material origins, certifications on demand, no greenwashing.',
+      title: t('whyUs.sourcing.title'),
+      description: t('whyUs.sourcing.description'),
       icon: FileText
     }
   ];
 
   const industries = [
-    { name: 'Packaging', icon: Package },
-    { name: 'Automotive', icon: Truck },
-    { name: 'Construction', icon: Shield },
-    { name: 'Consumer Goods', icon: Target },
-    { name: 'Agriculture', icon: Leaf },
-    { name: 'Industrial', icon: Zap }
+    { name: t('industries.packaging'), icon: Package },
+    { name: t('industries.automotive'), icon: Truck },
+    { name: t('industries.construction'), icon: Shield },
+    { name: t('industries.consumer'), icon: Target },
+    { name: t('industries.agriculture'), icon: Leaf },
+    { name: t('industries.industrial'), icon: Zap }
   ];
 
   // Organization and Website structured data
@@ -110,8 +115,11 @@ export default function Home() {
   return (
     <div className="min-h-screen">
       <SEO
-        title="Recycled Polymer Supplier Dubai | Virgin PE, PP, HDPE Materials"
-        description="PolySource Global - Dubai's leading B2B polymer supplier. Technical-grade recycled PE, PP, rPET and virgin polymers. Serving 18+ countries with batch traceability and 48hr quote turnaround."
+        title={isRTL ? 'مورد البوليمر المُعاد تدويره دبي | مواد PE، PP، HDPE البكر' : 'Recycled Polymer Supplier Dubai | Virgin PE, PP, HDPE Materials'}
+        description={isRTL 
+          ? 'PolySource Global - المورد الرائد للبوليمر B2B في دبي. بوليمرات معاد تدويرها من الدرجة التقنية PE، PP، rPET وبوليمرات بكر. نخدم أكثر من 18 دولة.'
+          : "PolySource Global - Dubai's leading B2B polymer supplier. Technical-grade recycled PE, PP, rPET and virgin polymers. Serving 18+ countries with batch traceability and 48hr quote turnaround."
+        }
         keywords="recycled polymers Dubai, virgin polymers UAE, PE supplier, PP supplier, HDPE materials, rPE, rPP, B2B polymer trading, plastic raw materials, polymer distributor MENA"
         structuredData={[organizationSchema, websiteSchema]}
       />
@@ -160,29 +168,29 @@ export default function Home() {
         
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 pt-24 pb-16">
           <motion.div 
-            className="max-w-4xl"
+            className={cn("max-w-4xl", isRTL && "text-right")}
             {...fadeInUp}
           >
             <Badge variant="secondary" className="mb-4 bg-primary-foreground/10 text-primary-foreground border-primary-foreground/20 backdrop-blur-sm">
-              Dubai to the World
+              {t('hero.badge')}
             </Badge>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight drop-shadow-lg">
-              Recycled-First Polymer Supply Chain
+              {t('hero.title')}
             </h1>
             <p className="text-lg md:text-xl lg:text-2xl mb-8 text-primary-foreground/90 max-w-3xl drop-shadow-md">
-              Global sourcing of high-quality recycled and virgin polymers with sustainability at the core. Technical-grade materials with traceable quality.
+              {t('hero.subtitle')}
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <div className={cn("flex flex-col sm:flex-row gap-4 mb-8", isRTL && "sm:flex-row-reverse")}>
               <Button 
                 asChild 
                 size="lg" 
                 className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold"
                 onClick={() => trackQuoteRequest('hero')}
               >
-                <Link to="/contact">Request Quote</Link>
+                <Link to="/contact">{t('hero.requestQuote')}</Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary backdrop-blur-sm">
-                <Link to="/products">View Materials</Link>
+                <Link to="/products">{t('hero.viewMaterials')}</Link>
               </Button>
               <Button 
                 size="lg" 
@@ -192,24 +200,27 @@ export default function Home() {
                   document.getElementById('product-categories')?.scrollIntoView({ behavior: 'smooth' });
                 }}
               >
-                View All Materials
-                <ChevronDown className="ml-2 h-4 w-4" />
+                {t('hero.viewAllMaterials')}
+                <ChevronDown className={cn("h-4 w-4", isRTL ? "mr-2" : "ml-2")} />
               </Button>
             </div>
             
             {/* Trust badges */}
-            <div className="flex flex-wrap items-center gap-6 pt-4 border-t border-primary-foreground/20">
-              <div className="flex items-center gap-2 text-sm text-primary-foreground/80">
+            <div className={cn(
+              "flex flex-wrap items-center gap-6 pt-4 border-t border-primary-foreground/20",
+              isRTL && "flex-row-reverse"
+            )}>
+              <div className={cn("flex items-center gap-2 text-sm text-primary-foreground/80", isRTL && "flex-row-reverse")}>
                 <Globe className="h-4 w-4" />
-                <span>18+ Countries</span>
+                <span>{t('hero.trustBadges.countries')}</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-primary-foreground/80">
+              <div className={cn("flex items-center gap-2 text-sm text-primary-foreground/80", isRTL && "flex-row-reverse")}>
                 <Package className="h-4 w-4" />
-                <span>500+ Tons/month</span>
+                <span>{t('hero.trustBadges.tons')}</span>
               </div>
-              <div className="flex items-center gap-2 text-sm text-primary-foreground/80">
+              <div className={cn("flex items-center gap-2 text-sm text-primary-foreground/80", isRTL && "flex-row-reverse")}>
                 <Shield className="h-4 w-4" />
-                <span>Certified Recycled</span>
+                <span>{t('hero.trustBadges.certified')}</span>
               </div>
             </div>
           </motion.div>
@@ -239,7 +250,7 @@ export default function Home() {
               transition={{ delay: 0.1 }}
             >
               <p className="text-3xl md:text-4xl font-bold text-foreground mb-2">12,500+</p>
-              <p className="text-sm text-muted-foreground">Tonnes Delivered Annually</p>
+              <p className="text-sm text-muted-foreground">{t('stats.tonnesDelivered')}</p>
             </motion.div>
             <motion.div 
               className="text-center"
@@ -249,7 +260,7 @@ export default function Home() {
               transition={{ delay: 0.2 }}
             >
               <p className="text-3xl md:text-4xl font-bold text-foreground mb-2">18+</p>
-              <p className="text-sm text-muted-foreground">Countries Served</p>
+              <p className="text-sm text-muted-foreground">{t('stats.countriesServed')}</p>
             </motion.div>
             <motion.div 
               className="text-center"
@@ -259,7 +270,7 @@ export default function Home() {
               transition={{ delay: 0.3 }}
             >
               <p className="text-3xl md:text-4xl font-bold text-foreground mb-2">50%</p>
-              <p className="text-sm text-muted-foreground">Recycled Content Available</p>
+              <p className="text-sm text-muted-foreground">{t('stats.recycledContent')}</p>
             </motion.div>
             <motion.div 
               className="text-center"
@@ -269,7 +280,7 @@ export default function Home() {
               transition={{ delay: 0.4 }}
             >
               <p className="text-3xl md:text-4xl font-bold text-foreground mb-2">&lt;48hr</p>
-              <p className="text-sm text-muted-foreground">Quote Turnaround</p>
+              <p className="text-sm text-muted-foreground">{t('stats.quoteTurnaround')}</p>
             </motion.div>
           </div>
         </div>
@@ -279,16 +290,16 @@ export default function Home() {
       <section id="product-categories" className="py-20 bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
-            className="text-center mb-12"
+            className={cn("text-center mb-12", isRTL && "text-center")}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-              Industrial-Grade Polymers, Simplified
+              {t('categories.title')}
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              From recycled materials to virgin grades and custom compounds, all with consistent quality you can rely on.
+              {t('categories.subtitle')}
             </p>
           </motion.div>
 
@@ -303,8 +314,8 @@ export default function Home() {
               >
                 <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group">
                   <Link to={category.link}>
-                    <CardHeader>
-                      <category.icon className="h-10 w-10 mb-4 text-primary" />
+                    <CardHeader className={isRTL ? 'text-right' : ''}>
+                      <category.icon className={cn("h-10 w-10 mb-4 text-primary", isRTL && "mr-auto")} />
                       <CardTitle className="group-hover:text-primary transition-colors">
                         {category.title}
                       </CardTitle>
@@ -322,16 +333,16 @@ export default function Home() {
       <section className="py-20 bg-muted/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
-            className="text-center mb-12"
+            className={cn("text-center mb-12", isRTL && "text-center")}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-              Why Leading Manufacturers Choose Us Over Traditional Traders
+              {t('whyUs.title')}
             </h2>
             <p className="text-lg text-muted-foreground max-w-3xl mx-auto">
-              We're not another commodity trader. We're a technical partner focused on solving the real problems in recycled polymer supply.
+              {t('whyUs.subtitle')}
             </p>
           </motion.div>
 
@@ -346,11 +357,11 @@ export default function Home() {
               >
                 <Card>
                   <CardHeader>
-                    <div className="flex items-start">
-                      <div className="p-2 bg-primary/10 rounded-lg mr-4">
+                    <div className={cn("flex items-start", isRTL && "flex-row-reverse")}>
+                      <div className={cn("p-2 bg-primary/10 rounded-lg", isRTL ? "ml-4" : "mr-4")}>
                         <prop.icon className="h-6 w-6 text-primary" />
                       </div>
-                      <div>
+                      <div className={isRTL ? 'text-right' : ''}>
                         <CardTitle className="mb-2">{prop.title}</CardTitle>
                         <CardDescription>{prop.description}</CardDescription>
                       </div>
@@ -373,10 +384,10 @@ export default function Home() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-              Trusted Across Industries
+              {t('industries.title')}
             </h2>
             <p className="text-lg text-muted-foreground">
-              Supplying production-grade polymers to manufacturers worldwide
+              {t('industries.subtitle')}
             </p>
           </motion.div>
 
@@ -402,47 +413,51 @@ export default function Home() {
       {/* Sustainability */}
       <section className="py-20 bg-success/5 border-y border-success/20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
+          <div className={cn(
+            "grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto",
+            isRTL && "md:grid-flow-dense"
+          )}>
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: isRTL ? 20 : -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
+              className={isRTL ? 'text-right md:col-start-2' : ''}
             >
               <Badge variant="outline" className="mb-4 border-success text-success">
-                Sustainability
+                {t('sustainability.badge')}
               </Badge>
               <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-                Recycled-First. Traceable. Certified.
+                {t('sustainability.title')}
               </h2>
               <p className="text-lg text-muted-foreground mb-6">
-                We prioritize recycled polymers not as a marketing gimmick, but as a technical solution. Every batch comes with traceable sourcing data and third-party certifications.
+                {t('sustainability.subtitle')}
               </p>
               <ul className="space-y-3 mb-8">
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-5 w-5 text-success mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-muted-foreground">Post-consumer and post-industrial recycled content available</span>
+                <li className={cn("flex items-start", isRTL && "flex-row-reverse")}>
+                  <CheckCircle2 className={cn("h-5 w-5 text-success mt-0.5 flex-shrink-0", isRTL ? "ml-3" : "mr-3")} />
+                  <span className="text-muted-foreground">{t('sustainability.points.pcr')}</span>
                 </li>
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-5 w-5 text-success mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-muted-foreground">ISO 14001 certified supply chain partners</span>
+                <li className={cn("flex items-start", isRTL && "flex-row-reverse")}>
+                  <CheckCircle2 className={cn("h-5 w-5 text-success mt-0.5 flex-shrink-0", isRTL ? "ml-3" : "mr-3")} />
+                  <span className="text-muted-foreground">{t('sustainability.points.iso')}</span>
                 </li>
-                <li className="flex items-start">
-                  <CheckCircle2 className="h-5 w-5 text-success mr-3 mt-0.5 flex-shrink-0" />
-                  <span className="text-muted-foreground">Material passports with full traceability data</span>
+                <li className={cn("flex items-start", isRTL && "flex-row-reverse")}>
+                  <CheckCircle2 className={cn("h-5 w-5 text-success mt-0.5 flex-shrink-0", isRTL ? "ml-3" : "mr-3")} />
+                  <span className="text-muted-foreground">{t('sustainability.points.co2')}</span>
                 </li>
               </ul>
               <Button asChild variant="outline" className="border-success text-success hover:bg-success hover:text-success-foreground">
                 <Link to="/sustainability">
-                  Learn More About Our Approach
-                  <ArrowRight className="ml-2 h-4 w-4" />
+                  {t('sustainability.learnMore')}
+                  <ArrowRight className={cn("h-4 w-4", isRTL ? "mr-2 rotate-180" : "ml-2")} />
                 </Link>
               </Button>
             </motion.div>
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, x: isRTL ? -20 : 20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="relative"
+              className={cn("relative", isRTL && "md:col-start-1 md:row-start-1")}
             >
               <div className="aspect-square rounded-2xl bg-gradient-to-br from-success/20 to-success/5 flex items-center justify-center">
                 <Leaf className="h-32 w-32 text-success" />
@@ -462,55 +477,55 @@ export default function Home() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-              Technical Resources & Insights
+              {isRTL ? 'الموارد الفنية والرؤى' : 'Technical Resources & Insights'}
             </h2>
             <p className="text-lg text-muted-foreground">
-              Material data sheets, processing guides, and industry insights
+              {isRTL ? 'أوراق بيانات المواد وأدلة المعالجة ورؤى الصناعة' : 'Material data sheets, processing guides, and industry insights'}
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             <Card>
-              <CardHeader>
-                <FileText className="h-8 w-8 text-primary mb-3" />
-                <CardTitle>TDS & SDS Library</CardTitle>
+              <CardHeader className={isRTL ? 'text-right' : ''}>
+                <FileText className={cn("h-8 w-8 text-primary mb-3", isRTL && "mr-auto")} />
+                <CardTitle>{isRTL ? 'مكتبة TDS و SDS' : 'TDS & SDS Library'}</CardTitle>
                 <CardDescription>
-                  Download technical and safety data sheets for all our materials
+                  {isRTL ? 'قم بتنزيل أوراق البيانات الفنية وبيانات السلامة لجميع موادنا' : 'Download technical and safety data sheets for all our materials'}
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className={isRTL ? 'text-right' : ''}>
                 <Button asChild variant="link" className="p-0">
-                  <Link to="/resources">Access Resources →</Link>
+                  <Link to="/resources">{isRTL ? 'الوصول للموارد ←' : 'Access Resources →'}</Link>
                 </Button>
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader>
-                <Package className="h-8 w-8 text-primary mb-3" />
-                <CardTitle>Processing Guidelines</CardTitle>
+              <CardHeader className={isRTL ? 'text-right' : ''}>
+                <Package className={cn("h-8 w-8 text-primary mb-3", isRTL && "mr-auto")} />
+                <CardTitle>{isRTL ? 'إرشادات المعالجة' : 'Processing Guidelines'}</CardTitle>
                 <CardDescription>
-                  Temperature profiles, cycle times, and optimization tips
+                  {isRTL ? 'ملفات درجات الحرارة وأوقات الدورة ونصائح التحسين' : 'Temperature profiles, cycle times, and optimization tips'}
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className={isRTL ? 'text-right' : ''}>
                 <Button asChild variant="link" className="p-0">
-                  <Link to="/blog">Read Guide →</Link>
+                  <Link to="/blog">{isRTL ? 'اقرأ الدليل ←' : 'Read Guide →'}</Link>
                 </Button>
               </CardContent>
             </Card>
 
             <Card>
-              <CardHeader>
-                <Zap className="h-8 w-8 text-primary mb-3" />
-                <CardTitle>Industry News</CardTitle>
+              <CardHeader className={isRTL ? 'text-right' : ''}>
+                <Zap className={cn("h-8 w-8 text-primary mb-3", isRTL && "mr-auto")} />
+                <CardTitle>{isRTL ? 'أخبار الصناعة' : 'Industry News'}</CardTitle>
                 <CardDescription>
-                  Latest updates on polymer markets and sustainability regulations
+                  {isRTL ? 'آخر التحديثات حول أسواق البوليمر ولوائح الاستدامة' : 'Latest updates on polymer markets and sustainability regulations'}
                 </CardDescription>
               </CardHeader>
-              <CardContent>
+              <CardContent className={isRTL ? 'text-right' : ''}>
                 <Button asChild variant="link" className="p-0">
-                  <Link to="/blog">View Blog →</Link>
+                  <Link to="/blog">{isRTL ? 'عرض المدونة ←' : 'View Blog →'}</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -527,17 +542,17 @@ export default function Home() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Ready to Source Reliable Polymers?
+              {t('cta.title')}
             </h2>
             <p className="text-xl mb-8 text-primary-foreground/90 max-w-2xl mx-auto">
-              Get a detailed quote within 48 hours. No WhatsApp back-and-forth required.
+              {t('cta.subtitle')}
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <div className={cn("flex flex-col sm:flex-row gap-4 justify-center", isRTL && "sm:flex-row-reverse")}>
               <Button asChild size="lg" variant="secondary">
-                <Link to="/contact">Start RFQ</Link>
+                <Link to="/contact">{t('cta.button')}</Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
-                <Link to="/products">Browse Catalog</Link>
+                <Link to="/products">{isRTL ? 'تصفح الكتالوج' : 'Browse Catalog'}</Link>
               </Button>
             </div>
           </motion.div>
