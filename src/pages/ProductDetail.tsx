@@ -15,6 +15,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { ArrowLeft, Download, Leaf, Shield, Package, Truck, FileText, CheckCircle2 } from 'lucide-react';
 import { useRFQ } from '@/contexts/RFQContext';
 import { useToast } from '@/hooks/use-toast';
+import { LazyImage } from '@/components/LazyImage';
+import { getProductImage, getProductAltText } from '@/data/product-images';
+import type { ProductCategory } from '@/data/product-taxonomy';
 
 export default function ProductDetail() {
   const { id } = useParams();
@@ -138,6 +141,19 @@ export default function ProductDetail() {
       <section className="py-8 border-b border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col lg:flex-row gap-8">
+            {/* Product Image */}
+            <div className="lg:w-96 flex-shrink-0">
+              <Card className="overflow-hidden">
+                <div className="aspect-square relative bg-muted">
+                  <LazyImage
+                    src={getProductImage('recycled' as ProductCategory)}
+                    alt={getProductAltText(product.name, 'recycled' as ProductCategory)}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </Card>
+            </div>
+            
             <div className="flex-1">
               <div className="flex flex-wrap gap-2 mb-4">
                 {product.recycled && (
