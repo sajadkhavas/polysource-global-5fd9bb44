@@ -12,6 +12,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Mail, MapPin, Phone, Clock, CheckCircle2, Upload, X } from 'lucide-react';
 import { useRFQ } from '@/contexts/RFQContext';
 import { useToast } from '@/hooks/use-toast';
+import { trackQuoteRequest, trackFormSubmission } from '@/lib/analytics';
 
 export default function Contact() {
   const { products, removeProduct, clearProducts } = useRFQ();
@@ -31,6 +32,22 @@ export default function Contact() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Log form data to console and simulate backend submission
+    const submissionData = {
+      ...formData,
+      products: products.map(p => ({ id: p.id, name: p.name, grade: p.grade })),
+      submittedAt: new Date().toISOString()
+    };
+    console.log('[Form Submission] Contact Form Data:', submissionData);
+    
+    // Track analytics event
+    trackQuoteRequest('contact');
+    trackFormSubmission('contact_form', submissionData);
+    
+    // Simulate sending to backend
+    console.log('[Backend Simulation] Sending to API:', { endpoint: '/api/quotes', payload: submissionData });
+    
     toast({
       title: "Quote Request Submitted",
       description: "We'll respond within 48 hours with a detailed quotation.",

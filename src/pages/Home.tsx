@@ -17,8 +17,10 @@ import {
   Clock,
   Users,
   CheckCircle2,
-  ArrowRight
+  ArrowRight,
+  ChevronDown
 } from 'lucide-react';
+import { trackQuoteRequest } from '@/lib/analytics';
 
 export default function Home() {
   const fadeInUp = {
@@ -171,11 +173,27 @@ export default function Home() {
               Global sourcing of high-quality recycled and virgin polymers with sustainability at the core. Technical-grade materials with traceable quality.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 mb-8">
-              <Button asChild size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold">
+              <Button 
+                asChild 
+                size="lg" 
+                className="bg-accent text-accent-foreground hover:bg-accent/90 font-semibold"
+                onClick={() => trackQuoteRequest('hero')}
+              >
                 <Link to="/contact">Request Quote</Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary backdrop-blur-sm">
                 <Link to="/products">View Materials</Link>
+              </Button>
+              <Button 
+                size="lg" 
+                variant="ghost" 
+                className="text-primary-foreground hover:bg-primary-foreground/10"
+                onClick={() => {
+                  document.getElementById('product-categories')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >
+                View All Materials
+                <ChevronDown className="ml-2 h-4 w-4" />
               </Button>
             </div>
             
@@ -258,7 +276,7 @@ export default function Home() {
       </section>
 
       {/* Product Categories */}
-      <section className="py-20 bg-background">
+      <section id="product-categories" className="py-20 bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div 
             className="text-center mb-12"

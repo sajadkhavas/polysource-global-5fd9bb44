@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
 import { SEO } from '@/components/SEO';
-import { generateProductSchema, generateBreadcrumbSchema } from '@/lib/structured-data';
+import { generateBreadcrumbSchema } from '@/lib/structured-data';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -10,45 +11,48 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Search, Filter, Package, Leaf } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Search, Filter, Package, Leaf, AlertCircle } from 'lucide-react';
 import { useRFQ } from '@/contexts/RFQContext';
 import { useToast } from '@/hooks/use-toast';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { products, type Product } from '@/data/products';
-import { productCategories, polymerTypes } from '@/data/product-taxonomy';
 import { LazyImage } from '@/components/LazyImage';
-import { getProductImage, getProductAltText } from '@/data/product-images';
+import { getProductAltText } from '@/data/product-images';
+import { fetchMaterials, type PolymerMaterial } from '@/lib/mockData';
 
 export default function Products() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [selectedType, setSelectedType] = useState<string>('all');
   const [showRecycledOnly, setShowRecycledOnly] = useState(false);
   const [showInStockOnly, setShowInStockOnly] = useState(false);
   const { addProduct } = useRFQ();
   const { toast } = useToast();
 
-  const filteredProducts = products.filter(product => {
-    const matchesSearch = product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         product.grade.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
-    const matchesType = selectedType === 'all' || product.type === selectedType;
-    const matchesRecycled = !showRecycledOnly || product.recycled;
-    const matchesStock = !showInStockOnly || product.inStock;
-
-    return matchesSearch && matchesCategory && matchesType && matchesRecycled && matchesStock;
+  const { data: materials, isLoading, isError } = useQuery({
+    queryKey: ['materials'],
+    queryFn: fetchMaterials,
   });
 
-  const handleAddToRFQ = (product: Product) => {
+  const filteredProducts = (materials || []).filter((product: PolymerMaterial) => {
+    const matchesSearch = product.name_en.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         product.grade.toLowerCase().includes(searchQuery.toLowerCase());
+    const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
+    const matchesRecycled = !showRecycledOnly || product.recycled_percentage > 0;
+    const matchesStock = !showInStockOnly || product.inStock;
+
+    return matchesSearch && matchesCategory && matchesRecycled && matchesStock;
+  });
+
+  const handleAddToRFQ = (product: PolymerMaterial) => {
     addProduct({
       id: product.id,
-      name: product.name,
-      type: product.type,
+      name: product.name_en,
+      type: product.category,
       grade: product.grade
     });
     toast({
       title: "Added to RFQ",
-      description: `${product.name} has been added to your quote request.`,
+      description: `${product.name_en} has been added to your quote request.`,
     });
   };
 
@@ -62,28 +66,11 @@ export default function Products() {
           </SelectTrigger>
           <SelectContent>
             <SelectItem value="all">All Categories</SelectItem>
-            {Object.entries(productCategories).map(([key, cat]) => (
-              <SelectItem key={key} value={key}>
-                {cat.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
-
-      <div>
-        <h3 className="font-semibold mb-3">Polymer Type</h3>
-        <Select value={selectedType} onValueChange={setSelectedType}>
-          <SelectTrigger>
-            <SelectValue placeholder="All Types" />
-          </SelectTrigger>
-          <SelectContent className="max-h-[300px]">
-            <SelectItem value="all">All Types</SelectItem>
-            {Object.entries(polymerTypes).map(([key, type]) => (
-              <SelectItem key={key} value={key}>
-                {type.label}
-              </SelectItem>
-            ))}
+            <SelectItem value="recycled">Recycled</SelectItem>
+            <SelectItem value="virgin">Virgin</SelectItem>
+            <SelectItem value="pcr">PCR</SelectItem>
+            <SelectItem value="masterbatch">Masterbatch</SelectItem>
+            <SelectItem value="compound">Compound</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -106,6 +93,39 @@ export default function Products() {
           <Label htmlFor="instock" className="cursor-pointer">In Stock Only</Label>
         </div>
       </div>
+    </div>
+  );
+
+  const LoadingSkeleton = () => (
+    <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+      {[...Array(6)].map((_, i) => (
+        <Card key={i} className="h-full overflow-hidden">
+          <Skeleton className="aspect-[4/3] w-full" />
+          <CardHeader className="pt-4">
+            <Skeleton className="h-6 w-3/4" />
+            <Skeleton className="h-4 w-1/2 mt-2" />
+            <div className="mt-4 space-y-2">
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-full" />
+              <Skeleton className="h-4 w-full" />
+            </div>
+          </CardHeader>
+          <CardContent className="pt-0">
+            <div className="flex gap-2">
+              <Skeleton className="h-9 flex-1" />
+              <Skeleton className="h-9 flex-1" />
+            </div>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+
+  const ErrorState = () => (
+    <div className="text-center py-12">
+      <AlertCircle className="h-12 w-12 mx-auto text-destructive mb-4" />
+      <h3 className="text-lg font-semibold mb-2">Error Loading Products</h3>
+      <p className="text-muted-foreground">Please try again later</p>
     </div>
   );
 
@@ -191,84 +211,93 @@ export default function Products() {
                 </p>
               </div>
 
-              <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
-                {filteredProducts.map((product, index) => (
-                  <motion.div
-                    key={product.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                  >
-                    <Card className="h-full hover:shadow-lg transition-shadow flex flex-col overflow-hidden">
-                      {/* Product Image */}
-                      <div className="aspect-[4/3] relative overflow-hidden bg-muted">
-                        <LazyImage
-                          src={getProductImage(product.category)}
-                          alt={getProductAltText(product.name, product.category)}
-                          className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
-                        />
-                        <div className="absolute top-2 left-2 flex gap-1.5 flex-wrap">
-                          {product.recycled && (
-                            <Badge variant="outline" className="bg-background/90 backdrop-blur-sm border-success text-success">
-                              <Leaf className="h-3 w-3 mr-1" />
-                              Recycled
-                            </Badge>
-                          )}
-                          {product.inStock && (
-                            <Badge variant="secondary" className="bg-background/90 backdrop-blur-sm">In Stock</Badge>
-                          )}
-                        </div>
-                      </div>
-                      <CardHeader className="flex-1 pt-4">
-                        <CardTitle className="text-lg">{product.name}</CardTitle>
-                        <CardDescription>
-                          <span className="font-mono text-xs">{product.grade}</span>
-                        </CardDescription>
-                        <div className="mt-4 space-y-2 text-sm">
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Type:</span>
-                            <span className="font-medium">{product.type}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">Color:</span>
-                            <span className="font-medium">{product.color}</span>
-                          </div>
-                          <div className="flex justify-between">
-                            <span className="text-muted-foreground">MFI:</span>
-                            <span className="font-medium">{product.mfi}</span>
-                          </div>
-                        </div>
-                        <div className="mt-4">
-                          <p className="text-xs text-muted-foreground mb-2">Applications:</p>
-                          <div className="flex flex-wrap gap-1">
-                            {product.applications.map(app => (
-                              <Badge key={app} variant="secondary" className="text-xs">
-                                {app}
+              {isLoading && <LoadingSkeleton />}
+              {isError && <ErrorState />}
+              
+              {!isLoading && !isError && (
+                <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+                  {filteredProducts.map((product: PolymerMaterial, index: number) => (
+                    <motion.div
+                      key={product.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.05 }}
+                    >
+                      <Card className="h-full hover:shadow-lg transition-shadow flex flex-col overflow-hidden">
+                        {/* Product Image */}
+                        <div className="aspect-[4/3] relative overflow-hidden bg-muted">
+                          <LazyImage
+                            src={product.image}
+                            alt={`${product.name_en} - ${product.category}`}
+                            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                          />
+                          <div className="absolute top-2 left-2 flex gap-1.5 flex-wrap">
+                            {product.recycled_percentage > 0 && (
+                              <Badge variant="outline" className="bg-background/90 backdrop-blur-sm border-success text-success">
+                                <Leaf className="h-3 w-3 mr-1" />
+                                {product.recycled_percentage}% Recycled
                               </Badge>
-                            ))}
+                            )}
+                            {product.inStock && (
+                              <Badge variant="secondary" className="bg-background/90 backdrop-blur-sm">In Stock</Badge>
+                            )}
                           </div>
                         </div>
-                      </CardHeader>
-                      <CardContent className="pt-0">
-                        <div className="flex gap-2">
-                          <Button asChild variant="outline" className="flex-1" size="sm">
-                            <Link to={`/products/${product.id}`}>View Details</Link>
-                          </Button>
-                          <Button 
-                            onClick={() => handleAddToRFQ(product)}
-                            size="sm"
-                            className="flex-1"
-                          >
-                            Add to RFQ
-                          </Button>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  </motion.div>
-                ))}
-              </div>
+                        <CardHeader className="flex-1 pt-4">
+                          <CardTitle className="text-lg">{product.name_en}</CardTitle>
+                          <CardDescription>
+                            <span className="font-mono text-xs">{product.grade}</span>
+                          </CardDescription>
+                          <div className="mt-4 space-y-2 text-sm">
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">Origin:</span>
+                              <span className="font-medium">{product.origin}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">Color:</span>
+                              <span className="font-medium">{product.color}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">MFI:</span>
+                              <span className="font-medium">{product.mfi}</span>
+                            </div>
+                            <div className="flex justify-between">
+                              <span className="text-muted-foreground">Price:</span>
+                              <span className="font-medium text-primary">{product.price_range}</span>
+                            </div>
+                          </div>
+                          <div className="mt-4">
+                            <p className="text-xs text-muted-foreground mb-2">Applications:</p>
+                            <div className="flex flex-wrap gap-1">
+                              {product.applications.map(app => (
+                                <Badge key={app} variant="secondary" className="text-xs">
+                                  {app}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="pt-0">
+                          <div className="flex gap-2">
+                            <Button asChild variant="outline" className="flex-1" size="sm">
+                              <Link to={`/products/${product.id}`}>View Details</Link>
+                            </Button>
+                            <Button 
+                              onClick={() => handleAddToRFQ(product)}
+                              size="sm"
+                              className="flex-1"
+                            >
+                              Add to RFQ
+                            </Button>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </motion.div>
+                  ))}
+                </div>
+              )}
 
-              {filteredProducts.length === 0 && (
+              {!isLoading && !isError && filteredProducts.length === 0 && (
                 <div className="text-center py-12">
                   <Package className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
                   <h3 className="text-lg font-semibold mb-2">No products found</h3>

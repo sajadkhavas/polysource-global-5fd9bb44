@@ -22,7 +22,7 @@ export function SEO({
   title,
   description,
   keywords,
-  image = '/images/og-default.jpg',
+  image = 'https://placehold.co/1200x630/059669/ffffff.png?text=PolySource+Global',
   url,
   type = 'website',
   article,
@@ -31,7 +31,8 @@ export function SEO({
 }: SEOProps) {
   const siteName = 'PolySource Global';
   const fullTitle = `${title} | ${siteName}`;
-  const fullUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
+  const siteUrl = 'https://testwebs.lovable.app';
+  const fullUrl = url || (typeof window !== 'undefined' ? window.location.href : siteUrl);
 
   // Handle multiple structured data schemas
   const renderStructuredData = () => {
@@ -55,11 +56,11 @@ export function SEO({
       {keywords && <meta name="keywords" content={keywords} />}
 
       {/* Robots */}
-      <meta name="robots" content={noIndex ? 'noindex, nofollow' : 'index, follow'} />
+      <meta name="robots" content={noIndex ? 'noindex, nofollow' : 'all'} />
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content={type} />
-      <meta property="og:url" content={fullUrl} />
+      <meta property="og:url" content={siteUrl} />
       <meta property="og:title" content={fullTitle} />
       <meta property="og:description" content={description} />
       <meta property="og:image" content={image} />
