@@ -14,7 +14,8 @@ interface SEOProps {
     section?: string;
     tags?: string[];
   };
-  structuredData?: object;
+  structuredData?: object | object[];
+  noIndex?: boolean;
 }
 
 export function SEO({
@@ -25,11 +26,25 @@ export function SEO({
   url,
   type = 'website',
   article,
-  structuredData
+  structuredData,
+  noIndex = false
 }: SEOProps) {
   const siteName = 'PolySource Global';
   const fullTitle = `${title} | ${siteName}`;
-  const fullUrl = url || typeof window !== 'undefined' ? window.location.href : '';
+  const fullUrl = url || (typeof window !== 'undefined' ? window.location.href : '');
+
+  // Handle multiple structured data schemas
+  const renderStructuredData = () => {
+    if (!structuredData) return null;
+    
+    const schemas = Array.isArray(structuredData) ? structuredData : [structuredData];
+    
+    return schemas.map((schema, index) => (
+      <script key={index} type="application/ld+json">
+        {JSON.stringify(schema)}
+      </script>
+    ));
+  };
 
   return (
     <Helmet>
@@ -38,6 +53,9 @@ export function SEO({
       <meta name="title" content={fullTitle} />
       <meta name="description" content={description} />
       {keywords && <meta name="keywords" content={keywords} />}
+
+      {/* Robots */}
+      <meta name="robots" content={noIndex ? 'noindex, nofollow' : 'index, follow'} />
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content={type} />
@@ -65,24 +83,21 @@ export function SEO({
       )}
 
       {/* Twitter */}
-      <meta property="twitter:card" content="summary_large_image" />
-      <meta property="twitter:url" content={fullUrl} />
-      <meta property="twitter:title" content={fullTitle} />
-      <meta property="twitter:description" content={description} />
-      <meta property="twitter:image" content={image} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:url" content={fullUrl} />
+      <meta name="twitter:title" content={fullTitle} />
+      <meta name="twitter:description" content={description} />
+      <meta name="twitter:image" content={image} />
 
-      {/* Structured Data */}
-      {structuredData && (
-        <script type="application/ld+json">
-          {JSON.stringify(structuredData)}
-        </script>
-      )}
+      {/* Canonical URL */}
+      <link rel="canonical" href={fullUrl} />
 
       {/* Additional SEO tags */}
-      <link rel="canonical" href={fullUrl} />
-      <meta name="robots" content="index, follow" />
       <meta name="language" content="English" />
       <meta name="revisit-after" content="7 days" />
+
+      {/* Structured Data */}
+      {renderStructuredData()}
     </Helmet>
   );
 }

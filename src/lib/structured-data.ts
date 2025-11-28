@@ -154,3 +154,70 @@ export function generateWebSiteSchema(name: string, url: string) {
     }
   };
 }
+
+export interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+export function generateFAQSchema(faqs: FAQItem[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: faqs.map(faq => ({
+      '@type': 'Question',
+      name: faq.question,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: faq.answer
+      }
+    }))
+  };
+}
+
+export function generateLocalBusinessSchema(business: {
+  name: string;
+  description: string;
+  url: string;
+  logo: string;
+  address: {
+    streetAddress?: string;
+    addressLocality: string;
+    addressRegion?: string;
+    postalCode?: string;
+    addressCountry: string;
+  };
+  geo?: {
+    latitude: number;
+    longitude: number;
+  };
+  telephone?: string;
+  email?: string;
+  priceRange?: string;
+  openingHours?: string[];
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'LocalBusiness',
+    '@id': `${business.url}#business`,
+    name: business.name,
+    description: business.description,
+    url: business.url,
+    logo: business.logo,
+    address: {
+      '@type': 'PostalAddress',
+      ...business.address
+    },
+    ...(business.geo && {
+      geo: {
+        '@type': 'GeoCoordinates',
+        latitude: business.geo.latitude,
+        longitude: business.geo.longitude
+      }
+    }),
+    ...(business.telephone && { telephone: business.telephone }),
+    ...(business.email && { email: business.email }),
+    ...(business.priceRange && { priceRange: business.priceRange }),
+    ...(business.openingHours && { openingHours: business.openingHours })
+  };
+}
