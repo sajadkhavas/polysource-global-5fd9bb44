@@ -21,6 +21,11 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link to="/services" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  Services
+                </Link>
+              </li>
+              <li>
                 <Link to="/blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                   Blog
                 </Link>
@@ -57,6 +62,11 @@ export function Footer() {
               <li>
                 <Link to="/resources" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                   TDS & SDS
+                </Link>
+              </li>
+              <li>
+                <Link to="/faq" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+                  FAQ
                 </Link>
               </li>
               <li>

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { SEO } from '@/components/SEO';
-import { generateArticleSchema } from '@/lib/structured-data';
+import { generateBreadcrumbSchema } from '@/lib/structured-data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Calendar, Clock, ArrowRight } from 'lucide-react';
@@ -67,12 +67,18 @@ const mockPosts: BlogPost[] = [
 ];
 
 export default function Blog() {
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: 'https://polysource.global' },
+    { name: 'Blog', url: 'https://polysource.global/blog' }
+  ]);
+
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Technical Insights & Industry Updates"
-        description="Practical guides, material science deep-dives, and industry analysis on polymer processing, recycled materials, and sustainability regulations."
-        keywords="polymer processing, material science, recycled polymers, technical guides, industry insights"
+        title="Polymer Industry Blog - Technical Guides & Market Insights"
+        description="Expert technical guides on polymer processing, MFI optimization, recycled vs virgin materials comparison, and industry regulations. Written by materials engineers for manufacturers."
+        keywords="polymer processing guide, MFI melt flow index, recycled polymer processing, HDPE processing, injection molding tips, polymer industry news, plastic materials blog"
+        structuredData={breadcrumbSchema}
       />
       {/* Hero */}
       <section className="bg-muted/50 py-12 border-b border-border">

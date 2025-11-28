@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { SEO } from '@/components/SEO';
-import { generateOrganizationSchema } from '@/lib/structured-data';
+import { generateOrganizationSchema, generateBreadcrumbSchema } from '@/lib/structured-data';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Globe, Target, Users, Award } from 'lucide-react';
 
@@ -36,16 +36,26 @@ export default function About() {
     address: {
       addressLocality: 'Dubai',
       addressCountry: 'UAE'
+    },
+    contactPoint: {
+      telephone: '+971 4 XXX XXXX',
+      email: 'hello@polysource.global',
+      contactType: 'Customer Service'
     }
   });
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: 'https://polysource.global' },
+    { name: 'About Us', url: 'https://polysource.global/about' }
+  ]);
 
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="About Us"
-        description="Founded in 2019 in Dubai by materials engineers. Serving 18+ countries with 12,500+ tonnes of recycled and virgin polymers annually. Technical partnership over transactional trading."
-        keywords="about polysource, dubai polymer supplier, materials engineering, polymer trading"
-        structuredData={organizationSchema}
+        title="About PolySource Global - Leading Polymer Supplier in Dubai"
+        description="Founded in 2019 in Dubai by materials engineers. PolySource Global serves 18+ countries with 12,500+ tonnes of recycled and virgin polymers annually. Technical partnership over transactional trading."
+        keywords="about PolySource, Dubai polymer supplier, polymer trading company, materials engineering, B2B polymer distributor, MENA polymer supplier"
+        structuredData={[organizationSchema, breadcrumbSchema]}
       />
       {/* Hero */}
       <section className="bg-gradient-to-br from-[hsl(var(--hero-gradient-start))] to-[hsl(var(--hero-gradient-end))] text-primary-foreground py-20">

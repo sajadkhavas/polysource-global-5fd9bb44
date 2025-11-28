@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { SEO } from '@/components/SEO';
+import { generateBreadcrumbSchema } from '@/lib/structured-data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -102,12 +103,18 @@ export default function Resources() {
     }
   };
 
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: 'Home', url: 'https://polysource.global' },
+    { name: 'Resources', url: 'https://polysource.global/resources' }
+  ]);
+
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Technical Resources"
-        description="Download technical data sheets (TDS), safety data sheets (SDS), and certificates of analysis for all PolySource polymer products. Regularly updated and compliant with international standards."
-        keywords="polymer TDS, polymer SDS, technical data sheet, safety data sheet, material certification"
+        title="Technical Resources - TDS, SDS & Polymer Documentation"
+        description="Download technical data sheets (TDS), safety data sheets (SDS), and certificates of analysis for recycled and virgin polymers. ISO compliant documentation for HDPE, LDPE, PP materials."
+        keywords="polymer TDS download, polymer SDS, technical data sheet polymer, safety data sheet plastic, material certification, HDPE datasheet, LDPE specifications"
+        structuredData={breadcrumbSchema}
       />
       {/* Hero */}
       <section className="bg-muted/50 py-12 border-b border-border">
