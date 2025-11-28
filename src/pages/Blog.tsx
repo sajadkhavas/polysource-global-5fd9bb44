@@ -1,76 +1,55 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { useQuery } from '@tanstack/react-query';
 import { SEO } from '@/components/SEO';
 import { generateBreadcrumbSchema } from '@/lib/structured-data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock, ArrowRight } from 'lucide-react';
-
-interface BlogPost {
-  id: string;
-  title: string;
-  excerpt: string;
-  category: string;
-  date: string;
-  readTime: string;
-}
-
-const mockPosts: BlogPost[] = [
-  {
-    id: '1',
-    title: 'Understanding MFI (Melt Flow Index) and Its Impact on Processing',
-    excerpt: 'A technical deep-dive into how MFI affects injection molding and extrusion parameters, with practical guidelines for matching material grades to your equipment.',
-    category: 'Technical Guide',
-    date: '2024-02-15',
-    readTime: '8 min'
-  },
-  {
-    id: '2',
-    title: 'Recycled vs Virgin HDPE: When to Use Each',
-    excerpt: 'Breaking down the real performance differences between recycled and virgin HDPE grades, backed by lab data and production case studies.',
-    category: 'Material Science',
-    date: '2024-02-10',
-    readTime: '6 min'
-  },
-  {
-    id: '3',
-    title: 'New EU Recycled Content Requirements: What Manufacturers Need to Know',
-    excerpt: 'Analysis of upcoming regulations requiring minimum recycled content in plastic products, and how to prepare your supply chain.',
-    category: 'Regulations',
-    date: '2024-02-05',
-    readTime: '10 min'
-  },
-  {
-    id: '4',
-    title: 'Processing Troubleshooting: Common Issues with Recycled PE',
-    excerpt: 'Practical solutions for warping, surface defects, and inconsistent cycle times when working with recycled polyethylene grades.',
-    category: 'Processing Tips',
-    date: '2024-01-28',
-    readTime: '7 min'
-  },
-  {
-    id: '5',
-    title: 'Dubai as a Polymer Trading Hub: Infrastructure and Logistics Advantages',
-    excerpt: 'Why Dubai-based suppliers can offer better lead times and reliability for MENA, Europe, and Asian markets.',
-    category: 'Industry Insights',
-    date: '2024-01-20',
-    readTime: '5 min'
-  },
-  {
-    id: '6',
-    title: 'Material Traceability: What You Should Expect from Your Supplier',
-    excerpt: 'The difference between marketing claims and actual traceability data. What documentation should you demand?',
-    category: 'Quality Standards',
-    date: '2024-01-15',
-    readTime: '6 min'
-  }
-];
+import { Skeleton } from '@/components/ui/skeleton';
+import { Calendar, Clock, ArrowRight, AlertCircle } from 'lucide-react';
+import { fetchBlogPosts, type BlogPost } from '@/lib/mockData';
 
 export default function Blog() {
+  const { data: posts, isLoading, isError } = useQuery({
+    queryKey: ['blogPosts'],
+    queryFn: fetchBlogPosts,
+  });
+
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: 'https://polysource.global' },
     { name: 'Blog', url: 'https://polysource.global/blog' }
   ]);
+
+  const LoadingSkeleton = () => (
+    <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {[...Array(6)].map((_, i) => (
+        <Card key={i} className="h-full">
+          <CardHeader>
+            <Skeleton className="h-6 w-24 mb-3" />
+            <Skeleton className="h-6 w-full" />
+            <Skeleton className="h-6 w-3/4" />
+            <Skeleton className="h-4 w-full mt-2" />
+            <Skeleton className="h-4 w-2/3" />
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-between">
+              <Skeleton className="h-4 w-20" />
+              <Skeleton className="h-4 w-16" />
+            </div>
+            <Skeleton className="h-4 w-28 mt-4" />
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  );
+
+  const ErrorState = () => (
+    <div className="text-center py-12">
+      <AlertCircle className="h-12 w-12 mx-auto text-destructive mb-4" />
+      <h3 className="text-lg font-semibold mb-2">Error Loading Posts</h3>
+      <p className="text-muted-foreground">Please try again later</p>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -112,52 +91,56 @@ export default function Blog() {
       {/* Blog Posts */}
       <section className="py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {mockPosts.map((post, index) => (
-              <motion.div
-                key={post.id}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <Link to={`/blog/${post.id}`}>
-                  <Card className="h-full hover:shadow-lg transition-shadow group">
-                    <CardHeader>
-                      <div className="flex items-center gap-2 mb-3">
-                        <Badge variant="secondary">{post.category}</Badge>
-                      </div>
-                      <CardTitle className="group-hover:text-primary transition-colors line-clamp-2">
-                        {post.title}
-                      </CardTitle>
-                      <CardDescription className="line-clamp-3">
-                        {post.excerpt}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex items-center justify-between text-xs text-muted-foreground">
-                        <div className="flex items-center">
-                          <Calendar className="h-3 w-3 mr-1" />
-                          {new Date(post.date).toLocaleDateString('en-US', { 
-                            month: 'short', 
-                            day: 'numeric', 
-                            year: 'numeric' 
-                          })}
+          {isLoading && <LoadingSkeleton />}
+          {isError && <ErrorState />}
+          {posts && (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {posts.map((post: BlogPost, index: number) => (
+                <motion.div
+                  key={post.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <Link to={`/blog/${post.id}`}>
+                    <Card className="h-full hover:shadow-lg transition-shadow group">
+                      <CardHeader>
+                        <div className="flex items-center gap-2 mb-3">
+                          <Badge variant="secondary">{post.category}</Badge>
                         </div>
-                        <div className="flex items-center">
-                          <Clock className="h-3 w-3 mr-1" />
-                          {post.readTime}
+                        <CardTitle className="group-hover:text-primary transition-colors line-clamp-2">
+                          {post.title_en}
+                        </CardTitle>
+                        <CardDescription className="line-clamp-3">
+                          {post.excerpt_en}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex items-center justify-between text-xs text-muted-foreground">
+                          <div className="flex items-center">
+                            <Calendar className="h-3 w-3 mr-1" />
+                            {new Date(post.date).toLocaleDateString('en-US', { 
+                              month: 'short', 
+                              day: 'numeric', 
+                              year: 'numeric' 
+                            })}
+                          </div>
+                          <div className="flex items-center">
+                            <Clock className="h-3 w-3 mr-1" />
+                            {post.readTime}
+                          </div>
                         </div>
-                      </div>
-                      <div className="mt-4 flex items-center text-sm text-primary font-medium">
-                        Read Article
-                        <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+                        <div className="mt-4 flex items-center text-sm text-primary font-medium">
+                          Read Article
+                          <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
