@@ -249,9 +249,9 @@ export default function About() {
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto">
-            {values.map((value, index) => (
+          {values.map((value, index) => (
               <motion.div
-                key={value.title}
+                key={value.title.en}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
