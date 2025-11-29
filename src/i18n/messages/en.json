@@ -20,6 +20,32 @@
       "tonnes": "tonnes delivered annually"
     }
   },
+  "branding": {
+    "name": "PolySource Global",
+    "shortName": "PolySource",
+    "tagline": "Recycled-first polymer supply from Dubai"
+  },
+  "mobileNav": {
+    "brandDescription": "Recycled-first polymer & raw material supply from Dubai",
+    "browseByProduct": "Browse by Product",
+    "moreAbout": "More about PolySource",
+    "browseAllProducts": "Browse All Products"
+  },
+  "megaMenu": {
+    "productFamilies": "Product Families",
+    "help": {
+      "title": "Need Help Choosing?",
+      "description": "Not sure which material is right for your application?",
+      "cta": "Get Technical Help"
+    }
+  },
+  "seo": {
+    "home": {
+      "title": "Recycled Polymer Supplier Dubai | Virgin PE, PP, HDPE Materials",
+      "description": "PolySource Global - Dubai's leading B2B polymer supplier. Technical-grade recycled PE, PP, rPET and virgin polymers. Serving 18+ countries with batch traceability and 48hr quote turnaround."
+    },
+    "organizationDescription": "Dubai-based polymer supplier specializing in recycled and virgin polymers with global shipping"
+  },
   "hero": {
     "badge": "Dubai to the World",
     "title": "Recycled-First Polymer Supply Chain",

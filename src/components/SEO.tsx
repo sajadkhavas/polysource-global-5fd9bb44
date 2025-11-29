@@ -31,10 +31,10 @@ export function SEO({
   noIndex = false
 }: SEOProps) {
   const { i18n } = useTranslation();
-  const currentLang = i18n.language;
-  const isArabic = currentLang === 'ar';
-  
-  const siteName = 'PolySource Global';
+  const currentLang = i18n.resolvedLanguage || i18n.language;
+  const isArabic = currentLang?.startsWith('ar');
+
+  const siteName = i18n.t('branding.name');
   const fullTitle = `${title} | ${siteName}`;
   const siteUrl = 'https://testwebs.lovable.app';
   const fullUrl = url || (typeof window !== 'undefined' ? window.location.href : siteUrl);

@@ -38,17 +38,18 @@ const PageLoader = () => (
 const App = () => {
   const { dir } = useDirection();
   const { i18n } = useTranslation();
+  const currentLanguage = i18n.resolvedLanguage || i18n.language;
 
   useEffect(() => {
     document.documentElement.setAttribute("dir", dir);
-    document.documentElement.setAttribute("lang", i18n.language);
+    document.documentElement.setAttribute("lang", currentLanguage);
 
     if (dir === "rtl") {
       document.body.classList.add("rtl");
     } else {
       document.body.classList.remove("rtl");
     }
-  }, [dir, i18n.language]);
+  }, [dir, currentLanguage]);
 
   return (
     <QueryClientProvider client={queryClient}>
