@@ -16,6 +16,9 @@ i18n
   .init({
     resources,
     fallbackLng: 'en',
+    supportedLngs: ['en', 'ar'],
+    load: 'languageOnly',
+    nonExplicitSupportedLngs: true,
     defaultNS: 'translation',
     detection: {
       order: ['localStorage', 'navigator'],
