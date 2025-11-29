@@ -160,8 +160,41 @@
     "recycled": "Recycled",
     "virgin": "Virgin",
     "compounds": "Compounds",
+    "pcr": "PCR",
+    "masterbatch": "Masterbatch",
+    "compound": "Compound",
     "viewDetails": "View Details",
-    "addToRfq": "Add to RFQ"
+    "addToRfq": "Add to RFQ",
+    "filters": {
+      "title": "Filters",
+      "category": "Category",
+      "allCategories": "All Categories",
+      "recycledOnly": "Recycled Only",
+      "inStockOnly": "In Stock Only"
+    },
+    "rfq": {
+      "added": "Added to RFQ",
+      "addedDescription": "{{name}} has been added to your quote request."
+    },
+    "labels": {
+      "grade": "Grade",
+      "category": "Category",
+      "recycledContent": "Recycled Content",
+      "inStock": "In Stock",
+      "outOfStock": "Out of Stock",
+      "origin": "Origin",
+      "color": "Color",
+      "mfi": "MFI",
+      "price": "Price",
+      "applications": "Applications"
+    },
+    "noResultsTitle": "No products found",
+    "noResultsDescription": "Try adjusting your filters or search query",
+    "errorTitle": "Error Loading Products",
+    "errorDescription": "Please try again later",
+    "searchPlaceholder": "Search by product name or grade...",
+    "heroTitle": "Product Catalog",
+    "heroSubtitle": "Find recycled and virgin polymers with full traceability and data sheets."
   },
   "blog": {
     "title": "Blog & Insights",
@@ -173,6 +206,111 @@
   "about": {
     "title": "About PolySource Global",
     "subtitle": "Your trusted partner for recycled and virgin polymers"
+  },
+  "blogPage": {
+    "heroTitle": "Technical Insights & Industry Updates",
+    "heroSubtitle": "Practical guides, material science deep-dives, and industry analysis. Written by engineers, for engineers.",
+    "categories": {
+      "all": "All Posts",
+      "technical": "Technical Guides",
+      "science": "Material Science",
+      "regulations": "Regulations",
+      "processing": "Processing Tips",
+      "insights": "Industry Insights"
+    },
+    "errorTitle": "Error Loading Posts",
+    "errorDescription": "Please try again later",
+    "cta": "Read Article",
+    "author": "By {{author}}"
+  },
+  "resourcesPage": {
+    "title": "Technical Resources",
+    "subtitle": "Download TDS, SDS, and certification documents",
+    "searchPlaceholder": "Search resources...",
+    "badge": {
+      "tds": "TDS",
+      "sds": "SDS",
+      "coa": "COA"
+    },
+    "labels": {
+      "product": "Product",
+      "grade": "Grade",
+      "lastUpdated": "Last Updated"
+    },
+    "download": "Download",
+    "trusted": {
+      "title": "Trusted Documentation",
+      "description": "All files are verified and kept up to date for your compliance needs."
+    }
+  },
+  "sustainabilityPage": {
+    "title": "Sustainability - Recycled Polymers for a Circular Economy",
+    "description": "Discover PolySource Global's recycled-first approach. 6,200+ tonnes of traceable recycled polymers supplied with ISO 14001 certified partners.",
+    "heroTitle": "Recycled-First. Performance Always.",
+    "heroSubtitle": "Building a circular supply chain for polymers without compromising quality.",
+    "badge": "Sustainability",
+    "principlesTitle": "Our Sustainability Principles",
+    "principles": {
+      "quality": {
+        "title": "Quality Over Claims",
+        "description": "We only call something sustainable when it performs in production."
+      },
+      "traceable": {
+        "title": "Traceable Sourcing",
+        "description": "Every batch is documented so you know the exact origin and process."
+      },
+      "certified": {
+        "title": "Certified Partners",
+        "description": "We work exclusively with ISO 14001 certified recyclers and processors."
+      },
+      "regional": {
+        "title": "Regional Impact",
+        "description": "Supporting MENA recycling infrastructure and diverting post-consumer waste from landfills."
+      }
+    },
+    "certificationsTitle": "Certifications & Compliance",
+    "impactTitle": "Measured Impact",
+    "impactList": [
+      "6,200+ tonnes of recycled polymers supplied with traceability",
+      "18+ countries served with certified supply chains",
+      "CO₂ footprint data available per shipment"
+    ]
+  },
+  "contactPage": {
+    "seoTitle": "Request a Quote - Contact PolySource Global",
+    "seoDescription": "Get a detailed polymer quotation within 48 hours. Professional RFQ process for recycled and virgin polymers.",
+    "heroTitle": "Request a Quote",
+    "heroSubtitle": "Get a detailed quotation within 48 hours. No WhatsApp back-and-forth. Just clear pricing, lead times, and technical specifications.",
+    "form": {
+      "title": "Quote Request Form",
+      "required": "All fields marked with * are required",
+      "selectedProducts": "Selected Products ({{count}})",
+      "yourName": "Your Name *",
+      "company": "Company",
+      "email": "Email *",
+      "country": "Country",
+      "phone": "Phone",
+      "quantity": "Quantity (MT)",
+      "application": "Application",
+      "timeline": "Timeline",
+      "requirements": "Additional Requirements",
+      "submit": "Submit Request",
+      "clear": "Clear Basket"
+    },
+    "successToast": {
+      "title": "Quote Request Submitted",
+      "description": "We'll respond within 48 hours with a detailed quotation."
+    },
+    "contactCards": {
+      "availability": "Response within 48 hours",
+      "workingHours": "Sunday - Thursday",
+      "support": "Dedicated polymer specialists"
+    },
+    "rfqBasket": {
+      "empty": "No products in your RFQ basket yet.",
+      "remove": "Remove",
+      "clear": "Clear Basket"
+    }
   },
   "notFound": {
     "title": "Page Not Found",
