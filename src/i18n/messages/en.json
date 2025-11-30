@@ -253,39 +253,92 @@
     "subtitle": "Your trusted partner for recycled and virgin polymers"
   },
   "blogPage": {
-    "heroTitle": "Technical Insights & Industry Updates",
-    "heroSubtitle": "Practical guides, material science deep-dives, and industry analysis. Written by engineers, for engineers.",
+    "breadcrumb": {
+      "home": "Home",
+      "blog": "Blog"
+    },
+    "seo": {
+      "title": "Polymer Industry Blog - Technical Guides & Market Insights",
+      "description": "Expert technical guides on polymer processing, MFI optimization, recycled vs virgin materials comparison, and industry regulations. Written by materials engineers for manufacturers.",
+      "keywords": "polymer processing guide, MFI melt flow index, recycled polymer processing, HDPE processing, injection molding tips, polymer industry news, plastic materials blog"
+    },
+    "hero": {
+      "title": "Technical Insights & Industry Updates",
+      "subtitle": "Practical guides, material science deep-dives, and industry analysis. Written by engineers, for engineers."
+    },
     "categories": {
       "all": "All Posts",
       "technical": "Technical Guides",
-      "science": "Material Science",
+      "materialScience": "Material Science",
       "regulations": "Regulations",
       "processing": "Processing Tips",
       "insights": "Industry Insights"
     },
-    "errorTitle": "Error Loading Posts",
-    "errorDescription": "Please try again later",
-    "cta": "Read Article",
-    "author": "By {{author}}"
+    "errors": {
+      "loadTitle": "Error Loading Posts",
+      "loadBody": "Please try again later"
+    },
+    "readArticle": "Read Article",
+    "newsletter": {
+      "title": "Stay Updated",
+      "description": "Get monthly insights on polymer processing, material science, and industry regulations delivered to your inbox.",
+      "placeholder": "your@email.com",
+      "cta": "Subscribe",
+      "note": "No spam. Unsubscribe anytime."
+    }
   },
   "resourcesPage": {
-    "title": "Technical Resources",
-    "subtitle": "Download TDS, SDS, and certification documents",
-    "searchPlaceholder": "Search resources...",
-    "badge": {
+    "breadcrumb": {
+      "home": "Home",
+      "resources": "Resources"
+    },
+    "seo": {
+      "title": "Technical Resources - TDS, SDS & Polymer Documentation",
+      "description": "Download technical data sheets (TDS), safety data sheets (SDS), and certificates of analysis for recycled and virgin polymers. ISO compliant documentation for HDPE, LDPE, PP materials.",
+      "keywords": "polymer TDS download, polymer SDS, technical data sheet polymer, safety data sheet plastic, material certification, HDPE datasheet, LDPE specifications"
+    },
+    "hero": {
+      "title": "Technical Resources",
+      "subtitle": "Access technical data sheets (TDS), safety data sheets (SDS), and certificates of analysis (COA) for all our products. All documents are regularly updated and compliant with international standards."
+    },
+    "search": {
+      "placeholder": "Search by product name, grade, or document type..."
+    },
+    "types": {
       "tds": "TDS",
       "sds": "SDS",
-      "coa": "COA"
+      "coa": "COA",
+      "labels": {
+        "tds": "TDS",
+        "sds": "SDS",
+        "coa": "COA"
+      },
+      "descriptions": {
+        "tds": "Technical Data Sheets with complete physical and mechanical properties",
+        "sds": "Safety Data Sheets with handling, storage, and emergency information",
+        "coa": "Certificates of Analysis for batch-specific quality verification"
+      }
     },
-    "labels": {
-      "product": "Product",
-      "grade": "Grade",
-      "lastUpdated": "Last Updated"
+    "list": {
+      "count": "Showing {{count}} documents",
+      "updated": "Updated: {{date}}",
+      "download": "Download PDF"
     },
-    "download": "Download",
-    "trusted": {
-      "title": "Trusted Documentation",
-      "description": "All files are verified and kept up to date for your compliance needs."
+    "empty": {
+      "title": "No documents found",
+      "subtitle": "Try adjusting your search query"
+    },
+    "help": {
+      "title": "Need a Specific Document?",
+      "description": "Can't find what you're looking for? We can provide:",
+      "items": [
+        "Batch-specific Certificates of Analysis (COA)",
+        "Regulatory compliance certificates (FDA, REACH, RoHS)",
+        "Material passports with full traceability",
+        "Custom testing reports",
+        "Processing guidelines for specific applications"
+      ],
+      "cta": "Contact Technical Support"
     }
   },
   "sustainabilityPage": {
@@ -294,6 +347,25 @@
     "heroTitle": "Recycled-First. Performance Always.",
     "heroSubtitle": "Building a circular supply chain for polymers without compromising quality.",
     "badge": "Sustainability",
+    "commitmentTitle": "Our Commitment",
+    "commitment": [
+      {
+        "title": "Prioritize Recycled Content",
+        "description": "We push recycled materials first, offering up to 50% PCR where technically suitable while being transparent when virgin is the better choice."
+      },
+      {
+        "title": "Full Material Traceability",
+        "description": "Every shipment includes material passports with origin, processing methods, and certification status—no vague claims."
+      },
+      {
+        "title": "Consistent Quality Standards",
+        "description": "Batch-to-batch consistency through rigorous testing protocols so recycled grades meet the same specifications as virgin equivalents."
+      },
+      {
+        "title": "Support Regional Recycling",
+        "description": "Partnerships with MENA recyclers to reduce transport emissions and build local circular infrastructure."
+      }
+    ],
     "principlesTitle": "Our Sustainability Principles",
     "principles": {
       "quality": {
@@ -314,11 +386,42 @@
       }
     },
     "certificationsTitle": "Certifications & Compliance",
+    "certificationsDescription": "Certifications maintained across our supply chain and available for compliant materials.",
+    "certificationsList": [
+      "ISO 9001:2015",
+      "ISO 14001:2015",
+      "FDA Contact Compliant Materials",
+      "REACH Compliance",
+      "RoHS Compliance"
+    ],
     "impactTitle": "Measured Impact",
+    "impactSubtitle": "Transparent reporting on our recycled material supply",
+    "impactCards": [
+      {
+        "value": "6,200",
+        "label": "Tonnes of Recycled Polymers Supplied"
+      },
+      {
+        "value": "45%",
+        "label": "Average PCR Content in Recycled Grades"
+      },
+      {
+        "value": "100%",
+        "label": "Material Batches with Full Traceability"
+      }
+    ],
     "impactList": [
       "6,200+ tonnes of recycled polymers supplied with traceability",
       "18+ countries served with certified supply chains",
       "CO₂ footprint data available per shipment"
+    ],
+    "transparencyTitle": "A Note on Transparency",
+    "transparencyIntro": "We don't claim to be carbon-neutral or perfectly circular—no B2B polymer supplier can honestly make that claim today. What we do claim:",
+    "transparencyList": [
+      "We prioritize recycled materials whenever technical requirements allow",
+      "We provide complete traceability and never make vague sustainability claims",
+      "We're honest about when virgin material is the better choice",
+      "We continuously work to improve our processes and expand recycled offerings"
     ]
   },
   "contactPage": {
@@ -342,43 +445,39 @@
       "requirements": "Additional Requirements",
       "submit": "Submit Quote Request",
       "clear": "Clear Basket",
-
       "namePlaceholder": "John Doe",
       "companyPlaceholder": "ABC Manufacturing Ltd.",
       "emailPlaceholder": "john@abc-manufacturing.com",
       "countryPlaceholder": "Select country",
-
       "products": "Products Needed *",
       "productsPlaceholder": "e.g., Recycled HDPE film grade, Virgin PP injection grade",
       "quantityPlaceholder": "e.g., 20",
-
       "phonePlaceholder": "+971 XX XXX XXXX",
       "applicationPlaceholder": "e.g., Packaging film, Automotive parts",
-
       "timelinePlaceholder": "Select timeline",
       "timelineUrgent": "Urgent (within 2 weeks)",
       "timeline1Month": "Within 1 month",
       "timelineFlexible": "Flexible timing",
       "timelineRecurring": "Recurring orders",
-
       "requirementsPlaceholder": "Color preferences, certifications needed, custom specifications...",
-
       "fileUploadLabel": "File Upload (Optional)",
       "fileUploadTitle": "Click to upload",
       "fileUploadSubtitle": "or drag and drop",
       "fileUploadHelp": "PDF, DOCX, XLSX, JPG, PNG (max 10MB)",
-
       "advancedToggleShow": "Show Additional Details (Optional)",
-      "advancedToggleHide": "Hide Additional Details (Optional)",
-
-      "privacyLabel": "I agree to the processing of my data for quote purposes and accept the privacy policy *",
-      "footerNote": "You'll receive a detailed quotation within 48 hours"
+      "advancedToggleHide": "Hide Additional Details (Optional)"
     },
     "validationErrorTitle": "Please check the form",
     "validationErrorDescription": "Some required fields are missing or invalid.",
     "successToast": {
       "title": "Quote Request Submitted",
-      "description": "We'll respond within 48 hours with a detailed quotation."
+      "description": "Thank you. Our team will contact you with a detailed quotation within 48 hours."
+    },
+    "footerNote": "You'll receive a detailed quotation within 48 hours.",
+    "privacyLabel": "I agree to the processing of my data for quote purposes and accept the privacy policy *",
+    "validation": {
+      "productsRequired": "Please describe the products you need when no items are in your RFQ basket.",
+      "privacyRequired": "You must accept the privacy policy to submit a quote request."
     },
     "sidebar": {
       "contactInfoTitle": "Contact Information",
@@ -416,6 +515,15 @@
       "clear": "Clear Basket"
     }
   },
+  "contactForm": {
+    "errors": {
+      "nameRequired": "Name is required",
+      "companyRequired": "Company is required",
+      "emailInvalid": "Invalid email address",
+      "countryRequired": "Country is required",
+      "quantityRequired": "Quantity is required"
+    }
+  },
   "notFound": {
     "title": "Page Not Found",
     "description": "The page you're looking for doesn't exist. Return to PolySource Global homepage.",
@@ -426,7 +534,9 @@
     "home": "Home",
     "about": "About Us",
     "services": "Services",
-    "contact": "Contact"
+    "contact": "Contact",
+    "faq": "FAQ",
+    "sustainability": "Sustainability"
   },
   "productDetail": {
     "backToProducts": "Back to Products",

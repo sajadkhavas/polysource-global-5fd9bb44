@@ -30,6 +30,7 @@ export default function Contact() {
     company: '',
     email: '',
     country: '',
+    productsDescription: '',
     phone: '',
     quantity: '',
     application: '',
@@ -38,45 +39,52 @@ export default function Contact() {
   });
 
   const [errors, setErrors] = useState<
-    Partial<Record<keyof ContactFormValues, string>>
+    Partial<Record<keyof ContactFormValues | 'privacy', string>>
   >({});
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    // 1) Validate with Zod
-    const result = contactFormSchema.safeParse(formData);
+    const validationResult = contactFormSchema.safeParse(formData);
+    const newErrors: Partial<Record<keyof ContactFormValues | 'privacy', string>> = {};
 
-    if (!result.success) {
-      const fieldErrors = result.error.flatten().fieldErrors;
-      const newErrors: Partial<Record<keyof ContactFormValues, string>> = {};
-
-      (Object.keys(fieldErrors) as (keyof ContactFormValues)[]).forEach((field) => {
+    if (!validationResult.success) {
+      const fieldErrors = validationResult.error.flatten().fieldErrors;
+      (Object.keys(fieldErrors) as (keyof ContactFormValues)[]).forEach(field => {
         const messages = fieldErrors[field];
         if (messages && messages.length > 0) {
-          newErrors[field] = messages[0];
+          const key = messages[0];
+          newErrors[field] = key.startsWith('contactForm.errors.') ? t(key) : key;
         }
       });
+    }
 
+    if (products.length === 0 && !formData.productsDescription?.trim()) {
+      newErrors.productsDescription = t('contactPage.validation.productsRequired');
+    }
+
+    if (!privacyAccepted) {
+      newErrors.privacy = t('contactPage.validation.privacyRequired');
+    }
+
+    if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-
       toast({
         variant: 'destructive',
         title: t('contactPage.validationErrorTitle'),
         description: t('contactPage.validationErrorDescription'),
       });
-
       return;
     }
 
-    // 2) If valid, clear errors and submit
     setErrors({});
     setIsSubmitting(true);
 
     try {
-      const validData = result.data;
+      const validData = validationResult.success ? validationResult.data : formData;
 
       const submissionData = {
         ...validData,
@@ -90,7 +98,6 @@ export default function Contact() {
         payload: submissionData,
       });
 
-      // Track analytics event
       trackQuoteRequest('contact');
       trackFormSubmission('contact_form', submissionData);
 
@@ -99,12 +106,12 @@ export default function Contact() {
         description: t('contactPage.successToast.description'),
       });
 
-      // Clear form and RFQ basket
       setFormData({
         name: '',
         company: '',
         email: '',
         country: '',
+        productsDescription: '',
         phone: '',
         quantity: '',
         application: '',
@@ -112,6 +119,7 @@ export default function Contact() {
         requirements: '',
       });
       clearProducts();
+      setPrivacyAccepted(false);
     } finally {
       setIsSubmitting(false);
     }
@@ -290,9 +298,18 @@ export default function Contact() {
                         <Textarea
                           id="products"
                           required={products.length === 0}
+                          value={formData.productsDescription}
+                          onChange={(e) => setFormData({ ...formData, productsDescription: e.target.value })}
                           placeholder={t('contactPage.form.productsPlaceholder')}
                           rows={2}
+                          aria-invalid={!!errors.productsDescription}
+                          aria-describedby={errors.productsDescription ? 'contact-products-error' : undefined}
                         />
+                        {errors.productsDescription && (
+                          <p id="contact-products-error" className="mt-1 text-sm text-destructive">
+                            {errors.productsDescription}
+                          </p>
+                        )}
                       </div>
                     )}
 
@@ -405,11 +422,25 @@ export default function Contact() {
 
                     {/* Submit */}
                     <div className="flex items-start space-x-2">
-                      <Checkbox id="privacy" required />
+                      <Checkbox
+                        id="privacy"
+                        checked={privacyAccepted}
+                        onCheckedChange={(checked) => {
+                          setPrivacyAccepted(Boolean(checked));
+                          setErrors(prev => ({ ...prev, privacy: undefined }));
+                        }}
+                        aria-invalid={!!errors.privacy}
+                        aria-describedby={errors.privacy ? 'contact-privacy-error' : undefined}
+                      />
                       <Label htmlFor="privacy" className="text-sm text-muted-foreground cursor-pointer">
-                        {t('contactPage.form.privacyLabel')}
+                        {t('contactPage.privacyLabel')}
                       </Label>
                     </div>
+                    {errors.privacy && (
+                      <p id="contact-privacy-error" className="text-sm text-destructive">
+                        {errors.privacy}
+                      </p>
+                    )}
 
                     <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
                       {t('contactPage.form.submit')}
@@ -417,7 +448,7 @@ export default function Contact() {
 
                     <p className="text-xs text-center text-muted-foreground">
                       <Clock className="inline h-3 w-3 mr-1" />
-                      {t('contactPage.form.footerNote')}
+                      {t('contactPage.footerNote')}
                     </p>
                   </form>
                 </CardContent>

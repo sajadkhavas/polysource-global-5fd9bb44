@@ -332,7 +332,7 @@ export default function FAQ() {
   const categories = faqContent[locale].categories;
   const faqSchema = generateFAQSchema(categories.flatMap(cat => cat.faqs));
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: locale === 'ar' ? 'الرئيسية' : 'Home', url: 'https://polysource.global' },
+    { name: t('breadcrumb.home'), url: 'https://polysource.global' },
     { name: faqContent[locale].heroTitle, url: 'https://polysource.global/faq' }
   ]);
 
