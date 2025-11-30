@@ -23,6 +23,9 @@ import {
   ChevronDown
 } from 'lucide-react';
 import { trackQuoteRequest } from '@/lib/analytics';
+import resourcesLibrary from '@/assets/resources-library.jpg';
+import resourcesProcessing from '@/assets/resources-processing.jpg';
+import resourcesNews from '@/assets/resources-news.jpg';
 
 export default function Home() {
   const { t, i18n } = useTranslation();
@@ -505,11 +508,24 @@ export default function Home() {
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            <Card>
-              <CardHeader className={isRTL ? 'text-right' : ''}>
-                <FileText className={cn("h-8 w-8 text-primary mb-3", isRTL && "mr-auto")} />
-                <CardTitle>{t('home.resources.cards.libraryTitle')}</CardTitle>
-                <CardDescription>
+            <Card className="overflow-hidden group hover:shadow-xl transition-all duration-300">
+              <div className="relative h-40 overflow-hidden">
+                <img 
+                  src={resourcesLibrary} 
+                  alt="TDS & SDS Library"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
+                <div className={cn(
+                  "absolute bottom-3 p-2 bg-primary/90 rounded-lg",
+                  isRTL ? "right-3" : "left-3"
+                )}>
+                  <FileText className="h-5 w-5 text-primary-foreground" />
+                </div>
+              </div>
+              <CardHeader className={cn("pt-4", isRTL ? 'text-right' : '')}>
+                <CardTitle className="text-lg group-hover:text-primary transition-colors">{t('home.resources.cards.libraryTitle')}</CardTitle>
+                <CardDescription className="text-sm">
                   {t('home.resources.cards.libraryDescription')}
                 </CardDescription>
               </CardHeader>
@@ -520,11 +536,24 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader className={isRTL ? 'text-right' : ''}>
-                <Package className={cn("h-8 w-8 text-primary mb-3", isRTL && "mr-auto")} />
-                <CardTitle>{t('home.resources.cards.guidesTitle')}</CardTitle>
-                <CardDescription>
+            <Card className="overflow-hidden group hover:shadow-xl transition-all duration-300">
+              <div className="relative h-40 overflow-hidden">
+                <img 
+                  src={resourcesProcessing} 
+                  alt="Processing Guidelines"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
+                <div className={cn(
+                  "absolute bottom-3 p-2 bg-primary/90 rounded-lg",
+                  isRTL ? "right-3" : "left-3"
+                )}>
+                  <Package className="h-5 w-5 text-primary-foreground" />
+                </div>
+              </div>
+              <CardHeader className={cn("pt-4", isRTL ? 'text-right' : '')}>
+                <CardTitle className="text-lg group-hover:text-primary transition-colors">{t('home.resources.cards.guidesTitle')}</CardTitle>
+                <CardDescription className="text-sm">
                   {t('home.resources.cards.guidesDescription')}
                 </CardDescription>
               </CardHeader>
@@ -535,11 +564,24 @@ export default function Home() {
               </CardContent>
             </Card>
 
-            <Card>
-              <CardHeader className={isRTL ? 'text-right' : ''}>
-                <Zap className={cn("h-8 w-8 text-primary mb-3", isRTL && "mr-auto")} />
-                <CardTitle>{t('home.resources.cards.newsTitle')}</CardTitle>
-                <CardDescription>
+            <Card className="overflow-hidden group hover:shadow-xl transition-all duration-300">
+              <div className="relative h-40 overflow-hidden">
+                <img 
+                  src={resourcesNews} 
+                  alt="Industry News"
+                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
+                <div className={cn(
+                  "absolute bottom-3 p-2 bg-primary/90 rounded-lg",
+                  isRTL ? "right-3" : "left-3"
+                )}>
+                  <Zap className="h-5 w-5 text-primary-foreground" />
+                </div>
+              </div>
+              <CardHeader className={cn("pt-4", isRTL ? 'text-right' : '')}>
+                <CardTitle className="text-lg group-hover:text-primary transition-colors">{t('home.resources.cards.newsTitle')}</CardTitle>
+                <CardDescription className="text-sm">
                   {t('home.resources.cards.newsDescription')}
                 </CardDescription>
               </CardHeader>
