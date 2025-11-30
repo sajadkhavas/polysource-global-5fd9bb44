@@ -1,14 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { z } from 'zod';
-
-// Contact form validation schema
-const contactFormSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  company: z.string().min(1, 'Company is required'),
-  email: z.string().email('Invalid email address'),
-  country: z.string().min(1, 'Country is required'),
-  quantity: z.string().min(1, 'Quantity is required'),
-});
+import { contactFormSchema } from '@/lib/validation/contactForm';
 
 describe('Contact Form Validation', () => {
   it('should fail validation with empty fields', () => {
@@ -21,14 +12,16 @@ describe('Contact Form Validation', () => {
     };
 
     const result = contactFormSchema.safeParse(emptyData);
-    
+
     expect(result.success).toBe(false);
     if (!result.success) {
-      expect(result.error.issues.length).toBeGreaterThan(0);
-      const fieldNames = result.error.issues.map(i => i.path[0]);
-      expect(fieldNames).toContain('name');
-      expect(fieldNames).toContain('company');
-      expect(fieldNames).toContain('email');
+      const errors = result.error.flatten().fieldErrors;
+
+      expect(errors.name?.[0]).toBe('contactForm.errors.nameRequired');
+      expect(errors.company?.[0]).toBe('contactForm.errors.companyRequired');
+      expect(errors.email?.[0]).toBe('contactForm.errors.emailInvalid');
+      expect(errors.country?.[0]).toBe('contactForm.errors.countryRequired');
+      expect(errors.quantity?.[0]).toBe('contactForm.errors.quantityRequired');
     }
   });
 
@@ -42,11 +35,11 @@ describe('Contact Form Validation', () => {
     };
 
     const result = contactFormSchema.safeParse(invalidEmailData);
-    
+
     expect(result.success).toBe(false);
     if (!result.success) {
-      const emailIssue = result.error.issues.find(i => i.path[0] === 'email');
-      expect(emailIssue).toBeDefined();
+      const errors = result.error.flatten().fieldErrors;
+      expect(errors.email?.[0]).toBe('contactForm.errors.emailInvalid');
     }
   });
 

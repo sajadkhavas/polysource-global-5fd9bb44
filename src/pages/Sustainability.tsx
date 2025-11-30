@@ -1,53 +1,64 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { SEO } from '@/components/SEO';
 import { generateBreadcrumbSchema } from '@/lib/structured-data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Leaf, CheckCircle2, Target, FileText, Users, Globe } from 'lucide-react';
+import { useDirection } from '@/hooks/useDirection';
+
+interface ImpactCard {
+  value: string;
+  label: string;
+}
+
+interface InfoItem {
+  title: string;
+  description: string;
+}
 
 export default function Sustainability() {
+  const { t } = useTranslation();
+  const { isRTL } = useDirection();
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: t('breadcrumb.home'), url: 'https://polysource.global' },
+    { name: t('breadcrumb.sustainability'), url: 'https://polysource.global/sustainability' }
+  ]);
+
   const principles = [
     {
       icon: Target,
-      title: 'Quality Over Claims',
-      description: 'We don\'t call something "sustainable" unless it actually performs in production. Recycled materials must meet the same standards as virgin grades.'
+      title: t('sustainabilityPage.principles.quality.title'),
+      description: t('sustainabilityPage.principles.quality.description')
     },
     {
       icon: FileText,
-      title: 'Traceable Sourcing',
-      description: 'Every batch comes with origin documentation. You know where your material came from and how it was processed.'
+      title: t('sustainabilityPage.principles.traceable.title'),
+      description: t('sustainabilityPage.principles.traceable.description')
     },
     {
       icon: Users,
-      title: 'Certified Partners',
-      description: 'We work only with recyclers and processors who maintain ISO 14001 certification and transparent operations.'
+      title: t('sustainabilityPage.principles.certified.title'),
+      description: t('sustainabilityPage.principles.certified.description')
     },
     {
       icon: Globe,
-      title: 'Regional Impact',
-      description: 'Supporting MENA-based recycling infrastructure development and diverting post-consumer waste from landfills.'
+      title: t('sustainabilityPage.principles.regional.title'),
+      description: t('sustainabilityPage.principles.regional.description')
     }
   ];
 
-  const certifications = [
-    'ISO 9001:2015',
-    'ISO 14001:2015',
-    'FDA Contact Compliant Materials',
-    'REACH Compliance',
-    'RoHS Compliance'
-  ];
-
-  const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: 'https://polysource.global' },
-    { name: 'Sustainability', url: 'https://polysource.global/sustainability' }
-  ]);
+  const commitmentItems = t('sustainabilityPage.commitment', { returnObjects: true }) as InfoItem[];
+  const certifications = t('sustainabilityPage.certificationsList', { returnObjects: true }) as string[];
+  const impactCards = t('sustainabilityPage.impactCards', { returnObjects: true }) as ImpactCard[];
+  const impactItems = t('sustainabilityPage.impactList', { returnObjects: true }) as string[];
+  const transparencyItems = t('sustainabilityPage.transparencyList', { returnObjects: true }) as string[];
 
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Sustainability - Recycled Polymers for a Circular Economy"
-        description="Discover PolySource Global's recycled-first approach. 6,200+ tonnes of traceable recycled polymers supplied with ISO 14001 certified partners. Leading sustainable plastic solutions in MENA."
-        keywords="sustainable polymers, recycled polymers Dubai, circular economy plastics, polymer traceability, ISO 14001 polymers, PCR plastics, post-consumer recycled"
+        title={t('sustainabilityPage.title')}
+        description={t('sustainabilityPage.description')}
         structuredData={breadcrumbSchema}
       />
       {/* Hero */}
@@ -58,21 +69,21 @@ export default function Sustainability() {
             animate={{ opacity: 1, y: 0 }}
             className="max-w-3xl"
           >
-            <Badge variant="outline" className="mb-4 border-success text-success">
-              <Leaf className="h-3 w-3 mr-1" />
-              Our Approach
+            <Badge variant="outline" className={`mb-4 border-success text-success ${isRTL ? 'flex-row-reverse' : ''}`}>
+              <Leaf className={`h-3 w-3 ${isRTL ? 'ml-1' : 'mr-1'}`} />
+              {t('sustainabilityPage.badge')}
             </Badge>
-            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground">
-              Recycled-First. But Only When It Works.
+            <h1 className={`text-4xl md:text-5xl font-bold mb-6 text-foreground ${isRTL ? 'text-right' : ''}`}>
+              {t('sustainabilityPage.heroTitle')}
             </h1>
-            <p className="text-xl text-muted-foreground">
-              We believe recycled polymers are the future—but not through greenwashing or compromising quality. Our approach: traceable sourcing, consistent testing, and honest conversations about what works.
+            <p className={`text-xl text-muted-foreground ${isRTL ? 'text-right' : ''}`}>
+              {t('sustainabilityPage.heroSubtitle')}
             </p>
           </motion.div>
         </div>
       </section>
 
-      {/* Our Commitment */}
+      {/* Commitment */}
       <section className="py-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="max-w-4xl mx-auto">
@@ -80,37 +91,19 @@ export default function Sustainability() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              className={isRTL ? 'text-right' : ''}
             >
-              <h2 className="text-3xl font-bold mb-6 text-foreground">Our Commitment</h2>
+              <h2 className="text-3xl font-bold mb-6 text-foreground">{t('sustainabilityPage.commitmentTitle')}</h2>
               <div className="space-y-6 text-muted-foreground">
-                <div className="flex items-start">
-                  <CheckCircle2 className="h-5 w-5 text-success mr-3 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="font-medium text-foreground mb-1">Prioritize Recycled Content</p>
-                    <p>We actively push recycled materials first, offering up to 50% PCR content across suitable applications. But we're transparent when virgin material is the better technical choice.</p>
+                {commitmentItems.map(item => (
+                  <div key={item.title} className="flex items-start">
+                    <CheckCircle2 className={`h-5 w-5 text-success mt-0.5 flex-shrink-0 ${isRTL ? 'ml-3' : 'mr-3'}`} />
+                    <div className={isRTL ? 'text-right' : ''}>
+                      <p className="font-medium text-foreground mb-1">{item.title}</p>
+                      <p>{item.description}</p>
+                    </div>
                   </div>
-                </div>
-                <div className="flex items-start">
-                  <CheckCircle2 className="h-5 w-5 text-success mr-3 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="font-medium text-foreground mb-1">Full Material Traceability</p>
-                    <p>Every shipment includes material passports detailing sourcing origin, processing methods, and certification status. No vague "recycled content" claims.</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <CheckCircle2 className="h-5 w-5 text-success mr-3 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="font-medium text-foreground mb-1">Consistent Quality Standards</p>
-                    <p>Batch-to-batch consistency through rigorous testing protocols. Recycled grades meet the same specifications as virgin equivalents.</p>
-                  </div>
-                </div>
-                <div className="flex items-start">
-                  <CheckCircle2 className="h-5 w-5 text-success mr-3 mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="font-medium text-foreground mb-1">Support Regional Recycling</p>
-                    <p>We partner with MENA-based recyclers to build local circular economy infrastructure, reducing transportation emissions and supporting regional development.</p>
-                  </div>
-                </div>
+                ))}
               </div>
             </motion.div>
           </div>
@@ -124,11 +117,11 @@ export default function Sustainability() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className={`text-center mb-12 ${isRTL ? 'rtl text-right' : ''}`}
           >
-            <h2 className="text-3xl font-bold mb-4 text-foreground">Guiding Principles</h2>
+            <h2 className="text-3xl font-bold mb-4 text-foreground">{t('sustainabilityPage.principlesTitle')}</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              How we make decisions about materials, partners, and processes
+              {t('sustainabilityPage.heroSubtitle')}
             </p>
           </motion.div>
 
@@ -143,11 +136,11 @@ export default function Sustainability() {
               >
                 <Card className="h-full">
                   <CardHeader>
-                    <div className="flex items-start">
-                      <div className="p-2 bg-success/10 rounded-lg mr-4">
+                    <div className={`flex items-start ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <div className={`p-2 bg-success/10 rounded-lg ${isRTL ? 'ml-4' : 'mr-4'}`}>
                         <principle.icon className="h-6 w-6 text-success" />
                       </div>
-                      <div>
+                      <div className={isRTL ? 'text-right' : ''}>
                         <CardTitle className="mb-2">{principle.title}</CardTitle>
                         <CardDescription>{principle.description}</CardDescription>
                       </div>
@@ -168,14 +161,13 @@ export default function Sustainability() {
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
+              className={isRTL ? 'text-right' : ''}
             >
-              <h2 className="text-3xl font-bold mb-6 text-foreground">Certifications & Compliance</h2>
+              <h2 className="text-3xl font-bold mb-6 text-foreground">{t('sustainabilityPage.certificationsTitle')}</h2>
               <Card>
                 <CardHeader>
-                  <CardTitle>Our Standards</CardTitle>
-                  <CardDescription>
-                    Certifications maintained across our supply chain and available for all compliant materials
-                  </CardDescription>
+                  <CardTitle>{t('sustainabilityPage.certificationsTitle')}</CardTitle>
+                  <CardDescription>{t('sustainabilityPage.certificationsDescription')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap gap-3">
@@ -199,33 +191,34 @@ export default function Sustainability() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className={`text-center mb-12 ${isRTL ? 'rtl' : ''}`}
           >
-            <h2 className="text-3xl font-bold mb-4 text-foreground">2024 Impact</h2>
-            <p className="text-lg text-muted-foreground">
-              Transparent reporting on our recycled material supply
+            <h2 className="text-3xl font-bold mb-4 text-foreground">{t('sustainabilityPage.impactTitle')}</h2>
+            <p className={`text-lg text-muted-foreground ${isRTL ? 'text-right' : 'text-center'}`}>
+              {t('sustainabilityPage.impactSubtitle')}
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <p className="text-4xl font-bold text-foreground mb-2">6,200</p>
-                <p className="text-sm text-muted-foreground">Tonnes of Recycled Polymers Supplied</p>
-              </CardContent>
-            </Card>
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <p className="text-4xl font-bold text-foreground mb-2">45%</p>
-                <p className="text-sm text-muted-foreground">Average PCR Content in Recycled Grades</p>
-              </CardContent>
-            </Card>
-            <Card className="text-center">
-              <CardContent className="pt-6">
-                <p className="text-4xl font-bold text-foreground mb-2">100%</p>
-                <p className="text-sm text-muted-foreground">Material Batches with Full Traceability</p>
-              </CardContent>
-            </Card>
+            {impactCards.map(card => (
+              <Card key={card.label} className="text-center">
+                <CardContent className="pt-6">
+                  <p className="text-4xl font-bold text-foreground mb-2">{card.value}</p>
+                  <p className="text-sm text-muted-foreground">{card.label}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="max-w-3xl mx-auto mt-10">
+            <ul className={`space-y-2 text-muted-foreground ${isRTL ? 'text-right' : ''}`}>
+              {impactItems.map(item => (
+                <li key={item} className="flex items-start">
+                  <CheckCircle2 className={`h-4 w-4 text-success mt-1 flex-shrink-0 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
@@ -236,29 +229,17 @@ export default function Sustainability() {
           <div className="max-w-3xl mx-auto">
             <Card>
               <CardHeader>
-                <CardTitle>A Note on Transparency</CardTitle>
+                <CardTitle>{t('sustainabilityPage.transparencyTitle')}</CardTitle>
               </CardHeader>
-              <CardContent className="text-muted-foreground">
-                <p className="mb-4">
-                  We don't claim to be carbon-neutral or perfectly circular—no B2B polymer supplier can honestly make that claim today. What we do claim:
-                </p>
+              <CardContent className={`text-muted-foreground ${isRTL ? 'text-right' : ''}`}>
+                <p className="mb-4">{t('sustainabilityPage.transparencyIntro')}</p>
                 <ul className="space-y-2">
-                  <li className="flex items-start">
-                    <CheckCircle2 className="h-4 w-4 text-success mr-2 mt-0.5 flex-shrink-0" />
-                    <span>We prioritize recycled materials whenever technical requirements allow</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle2 className="h-4 w-4 text-success mr-2 mt-0.5 flex-shrink-0" />
-                    <span>We provide complete traceability and never make vague sustainability claims</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle2 className="h-4 w-4 text-success mr-2 mt-0.5 flex-shrink-0" />
-                    <span>We're honest about when virgin material is the better choice</span>
-                  </li>
-                  <li className="flex items-start">
-                    <CheckCircle2 className="h-4 w-4 text-success mr-2 mt-0.5 flex-shrink-0" />
-                    <span>We continuously work to improve our processes and expand recycled offerings</span>
-                  </li>
+                  {transparencyItems.map(item => (
+                    <li key={item} className="flex items-start">
+                      <CheckCircle2 className={`h-4 w-4 text-success mt-0.5 flex-shrink-0 ${isRTL ? 'ml-2' : 'mr-2'}`} />
+                      <span>{item}</span>
+                    </li>
+                  ))}
                 </ul>
               </CardContent>
             </Card>

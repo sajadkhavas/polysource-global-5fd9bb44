@@ -17,6 +17,7 @@ describe('Materials Query', () => {
       expect(material).toHaveProperty('id');
       expect(material).toHaveProperty('name_fa');
       expect(material).toHaveProperty('name_en');
+      expect(material).toHaveProperty('name_ar');
       expect(material).toHaveProperty('grade');
       expect(material).toHaveProperty('origin');
       expect(material).toHaveProperty('recycled_percentage');
