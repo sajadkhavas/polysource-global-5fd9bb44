@@ -114,7 +114,7 @@ export function Footer() {
             isRTL && "md:flex-row-reverse"
           )}>
             <p className="text-sm text-muted-foreground">
-              {t('footer.copyright', { year: new Date().getFullYear() })}
+              © {new Date().getFullYear()} PolySource Global. {t('footer.copyright')}
             </p>
             <div className={cn("flex mt-4 md:mt-0", isRTL ? "space-x-reverse space-x-6" : "space-x-6")}>
               <Link to="/privacy" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
