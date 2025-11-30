@@ -324,6 +324,7 @@
   "contactPage": {
     "seoTitle": "Request a Quote - Contact PolySource Global",
     "seoDescription": "Get a detailed polymer quotation within 48 hours. Professional RFQ process for recycled and virgin polymers.",
+    "seoKeywords": "polymer quote request, RFQ polymers, buy recycled polymers, virgin polymers, polymer supplier contact, Dubai polymer trader",
     "heroTitle": "Request a Quote",
     "heroSubtitle": "Get a detailed quotation within 48 hours. No WhatsApp back-and-forth. Just clear pricing, lead times, and technical specifications.",
     "form": {
@@ -331,20 +332,78 @@
       "required": "All fields marked with * are required",
       "selectedProducts": "Selected Products ({{count}})",
       "yourName": "Your Name *",
-      "company": "Company",
+      "company": "Company *",
       "email": "Email *",
-      "country": "Country",
-      "phone": "Phone",
-      "quantity": "Quantity (MT)",
-      "application": "Application",
-      "timeline": "Timeline",
+      "country": "Country *",
+      "phone": "Phone Number",
+      "quantity": "Approximate Quantity (MT) *",
+      "application": "Application / Industry",
+      "timeline": "Delivery Timeline",
       "requirements": "Additional Requirements",
-      "submit": "Submit Request",
-      "clear": "Clear Basket"
+      "submit": "Submit Quote Request",
+      "clear": "Clear Basket",
+
+      "namePlaceholder": "John Doe",
+      "companyPlaceholder": "ABC Manufacturing Ltd.",
+      "emailPlaceholder": "john@abc-manufacturing.com",
+      "countryPlaceholder": "Select country",
+
+      "products": "Products Needed *",
+      "productsPlaceholder": "e.g., Recycled HDPE film grade, Virgin PP injection grade",
+      "quantityPlaceholder": "e.g., 20",
+
+      "phonePlaceholder": "+971 XX XXX XXXX",
+      "applicationPlaceholder": "e.g., Packaging film, Automotive parts",
+
+      "timelinePlaceholder": "Select timeline",
+      "timelineUrgent": "Urgent (within 2 weeks)",
+      "timeline1Month": "Within 1 month",
+      "timelineFlexible": "Flexible timing",
+      "timelineRecurring": "Recurring orders",
+
+      "requirementsPlaceholder": "Color preferences, certifications needed, custom specifications...",
+
+      "fileUploadLabel": "File Upload (Optional)",
+      "fileUploadTitle": "Click to upload",
+      "fileUploadSubtitle": "or drag and drop",
+      "fileUploadHelp": "PDF, DOCX, XLSX, JPG, PNG (max 10MB)",
+
+      "advancedToggleShow": "Show Additional Details (Optional)",
+      "advancedToggleHide": "Hide Additional Details (Optional)",
+
+      "privacyLabel": "I agree to the processing of my data for quote purposes and accept the privacy policy *",
+      "footerNote": "You'll receive a detailed quotation within 48 hours"
     },
+    "validationErrorTitle": "Please check the form",
+    "validationErrorDescription": "Some required fields are missing or invalid.",
     "successToast": {
       "title": "Quote Request Submitted",
       "description": "We'll respond within 48 hours with a detailed quotation."
+    },
+    "sidebar": {
+      "contactInfoTitle": "Contact Information",
+      "addressLabel": "Address",
+      "addressValue": "Dubai, United Arab Emirates",
+      "emailLabel": "Email",
+      "phoneLabel": "Phone",
+      "businessHoursLabel": "Business Hours",
+      "businessHoursValue": "Sunday - Thursday: 9:00 - 18:00 GST",
+      "whatToExpectTitle": "What to Expect",
+      "expectationDetailedQuote": "Detailed quotation within 48 hours",
+      "expectationPricing": "Clear pricing with no hidden fees",
+      "expectationTechnical": "Technical specifications and certifications",
+      "expectationShipping": "Shipping options and lead times",
+      "expectationSamples": "Sample availability (if applicable)"
+    },
+    "countries": {
+      "uae": "United Arab Emirates",
+      "saudi": "Saudi Arabia",
+      "egypt": "Egypt",
+      "turkey": "Turkey",
+      "india": "India",
+      "pakistan": "Pakistan",
+      "kenya": "Kenya",
+      "other": "Other"
     },
     "contactCards": {
       "availability": "Response within 48 hours",
@@ -366,7 +425,8 @@
   "breadcrumb": {
     "home": "Home",
     "about": "About Us",
-    "services": "Services"
+    "services": "Services",
+    "contact": "Contact"
   },
   "productDetail": {
     "backToProducts": "Back to Products",

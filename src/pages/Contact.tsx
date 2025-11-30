@@ -15,14 +15,17 @@ import { useRFQ } from '@/contexts/RFQContext';
 import { useToast } from '@/hooks/use-toast';
 import { trackQuoteRequest, trackFormSubmission } from '@/lib/analytics';
 import { useDirection } from '@/hooks/useDirection';
+import { contactFormSchema, type ContactFormValues } from '@/lib/validation/contactForm';
 
 export default function Contact() {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { isRTL } = useDirection();
   const { products, removeProduct, clearProducts } = useRFQ();
   const { toast } = useToast();
+
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [formData, setFormData] = useState({
+
+  const [formData, setFormData] = useState<ContactFormValues>({
     name: '',
     company: '',
     email: '',
@@ -34,46 +37,89 @@ export default function Contact() {
     requirements: ''
   });
 
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof ContactFormValues, string>>
+  >({});
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Log form data to console and simulate backend submission
-    const submissionData = {
-      ...formData,
-      products: products.map(p => ({ id: p.id, name: p.name, grade: p.grade })),
-      submittedAt: new Date().toISOString()
-    };
-    console.log('[Form Submission] Contact Form Data:', submissionData);
-    
-    // Track analytics event
-    trackQuoteRequest('contact');
-    trackFormSubmission('contact_form', submissionData);
-    
-    // Simulate sending to backend
-    console.log('[Backend Simulation] Sending to API:', { endpoint: '/api/quotes', payload: submissionData });
-    
-    toast({
-      title: t('contactPage.successToast.title'),
-      description: t('contactPage.successToast.description'),
-    });
-    // Clear form and RFQ basket
-    setFormData({
-      name: '',
-      company: '',
-      email: '',
-      country: '',
-      phone: '',
-      quantity: '',
-      application: '',
-      timeline: '',
-      requirements: ''
-    });
-    clearProducts();
+
+    // 1) Validate with Zod
+    const result = contactFormSchema.safeParse(formData);
+
+    if (!result.success) {
+      const fieldErrors = result.error.flatten().fieldErrors;
+      const newErrors: Partial<Record<keyof ContactFormValues, string>> = {};
+
+      (Object.keys(fieldErrors) as (keyof ContactFormValues)[]).forEach((field) => {
+        const messages = fieldErrors[field];
+        if (messages && messages.length > 0) {
+          newErrors[field] = messages[0];
+        }
+      });
+
+      setErrors(newErrors);
+
+      toast({
+        variant: 'destructive',
+        title: t('contactPage.validationErrorTitle'),
+        description: t('contactPage.validationErrorDescription'),
+      });
+
+      return;
+    }
+
+    // 2) If valid, clear errors and submit
+    setErrors({});
+    setIsSubmitting(true);
+
+    try {
+      const validData = result.data;
+
+      const submissionData = {
+        ...validData,
+        products: products.map((p) => ({ id: p.id, name: p.name, grade: p.grade })),
+        submittedAt: new Date().toISOString(),
+      };
+
+      console.log('[Form Submission] Contact Form Data:', submissionData);
+      console.log('[Backend Simulation] Sending to API:', {
+        endpoint: '/api/quotes',
+        payload: submissionData,
+      });
+
+      // Track analytics event
+      trackQuoteRequest('contact');
+      trackFormSubmission('contact_form', submissionData);
+
+      toast({
+        title: t('contactPage.successToast.title'),
+        description: t('contactPage.successToast.description'),
+      });
+
+      // Clear form and RFQ basket
+      setFormData({
+        name: '',
+        company: '',
+        email: '',
+        country: '',
+        phone: '',
+        quantity: '',
+        application: '',
+        timeline: '',
+        requirements: '',
+      });
+      clearProducts();
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: 'https://polysource.global' },
-    { name: 'Contact', url: 'https://polysource.global/contact' }
+    { name: t('breadcrumb.home'), url: 'https://polysource.global' },
+    { name: t('breadcrumb.contact'), url: 'https://polysource.global/contact' }
   ]);
 
   const localBusinessSchema = generateLocalBusinessSchema({
@@ -95,7 +141,7 @@ export default function Contact() {
       <SEO
         title={t('contactPage.seoTitle')}
         description={t('contactPage.seoDescription')}
-        keywords="polymer quote request, RFQ polymers, buy recycled polymers, polymer supplier contact, Dubai polymer trader"
+        keywords={t('contactPage.seoKeywords')}
         structuredData={[breadcrumbSchema, localBusinessSchema]}
       />
       {/* Hero */}
@@ -156,80 +202,116 @@ export default function Contact() {
                     {/* Required Fields */}
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="name">Your Name *</Label>
+                        <Label htmlFor="name">{t('contactPage.form.yourName')}</Label>
                         <Input
                           id="name"
                           required
                           value={formData.name}
-                          onChange={(e) => setFormData({...formData, name: e.target.value})}
-                          placeholder="John Doe"
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          placeholder={t('contactPage.form.namePlaceholder')}
+                          aria-invalid={!!errors.name}
+                          aria-describedby={errors.name ? 'contact-name-error' : undefined}
                         />
+                        {errors.name && (
+                          <p id="contact-name-error" className="mt-1 text-sm text-destructive">
+                            {errors.name}
+                          </p>
+                        )}
                       </div>
                       <div>
-                        <Label htmlFor="company">Company *</Label>
+                        <Label htmlFor="company">{t('contactPage.form.company')}</Label>
                         <Input
                           id="company"
                           required
                           value={formData.company}
-                          onChange={(e) => setFormData({...formData, company: e.target.value})}
-                          placeholder="ABC Manufacturing Ltd."
+                          onChange={(e) => setFormData({ ...formData, company: e.target.value })}
+                          placeholder={t('contactPage.form.companyPlaceholder')}
+                          aria-invalid={!!errors.company}
+                          aria-describedby={errors.company ? 'contact-company-error' : undefined}
                         />
+                        {errors.company && (
+                          <p id="contact-company-error" className="mt-1 text-sm text-destructive">
+                            {errors.company}
+                          </p>
+                        )}
                       </div>
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="email">Email *</Label>
+                        <Label htmlFor="email">{t('contactPage.form.email')}</Label>
                         <Input
                           id="email"
                           type="email"
                           required
                           value={formData.email}
-                          onChange={(e) => setFormData({...formData, email: e.target.value})}
-                          placeholder="john@abc-manufacturing.com"
+                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                          placeholder={t('contactPage.form.emailPlaceholder')}
+                          aria-invalid={!!errors.email}
+                          aria-describedby={errors.email ? 'contact-email-error' : undefined}
                         />
+                        {errors.email && (
+                          <p id="contact-email-error" className="mt-1 text-sm text-destructive">
+                            {errors.email}
+                          </p>
+                        )}
                       </div>
                       <div>
-                        <Label htmlFor="country">Country *</Label>
-                        <Select value={formData.country} onValueChange={(value) => setFormData({...formData, country: value})}>
-                          <SelectTrigger>
-                            <SelectValue placeholder="Select country" />
+                        <Label htmlFor="country">{t('contactPage.form.country')}</Label>
+                        <Select
+                          value={formData.country}
+                          onValueChange={(value) => setFormData({ ...formData, country: value })}
+                        >
+                          <SelectTrigger aria-invalid={!!errors.country} aria-describedby={errors.country ? 'contact-country-error' : undefined}>
+                            <SelectValue placeholder={t('contactPage.form.countryPlaceholder')} />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="uae">United Arab Emirates</SelectItem>
-                            <SelectItem value="saudi">Saudi Arabia</SelectItem>
-                            <SelectItem value="egypt">Egypt</SelectItem>
-                            <SelectItem value="turkey">Turkey</SelectItem>
-                            <SelectItem value="india">India</SelectItem>
-                            <SelectItem value="pakistan">Pakistan</SelectItem>
-                            <SelectItem value="kenya">Kenya</SelectItem>
-                            <SelectItem value="other">Other</SelectItem>
+                            <SelectItem value="uae">{t('contactPage.countries.uae')}</SelectItem>
+                            <SelectItem value="saudi">{t('contactPage.countries.saudi')}</SelectItem>
+                            <SelectItem value="egypt">{t('contactPage.countries.egypt')}</SelectItem>
+                            <SelectItem value="turkey">{t('contactPage.countries.turkey')}</SelectItem>
+                            <SelectItem value="india">{t('contactPage.countries.india')}</SelectItem>
+                            <SelectItem value="pakistan">{t('contactPage.countries.pakistan')}</SelectItem>
+                            <SelectItem value="kenya">{t('contactPage.countries.kenya')}</SelectItem>
+                            <SelectItem value="other">{t('contactPage.countries.other')}</SelectItem>
                           </SelectContent>
                         </Select>
+                        {errors.country && (
+                          <p id="contact-country-error" className="mt-1 text-sm text-destructive">
+                            {errors.country}
+                          </p>
+                        )}
                       </div>
                     </div>
 
                     {products.length === 0 && (
                       <div>
-                        <Label htmlFor="products">Products Needed *</Label>
+                        <Label htmlFor="products">{t('contactPage.form.products')}</Label>
                         <Textarea
                           id="products"
                           required={products.length === 0}
-                          placeholder="e.g., Recycled HDPE film grade, Virgin PP injection grade"
+                          placeholder={t('contactPage.form.productsPlaceholder')}
                           rows={2}
                         />
                       </div>
                     )}
 
                     <div>
-                      <Label htmlFor="quantity">Approximate Quantity (MT) *</Label>
+                      <Label htmlFor="quantity">{t('contactPage.form.quantity')}</Label>
                       <Input
                         id="quantity"
                         required
                         value={formData.quantity}
-                        onChange={(e) => setFormData({...formData, quantity: e.target.value})}
-                        placeholder="e.g., 20"
+                        onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
+                        placeholder={t('contactPage.form.quantityPlaceholder')}
+                        aria-invalid={!!errors.quantity}
+                        aria-describedby={errors.quantity ? 'contact-quantity-error' : undefined}
                       />
+                      {errors.quantity && (
+                        <p id="contact-quantity-error" className="mt-1 text-sm text-destructive">
+                          {errors.quantity}
+                        </p>
+                      )}
                     </div>
 
                     {/* Advanced Section Toggle */}
@@ -237,10 +319,13 @@ export default function Contact() {
                       <Button
                         type="button"
                         variant="outline"
-                        onClick={() => setShowAdvanced(!showAdvanced)}
+                        size="sm"
+                        onClick={() => setShowAdvanced((prev) => !prev)}
                         className="w-full"
                       >
-                        {showAdvanced ? 'Hide' : 'Show'} Additional Details (Optional)
+                        {showAdvanced
+                          ? t('contactPage.form.advancedToggleHide')
+                          : t('contactPage.form.advancedToggleShow')}
                       </Button>
                     </div>
 
@@ -252,62 +337,63 @@ export default function Contact() {
                         className="space-y-4 pt-4 border-t border-border"
                       >
                         <div>
-                          <Label htmlFor="phone">Phone Number</Label>
+                          <Label htmlFor="phone">{t('contactPage.form.phone')}</Label>
                           <Input
                             id="phone"
                             value={formData.phone}
-                            onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                            placeholder="+971 XX XXX XXXX"
+                            onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                            placeholder={t('contactPage.form.phonePlaceholder')}
                           />
                         </div>
 
                         <div>
-                          <Label htmlFor="application">Application / Industry</Label>
+                          <Label htmlFor="application">{t('contactPage.form.application')}</Label>
                           <Input
                             id="application"
                             value={formData.application}
-                            onChange={(e) => setFormData({...formData, application: e.target.value})}
-                            placeholder="e.g., Packaging film, Automotive parts"
+                            onChange={(e) => setFormData({ ...formData, application: e.target.value })}
+                            placeholder={t('contactPage.form.applicationPlaceholder')}
                           />
                         </div>
 
                         <div>
-                          <Label htmlFor="timeline">Delivery Timeline</Label>
-                          <Select value={formData.timeline} onValueChange={(value) => setFormData({...formData, timeline: value})}>
+                          <Label htmlFor="timeline">{t('contactPage.form.timeline')}</Label>
+                          <Select value={formData.timeline} onValueChange={(value) => setFormData({ ...formData, timeline: value })}>
                             <SelectTrigger>
-                              <SelectValue placeholder="Select timeline" />
+                              <SelectValue placeholder={t('contactPage.form.timelinePlaceholder')} />
                             </SelectTrigger>
                             <SelectContent>
-                              <SelectItem value="urgent">Urgent (within 2 weeks)</SelectItem>
-                              <SelectItem value="1month">Within 1 month</SelectItem>
-                              <SelectItem value="flexible">Flexible timing</SelectItem>
-                              <SelectItem value="recurring">Recurring orders</SelectItem>
+                              <SelectItem value="urgent">{t('contactPage.form.timelineUrgent')}</SelectItem>
+                              <SelectItem value="1month">{t('contactPage.form.timeline1Month')}</SelectItem>
+                              <SelectItem value="flexible">{t('contactPage.form.timelineFlexible')}</SelectItem>
+                              <SelectItem value="recurring">{t('contactPage.form.timelineRecurring')}</SelectItem>
                             </SelectContent>
                           </Select>
                         </div>
 
                         <div>
-                          <Label htmlFor="requirements">Additional Requirements</Label>
+                          <Label htmlFor="requirements">{t('contactPage.form.requirements')}</Label>
                           <Textarea
                             id="requirements"
                             value={formData.requirements}
-                            onChange={(e) => setFormData({...formData, requirements: e.target.value})}
-                            placeholder="Color preferences, certifications needed, custom specifications..."
+                            onChange={(e) => setFormData({ ...formData, requirements: e.target.value })}
+                            placeholder={t('contactPage.form.requirementsPlaceholder')}
                             rows={4}
                           />
                         </div>
 
                         <div>
-                          <Label>File Upload (Optional)</Label>
+                          <Label>{t('contactPage.form.fileUploadLabel')}</Label>
                           <div className="mt-2 flex items-center justify-center w-full">
                             <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-border border-dashed rounded-lg cursor-pointer hover:bg-muted/50 transition-colors">
                               <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                 <Upload className="w-8 h-8 mb-2 text-muted-foreground" />
                                 <p className="mb-2 text-sm text-muted-foreground">
-                                  <span className="font-semibold">Click to upload</span> or drag and drop
+                                  <span className="font-semibold">{t('contactPage.form.fileUploadTitle')}</span>{' '}
+                                  {t('contactPage.form.fileUploadSubtitle')}
                                 </p>
                                 <p className="text-xs text-muted-foreground">
-                                  Technical drawings, specifications (PDF, DOC, max 10MB)
+                                  {t('contactPage.form.fileUploadHelp')}
                                 </p>
                               </div>
                               <input type="file" className="hidden" />
@@ -321,17 +407,17 @@ export default function Contact() {
                     <div className="flex items-start space-x-2">
                       <Checkbox id="privacy" required />
                       <Label htmlFor="privacy" className="text-sm text-muted-foreground cursor-pointer">
-                        I agree to the processing of my data for quote purposes and accept the privacy policy *
+                        {t('contactPage.form.privacyLabel')}
                       </Label>
                     </div>
 
-                    <Button type="submit" size="lg" className="w-full">
-                      Submit Quote Request
+                    <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+                      {t('contactPage.form.submit')}
                     </Button>
 
                     <p className="text-xs text-center text-muted-foreground">
                       <Clock className="inline h-3 w-3 mr-1" />
-                      You'll receive a detailed quotation within 48 hours
+                      {t('contactPage.form.footerNote')}
                     </p>
                   </form>
                 </CardContent>
@@ -343,22 +429,22 @@ export default function Contact() {
               {/* Contact Info */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Contact Information</CardTitle>
+                  <CardTitle>{t('contactPage.sidebar.contactInfoTitle')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="flex items-start">
                     <MapPin className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-sm">Address</p>
+                      <p className="font-medium text-sm">{t('contactPage.sidebar.addressLabel')}</p>
                       <p className="text-sm text-muted-foreground">
-                        Dubai, United Arab Emirates
+                        {t('contactPage.sidebar.addressValue')}
                       </p>
                     </div>
                   </div>
                   <div className="flex items-start">
                     <Mail className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-sm">Email</p>
+                      <p className="font-medium text-sm">{t('contactPage.sidebar.emailLabel')}</p>
                       <a href="mailto:hello@polysource.global" className="text-sm text-primary hover:underline">
                         hello@polysource.global
                       </a>
@@ -367,7 +453,7 @@ export default function Contact() {
                   <div className="flex items-start">
                     <Phone className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-sm">Phone</p>
+                      <p className="font-medium text-sm">{t('contactPage.sidebar.phoneLabel')}</p>
                       <p className="text-sm text-muted-foreground">
                         +971 4 XXX XXXX
                       </p>
@@ -376,9 +462,9 @@ export default function Contact() {
                   <div className="flex items-start">
                     <Clock className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
                     <div>
-                      <p className="font-medium text-sm">Business Hours</p>
+                      <p className="font-medium text-sm">{t('contactPage.sidebar.businessHoursLabel')}</p>
                       <p className="text-sm text-muted-foreground">
-                        Sunday - Thursday: 9:00 - 18:00 GST
+                        {t('contactPage.sidebar.businessHoursValue')}
                       </p>
                     </div>
                   </div>
@@ -388,37 +474,37 @@ export default function Contact() {
               {/* What to Expect */}
               <Card>
                 <CardHeader>
-                  <CardTitle>What to Expect</CardTitle>
+                  <CardTitle>{t('contactPage.sidebar.whatToExpectTitle')}</CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-3">
                   <div className="flex items-start">
                     <CheckCircle2 className="h-4 w-4 text-success mr-2 mt-0.5 flex-shrink-0" />
                     <p className="text-sm text-muted-foreground">
-                      Detailed quotation within 48 hours
+                      {t('contactPage.sidebar.expectationDetailedQuote')}
                     </p>
                   </div>
                   <div className="flex items-start">
                     <CheckCircle2 className="h-4 w-4 text-success mr-2 mt-0.5 flex-shrink-0" />
                     <p className="text-sm text-muted-foreground">
-                      Clear pricing with no hidden fees
+                      {t('contactPage.sidebar.expectationPricing')}
                     </p>
                   </div>
                   <div className="flex items-start">
                     <CheckCircle2 className="h-4 w-4 text-success mr-2 mt-0.5 flex-shrink-0" />
                     <p className="text-sm text-muted-foreground">
-                      Technical specifications and certifications
+                      {t('contactPage.sidebar.expectationTechnical')}
                     </p>
                   </div>
                   <div className="flex items-start">
                     <CheckCircle2 className="h-4 w-4 text-success mr-2 mt-0.5 flex-shrink-0" />
                     <p className="text-sm text-muted-foreground">
-                      Shipping options and lead times
+                      {t('contactPage.sidebar.expectationShipping')}
                     </p>
                   </div>
                   <div className="flex items-start">
                     <CheckCircle2 className="h-4 w-4 text-success mr-2 mt-0.5 flex-shrink-0" />
                     <p className="text-sm text-muted-foreground">
-                      Sample availability (if applicable)
+                      {t('contactPage.sidebar.expectationSamples')}
                     </p>
                   </div>
                 </CardContent>

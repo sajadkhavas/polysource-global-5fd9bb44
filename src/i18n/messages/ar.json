@@ -383,6 +383,7 @@
   "contactPage": {
     "seoTitle": "اطلب عرض سعر - تواصل مع PolySource Global",
     "seoDescription": "احصل على عرض أسعار مفصل خلال 48 ساعة لاحتياجاتك من البوليمرات المُعاد تدويرها أو الأصلية.",
+    "seoKeywords": "طلب عرض سعر بوليمرات، طلب تسعيرة بوليمرات، بوليمرات معاد تدويرها، بوليمرات بكر، مورد بوليمرات دبي، تاجر بوليمرات في دبي",
     "heroTitle": "اطلب عرض سعر",
     "heroSubtitle": "احصل على عرض مفصل خلال 48 ساعة. بدون رسائل واتساب، فقط تسعير واضح ومواصفات تقنية.",
     "form": {
@@ -390,20 +391,78 @@
       "required": "الحقول التي تحمل * مطلوبة",
       "selectedProducts": "المنتجات المختارة ({{count}})",
       "yourName": "اسمك *",
-      "company": "الشركة",
+      "company": "الشركة *",
       "email": "البريد الإلكتروني *",
-      "country": "الدولة",
-      "phone": "الهاتف",
-      "quantity": "الكمية (طن)",
-      "application": "التطبيق",
-      "timeline": "الإطار الزمني",
+      "country": "الدولة *",
+      "phone": "رقم الهاتف",
+      "quantity": "الكمية التقريبية (طن) *",
+      "application": "التطبيق / القطاع",
+      "timeline": "الإطار الزمني للتسليم",
       "requirements": "متطلبات إضافية",
-      "submit": "إرسال الطلب",
-      "clear": "مسح السلة"
+      "submit": "إرسال طلب عرض السعر",
+      "clear": "مسح السلة",
+
+      "namePlaceholder": "محمد أحمد",
+      "companyPlaceholder": "شركة ABC للصناعات",
+      "emailPlaceholder": "name@company.com",
+      "countryPlaceholder": "اختر الدولة",
+
+      "products": "المنتجات المطلوبة *",
+      "productsPlaceholder": "مثال: درجة فيلم HDPE معاد تدويره، درجة PP للحقن بكر",
+      "quantityPlaceholder": "مثال: 20",
+
+      "phonePlaceholder": "+971 XX XXX XXXX",
+      "applicationPlaceholder": "مثال: أفلام تغليف، قطع سيارات",
+
+      "timelinePlaceholder": "اختر الإطار الزمني",
+      "timelineUrgent": "عاجل (خلال أسبوعين)",
+      "timeline1Month": "خلال شهر واحد",
+      "timelineFlexible": "مرن",
+      "timelineRecurring": "طلبات متكررة",
+
+      "requirementsPlaceholder": "تفضيلات اللون، الشهادات المطلوبة، المواصفات الخاصة...",
+
+      "fileUploadLabel": "رفع ملف (اختياري)",
+      "fileUploadTitle": "انقر للرفع",
+      "fileUploadSubtitle": "أو اسحب الملف وأفلته هنا",
+      "fileUploadHelp": "PDF, DOCX, XLSX, JPG, PNG (بحد أقصى 10 ميجابايت)",
+
+      "advancedToggleShow": "عرض التفاصيل الإضافية (اختياري)",
+      "advancedToggleHide": "إخفاء التفاصيل الإضافية (اختياري)",
+
+      "privacyLabel": "أوافق على معالجة بياناتي لأغراض عرض السعر وأقبل سياسة الخصوصية *",
+      "footerNote": "ستتلقى عرض سعر مفصلاً خلال ٤٨ ساعة"
     },
+    "validationErrorTitle": "يرجى التحقق من النموذج",
+    "validationErrorDescription": "بعض الحقول المطلوبة مفقودة أو غير صحيحة.",
     "successToast": {
       "title": "تم إرسال طلب عرض السعر",
       "description": "سنتواصل معك خلال 48 ساعة بعرض مفصل."
+    },
+    "sidebar": {
+      "contactInfoTitle": "معلومات الاتصال",
+      "addressLabel": "العنوان",
+      "addressValue": "دبي، الإمارات العربية المتحدة",
+      "emailLabel": "البريد الإلكتروني",
+      "phoneLabel": "الهاتف",
+      "businessHoursLabel": "ساعات العمل",
+      "businessHoursValue": "الأحد - الخميس: 9:00 - 18:00 بتوقيت الخليج",
+      "whatToExpectTitle": "ما الذي يمكنك توقعه",
+      "expectationDetailedQuote": "عرض سعر مفصل خلال ٤٨ ساعة",
+      "expectationPricing": "أسعار واضحة بدون رسوم مخفية",
+      "expectationTechnical": "المواصفات الفنية والشهادات",
+      "expectationShipping": "خيارات الشحن وأوقات التسليم",
+      "expectationSamples": "توفر عينات (إن وُجدت)"
+    },
+    "countries": {
+      "uae": "الإمارات العربية المتحدة",
+      "saudi": "السعودية",
+      "egypt": "مصر",
+      "turkey": "تركيا",
+      "india": "الهند",
+      "pakistan": "باكستان",
+      "kenya": "كينيا",
+      "other": "دولة أخرى"
     },
     "contactCards": {
       "availability": "رد خلال 48 ساعة",
@@ -425,7 +484,8 @@
   "breadcrumb": {
     "home": "الرئيسية",
     "about": "من نحن",
-    "services": "الخدمات"
+    "services": "الخدمات",
+    "contact": "تواصل"
   },
   "productDetail": {
     "backToProducts": "العودة للمنتجات",
