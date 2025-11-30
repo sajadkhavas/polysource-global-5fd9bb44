@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useLocation } from 'react-router-dom';
 
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
@@ -16,9 +15,6 @@ const languages = [
 
 export function LanguageSwitcher({ className, variant = 'default' }: LanguageSwitcherProps) {
   const { i18n } = useTranslation();
-  const navigate = useNavigate();
-  const location = useLocation();
-  
   const currentLangBase = i18n.resolvedLanguage || i18n.language || 'en';
   const currentLang: 'en' | 'ar' = currentLangBase.startsWith('ar') ? 'ar' : 'en';
 
@@ -27,28 +23,6 @@ export function LanguageSwitcher({ className, variant = 'default' }: LanguageSwi
 
     i18n.changeLanguage(lang);
     localStorage.setItem('i18nextLng', lang);
-    
-    // Navigate to the correct URL prefix
-    const currentPath = location.pathname;
-    let newPath: string;
-    
-    if (lang === 'ar') {
-      // Switch to Arabic: add /ar prefix
-      if (currentPath.startsWith('/ar')) {
-        newPath = currentPath; // Already on Arabic route
-      } else {
-        newPath = currentPath === '/' ? '/ar' : `/ar${currentPath}`;
-      }
-    } else {
-      // Switch to English: remove /ar prefix
-      if (currentPath.startsWith('/ar')) {
-        newPath = currentPath === '/ar' ? '/' : currentPath.replace(/^\/ar/, '');
-      } else {
-        newPath = currentPath; // Already on English route
-      }
-    }
-    
-    navigate(newPath);
   };
 
   if (variant === 'compact') {
