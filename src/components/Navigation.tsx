@@ -58,15 +58,25 @@ export function Navigation() {
         <div className="hidden lg:block">
           {/* Top layer: Brand + Trust signals */}
           <div className={cn(
-            "flex items-center justify-between py-3 border-b border-border/50",
+            "flex items-center justify-between py-3 border-b",
+            isHomePage && !scrolled ? "border-white/20" : "border-border/50",
             isRTL && "flex-row-reverse"
           )}>
             <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-4" : "space-x-4")}>
               <Link to="/" className={cn("flex items-center", isRTL ? "space-x-reverse space-x-2.5" : "space-x-2.5")}>
-                <div className="h-9 w-9 rounded-lg bg-primary" aria-hidden="true" />
+                <div className={cn(
+                  "h-9 w-9 rounded-lg",
+                  isHomePage && !scrolled ? "bg-white" : "bg-primary"
+                )} aria-hidden="true" />
                 <div>
-                  <span className="text-xl font-bold text-foreground block leading-none">{brandName}</span>
-                  <span className="text-xs text-muted-foreground block mt-0.5">
+                  <span className={cn(
+                    "text-xl font-bold block leading-none",
+                    isHomePage && !scrolled ? "text-white" : "text-foreground"
+                  )}>{brandName}</span>
+                  <span className={cn(
+                    "text-xs block mt-0.5",
+                    isHomePage && !scrolled ? "text-white/70" : "text-muted-foreground"
+                  )}>
                     {brandTagline}
                   </span>
                 </div>
@@ -74,16 +84,26 @@ export function Navigation() {
             </div>
             
             <div className={cn(
-              "flex items-center text-xs text-muted-foreground",
+              "flex items-center text-xs",
+              isHomePage && !scrolled ? "text-white/70" : "text-muted-foreground",
               isRTL ? "space-x-reverse space-x-6" : "space-x-6"
             )}>
               <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-1.5" : "space-x-1.5")}>
-                <span className="font-semibold text-foreground">18+</span>
+                <span className={cn(
+                  "font-semibold",
+                  isHomePage && !scrolled ? "text-white" : "text-foreground"
+                )}>18+</span>
                 <span>{t('nav.trustBadge.countries')}</span>
               </div>
-              <div className="h-3 w-px bg-border" />
+              <div className={cn(
+                "h-3 w-px",
+                isHomePage && !scrolled ? "bg-white/30" : "bg-border"
+              )} />
               <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-1.5" : "space-x-1.5")}>
-                <span className="font-semibold text-foreground">12,500+</span>
+                <span className={cn(
+                  "font-semibold",
+                  isHomePage && !scrolled ? "text-white" : "text-foreground"
+                )}>12,500+</span>
                 <span>{t('nav.trustBadge.tonnes')}</span>
               </div>
             </div>
@@ -108,7 +128,9 @@ export function Navigation() {
                       'text-sm font-semibold transition-colors px-4 py-2 rounded-md',
                       isActive('/products')
                         ? 'bg-primary/10 text-primary'
-                        : 'text-foreground/90 hover:bg-muted hover:text-primary'
+                        : isHomePage && !scrolled
+                          ? 'text-white/90 hover:bg-white/10 hover:text-white'
+                          : 'text-foreground/90 hover:bg-muted hover:text-primary'
                     )}
                   >
                     {isRTL ? polymerProductsItem.label.ar : polymerProductsItem.label.en}
@@ -133,6 +155,7 @@ export function Navigation() {
                   isOpen={dropdownOpen === 'services'}
                   onOpenChange={(open) => setDropdownOpen(open ? 'services' : null)}
                   isActive={isActive}
+                  isTransparent={isHomePage && !scrolled}
                 />
               )}
               {newsItem && (
@@ -141,6 +164,7 @@ export function Navigation() {
                   isOpen={dropdownOpen === 'news'}
                   onOpenChange={(open) => setDropdownOpen(open ? 'news' : null)}
                   isActive={isActive}
+                  isTransparent={isHomePage && !scrolled}
                 />
               )}
               {aboutItem && (
@@ -149,6 +173,7 @@ export function Navigation() {
                   isOpen={dropdownOpen === 'about'}
                   onOpenChange={(open) => setDropdownOpen(open ? 'about' : null)}
                   isActive={isActive}
+                  isTransparent={isHomePage && !scrolled}
                 />
               )}
               <Link 
@@ -157,7 +182,9 @@ export function Navigation() {
                   'text-sm font-semibold transition-colors px-4 py-2 rounded-md',
                   isActive('/sustainability')
                     ? 'bg-primary/10 text-primary'
-                    : 'text-foreground/90 hover:bg-muted hover:text-primary'
+                    : isHomePage && !scrolled
+                      ? 'text-white/90 hover:bg-white/10 hover:text-white'
+                      : 'text-foreground/90 hover:bg-muted hover:text-primary'
                 )}
               >
                 {t('nav.sustainability')}
