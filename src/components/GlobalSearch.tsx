@@ -103,7 +103,7 @@ export function GlobalSearch({ className }: GlobalSearchProps) {
 
       {/* Dialog */}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className={cn("sm:max-w-lg", isRTL && "text-right")}>
+        <DialogContent className={cn("sm:max-w-lg", isRTL && "text-right")} aria-describedby={undefined}>
           <DialogHeader>
             <DialogTitle>{t("search.dialogTitle")}</DialogTitle>
           </DialogHeader>

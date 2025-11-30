@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { SEO } from '@/components/SEO';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { generateBreadcrumbSchema, generateLocalBusinessSchema } from '@/lib/structured-data';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -125,6 +126,11 @@ export default function Contact() {
     }
   };
 
+  const breadcrumbItems = [
+    { labelKey: "breadcrumb.home", to: "/" },
+    { labelKey: "breadcrumb.contact", to: "/contact" }
+  ];
+
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: t('breadcrumb.home'), url: 'https://polysource.global' },
     { name: t('breadcrumb.contact'), url: 'https://polysource.global/contact' }
@@ -155,6 +161,7 @@ export default function Contact() {
       {/* Hero */}
       <section className="bg-muted/50 pt-32 pb-12 border-b border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumbs items={breadcrumbItems} />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

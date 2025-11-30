@@ -27,30 +27,30 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
     <nav
       aria-label="breadcrumb"
       className={cn(
-        "mb-4 text-sm text-muted-foreground",
+        "mb-6 py-2 px-4 rounded-lg bg-muted/60 border border-border/50 inline-flex",
         isRTL ? "text-right" : "text-left",
         className
       )}
     >
-      <ol className={cn("flex flex-wrap items-center gap-1", isRTL && "flex-row-reverse")}>
+      <ol className={cn("flex flex-wrap items-center gap-2 text-sm", isRTL && "flex-row-reverse")}>
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
           const text = item.label ?? (item.labelKey ? t(item.labelKey) : "");
 
           return (
-            <li key={item.to} className={cn("flex items-center gap-1", isRTL && "flex-row-reverse")}>
+            <li key={item.to} className={cn("flex items-center gap-2", isRTL && "flex-row-reverse")}>
               {!isLast ? (
                 <>
                   <Link
                     to={item.to}
-                    className="hover:text-foreground underline-offset-2 hover:underline transition-colors"
+                    className="text-muted-foreground hover:text-primary underline-offset-4 hover:underline transition-colors font-medium"
                   >
                     {text}
                   </Link>
-                  <Separator className="h-3 w-3 opacity-50" />
+                  <Separator className="h-4 w-4 text-muted-foreground/50" />
                 </>
               ) : (
-                <span className="font-medium text-foreground">{text}</span>
+                <span className="font-semibold text-foreground">{text}</span>
               )}
             </li>
           );
