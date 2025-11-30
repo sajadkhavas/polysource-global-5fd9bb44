@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { SEO } from '@/components/SEO';
 import { generateBreadcrumbSchema } from '@/lib/structured-data';
 import { Button } from '@/components/ui/button';
@@ -19,8 +20,13 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/co
 import { LazyImage } from '@/components/LazyImage';
 import { getProductAltText } from '@/data/product-images';
 import { fetchMaterials, type PolymerMaterial } from '@/lib/mockData';
+import { cn } from '@/lib/utils';
+import { useDirection } from '@/hooks/useDirection';
 
 export default function Products() {
+  const { t, i18n } = useTranslation();
+  const { isRTL } = useDirection();
+  const resolvedLanguage = i18n.resolvedLanguage || i18n.language || 'en';
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [showRecycledOnly, setShowRecycledOnly] = useState(false);
@@ -33,9 +39,18 @@ export default function Products() {
     queryFn: fetchMaterials,
   });
 
+  const locale: 'en' | 'ar' = resolvedLanguage.startsWith('ar') ? 'ar' : 'en';
+
+  const getProductName = (product: PolymerMaterial) =>
+    locale === 'ar' ? product.name_ar : product.name_en;
+
   const filteredProducts = (materials || []).filter((product: PolymerMaterial) => {
-    const matchesSearch = product.name_en.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         product.grade.toLowerCase().includes(searchQuery.toLowerCase());
+    const searchValue = searchQuery.toLowerCase();
+    const matchesSearch =
+      product.name_en.toLowerCase().includes(searchValue) ||
+      product.name_ar.toLowerCase().includes(searchValue) ||
+      getProductName(product).toLowerCase().includes(searchValue) ||
+      product.grade.toLowerCase().includes(searchValue);
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
     const matchesRecycled = !showRecycledOnly || product.recycled_percentage > 0;
     const matchesStock = !showInStockOnly || product.inStock;
@@ -44,53 +59,54 @@ export default function Products() {
   });
 
   const handleAddToRFQ = (product: PolymerMaterial) => {
+    const localizedName = getProductName(product);
     addProduct({
       id: product.id,
-      name: product.name_en,
+      name: localizedName,
       type: product.category,
       grade: product.grade
     });
     toast({
-      title: "Added to RFQ",
-      description: `${product.name_en} has been added to your quote request.`,
+      title: t('products.rfq.added'),
+      description: t('products.rfq.addedDescription', { name: localizedName }),
     });
   };
 
   const FilterSidebar = () => (
-    <div className="space-y-6">
+    <div className={cn("space-y-6", isRTL && "text-right")}>
       <div>
-        <h3 className="font-semibold mb-3">Category</h3>
+        <h3 className="font-semibold mb-3">{t('products.filters.category')}</h3>
         <Select value={selectedCategory} onValueChange={setSelectedCategory}>
           <SelectTrigger>
-            <SelectValue placeholder="All Categories" />
+            <SelectValue placeholder={t('products.filters.allCategories')} />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Categories</SelectItem>
-            <SelectItem value="recycled">Recycled</SelectItem>
-            <SelectItem value="virgin">Virgin</SelectItem>
-            <SelectItem value="pcr">PCR</SelectItem>
-            <SelectItem value="masterbatch">Masterbatch</SelectItem>
-            <SelectItem value="compound">Compound</SelectItem>
+            <SelectItem value="all">{t('products.filters.allCategories')}</SelectItem>
+            <SelectItem value="recycled">{t('products.recycled')}</SelectItem>
+            <SelectItem value="virgin">{t('products.virgin')}</SelectItem>
+            <SelectItem value="pcr">{t('products.pcr')}</SelectItem>
+            <SelectItem value="masterbatch">{t('products.masterbatch')}</SelectItem>
+            <SelectItem value="compound">{t('products.compound')}</SelectItem>
           </SelectContent>
         </Select>
       </div>
 
-      <div className="space-y-3">
-        <div className="flex items-center space-x-2">
-          <Checkbox 
-            id="recycled" 
+      <div className={cn("space-y-3", isRTL && "text-right")}>
+        <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-2" : "space-x-2")}>
+          <Checkbox
+            id="recycled"
             checked={showRecycledOnly}
             onCheckedChange={(checked) => setShowRecycledOnly(checked as boolean)}
           />
-          <Label htmlFor="recycled" className="cursor-pointer">Recycled Only</Label>
+          <Label htmlFor="recycled" className="cursor-pointer">{t('products.filters.recycledOnly')}</Label>
         </div>
-        <div className="flex items-center space-x-2">
-          <Checkbox 
-            id="instock" 
+        <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-2" : "space-x-2")}>
+          <Checkbox
+            id="instock"
             checked={showInStockOnly}
             onCheckedChange={(checked) => setShowInStockOnly(checked as boolean)}
           />
-          <Label htmlFor="instock" className="cursor-pointer">In Stock Only</Label>
+          <Label htmlFor="instock" className="cursor-pointer">{t('products.filters.inStockOnly')}</Label>
         </div>
       </div>
     </div>
@@ -124,8 +140,8 @@ export default function Products() {
   const ErrorState = () => (
     <div className="text-center py-12">
       <AlertCircle className="h-12 w-12 mx-auto text-destructive mb-4" />
-      <h3 className="text-lg font-semibold mb-2">Error Loading Products</h3>
-      <p className="text-muted-foreground">Please try again later</p>
+      <h3 className="text-lg font-semibold mb-2">{t('products.errorTitle')}</h3>
+      <p className="text-muted-foreground">{t('products.errorDescription')}</p>
     </div>
   );
 
@@ -137,17 +153,17 @@ export default function Products() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Polymer Catalog - Recycled & Virgin PE, PP, HDPE Materials"
-        description="Browse PolySource Global's complete catalog of recycled and virgin polymers. rPE, rPP, rPET, HDPE, LDPE, and compounds with full technical data sheets and batch traceability. Request quotes online."
+        title={t('products.heroTitle')}
+        description={t('products.heroSubtitle')}
         keywords="polymer catalog, recycled polymers, virgin polymers, PE grades, PP grades, HDPE, LDPE, rPE, rPP, polymer materials catalog, plastic raw materials"
         structuredData={breadcrumbSchema}
       />
       {/* Header */}
       <section className="bg-muted/50 pt-32 pb-12 border-b border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h1 className="text-4xl font-bold mb-4 text-foreground">Product Catalog</h1>
-          <p className="text-lg text-muted-foreground max-w-3xl">
-            Browse our complete range of recycled and virgin polymers. All materials come with full technical data sheets and batch traceability.
+          <h1 className={cn("text-4xl font-bold mb-4 text-foreground", isRTL && "text-right")}>{t('products.heroTitle')}</h1>
+          <p className={cn("text-lg text-muted-foreground max-w-3xl", isRTL && "text-right ml-auto")}>
+            {t('products.heroSubtitle')}
           </p>
         </div>
       </section>
@@ -155,26 +171,29 @@ export default function Products() {
       {/* Search & Filter Bar */}
       <section className="py-6 bg-background border-b border-border sticky top-16 z-40 backdrop-blur bg-background/95">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex gap-4">
+          <div className={cn("flex gap-4", isRTL && "flex-row-reverse")}> 
             <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Search className={cn(
+                "absolute top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground",
+                isRTL ? "right-3" : "left-3"
+              )} />
               <Input
-                placeholder="Search by product name or grade..."
+                placeholder={t('products.searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
+                className={cn("pl-10", isRTL && "pr-10 text-right")}
               />
             </div>
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="outline" className="lg:hidden">
                   <Filter className="h-4 w-4 mr-2" />
-                  Filters
+                  {t('products.filters.title')}
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left">
+              <SheetContent side={isRTL ? 'right' : 'left'}>
                 <SheetHeader>
-                  <SheetTitle>Filters</SheetTitle>
+                  <SheetTitle>{t('products.filters.title')}</SheetTitle>
                 </SheetHeader>
                 <div className="mt-6">
                   <FilterSidebar />
@@ -192,9 +211,9 @@ export default function Products() {
             {/* Desktop Sidebar */}
             <aside className="hidden lg:block w-64 flex-shrink-0">
               <div className="sticky top-32">
-                <Card>
+                <Card className={cn(isRTL && "text-right")}>
                   <CardHeader>
-                    <CardTitle className="text-lg">Filters</CardTitle>
+                    <CardTitle className="text-lg">{t('products.filters.title')}</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <FilterSidebar />
@@ -206,8 +225,8 @@ export default function Products() {
             {/* Product Grid */}
             <div className="flex-1">
               <div className="mb-6">
-                <p className="text-sm text-muted-foreground">
-                  Showing {filteredProducts.length} products
+                <p className={cn("text-sm text-muted-foreground", isRTL && "text-right")}> 
+                  {t('products.subtitle')} ({filteredProducts.length}/{(materials || []).length})
                 </p>
               </div>
 
@@ -228,47 +247,47 @@ export default function Products() {
                         <div className="aspect-[4/3] relative overflow-hidden bg-muted">
                           <LazyImage
                             src={product.image}
-                            alt={`${product.name_en} - ${product.category}`}
+                            alt={`${getProductName(product)} - ${product.category}`}
                             className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                           />
-                          <div className="absolute top-2 left-2 flex gap-1.5 flex-wrap">
+                          <div className={cn("absolute top-2 left-2 flex gap-1.5 flex-wrap", isRTL && "left-auto right-2 flex-row-reverse")}>
                             {product.recycled_percentage > 0 && (
                               <Badge variant="outline" className="bg-background/90 backdrop-blur-sm border-success text-success">
-                                <Leaf className="h-3 w-3 mr-1" />
-                                {product.recycled_percentage}% Recycled
+                              <Leaf className={cn("h-3 w-3", isRTL ? "ml-1" : "mr-1")} />
+                              {product.recycled_percentage}% {t('products.recycled')}
                               </Badge>
                             )}
                             {product.inStock && (
-                              <Badge variant="secondary" className="bg-background/90 backdrop-blur-sm">In Stock</Badge>
+                              <Badge variant="secondary" className="bg-background/90 backdrop-blur-sm">{t('products.labels.inStock')}</Badge>
                             )}
                           </div>
                         </div>
                         <CardHeader className="flex-1 pt-4">
-                          <CardTitle className="text-lg">{product.name_en}</CardTitle>
+                          <CardTitle className={cn("text-lg", isRTL && "text-right")}>{getProductName(product)}</CardTitle>
                           <CardDescription>
                             <span className="font-mono text-xs">{product.grade}</span>
                           </CardDescription>
                           <div className="mt-4 space-y-2 text-sm">
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Origin:</span>
+                            <div className={cn("flex justify-between", isRTL && "flex-row-reverse text-right")}> 
+                              <span className="text-muted-foreground">{t('products.labels.origin')}:</span>
                               <span className="font-medium">{product.origin}</span>
                             </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Color:</span>
+                            <div className={cn("flex justify-between", isRTL && "flex-row-reverse text-right")}> 
+                              <span className="text-muted-foreground">{t('products.labels.color')}:</span>
                               <span className="font-medium">{product.color}</span>
                             </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">MFI:</span>
+                            <div className={cn("flex justify-between", isRTL && "flex-row-reverse text-right")}> 
+                              <span className="text-muted-foreground">{t('products.labels.mfi')}:</span>
                               <span className="font-medium">{product.mfi}</span>
                             </div>
-                            <div className="flex justify-between">
-                              <span className="text-muted-foreground">Price:</span>
+                            <div className={cn("flex justify-between", isRTL && "flex-row-reverse text-right")}> 
+                              <span className="text-muted-foreground">{t('products.labels.price')}:</span>
                               <span className="font-medium text-primary">{product.price_range}</span>
                             </div>
                           </div>
                           <div className="mt-4">
-                            <p className="text-xs text-muted-foreground mb-2">Applications:</p>
-                            <div className="flex flex-wrap gap-1">
+                            <p className={cn("text-xs text-muted-foreground mb-2", isRTL && "text-right")}>{t('products.labels.applications')}:</p>
+                            <div className={cn("flex flex-wrap gap-1", isRTL && "flex-row-reverse justify-end")}> 
                               {product.applications.map(app => (
                                 <Badge key={app} variant="secondary" className="text-xs">
                                   {app}
@@ -278,16 +297,16 @@ export default function Products() {
                           </div>
                         </CardHeader>
                         <CardContent className="pt-0">
-                          <div className="flex gap-2">
+                          <div className={cn("flex gap-2", isRTL && "flex-row-reverse")}> 
                             <Button asChild variant="outline" className="flex-1" size="sm">
-                              <Link to={`/products/${product.id}`}>View Details</Link>
+                              <Link to={`/products/${product.id}`}>{t('products.viewDetails')}</Link>
                             </Button>
-                            <Button 
+                            <Button
                               onClick={() => handleAddToRFQ(product)}
                               size="sm"
                               className="flex-1"
                             >
-                              Add to RFQ
+                              {t('products.addToRfq')}
                             </Button>
                           </div>
                         </CardContent>
@@ -300,8 +319,8 @@ export default function Products() {
               {!isLoading && !isError && filteredProducts.length === 0 && (
                 <div className="text-center py-12">
                   <Package className="h-12 w-12 mx-auto text-muted-foreground mb-4" />
-                  <h3 className="text-lg font-semibold mb-2">No products found</h3>
-                  <p className="text-muted-foreground">Try adjusting your filters or search query</p>
+                  <h3 className="text-lg font-semibold mb-2">{t('products.noResultsTitle')}</h3>
+                  <p className="text-muted-foreground">{t('products.noResultsDescription')}</p>
                 </div>
               )}
             </div>

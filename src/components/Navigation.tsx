@@ -17,7 +17,8 @@ import { LanguageSwitcher } from './LanguageSwitcher';
 export function Navigation() {
   const location = useLocation();
   const { t, i18n } = useTranslation();
-  const isRTL = i18n.language === 'ar';
+  const resolvedLanguage = i18n.resolvedLanguage || i18n.language || 'en';
+  const isRTL = resolvedLanguage.startsWith('ar');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
@@ -37,6 +38,9 @@ export function Navigation() {
   const servicesItem = navigationData.find(item => item.id === 'services');
   const newsItem = navigationData.find(item => item.id === 'insights');
   const aboutItem = navigationData.find(item => item.id === 'about');
+  const brandName = t('branding.name');
+  const shortBrand = t('branding.shortName');
+  const brandTagline = t('branding.tagline');
 
   const isActive = (href: string) => {
     return location.pathname === href || location.pathname.startsWith(href + '/');
@@ -61,9 +65,9 @@ export function Navigation() {
               <Link to="/" className={cn("flex items-center", isRTL ? "space-x-reverse space-x-2.5" : "space-x-2.5")}>
                 <div className="h-9 w-9 rounded-lg bg-primary" aria-hidden="true" />
                 <div>
-                  <span className="text-xl font-bold text-foreground block leading-none">PolySource Global</span>
+                  <span className="text-xl font-bold text-foreground block leading-none">{brandName}</span>
                   <span className="text-xs text-muted-foreground block mt-0.5">
-                    {isRTL ? 'توريد البوليمر المُعاد تدويره من دبي' : 'Recycled-first polymer supply from Dubai'}
+                    {brandTagline}
                   </span>
                 </div>
               </Link>
@@ -232,7 +236,7 @@ export function Navigation() {
           {/* Left: Brand */}
           <Link to="/" className={cn("flex items-center", isRTL ? "space-x-reverse space-x-2" : "space-x-2")}>
             <div className="h-8 w-8 rounded bg-primary" aria-hidden="true" />
-            <span className="text-lg font-bold text-foreground">PolySource</span>
+            <span className="text-lg font-bold text-foreground">{shortBrand}</span>
           </Link>
 
           {/* Right: Controls */}

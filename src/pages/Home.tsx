@@ -26,7 +26,13 @@ import { trackQuoteRequest } from '@/lib/analytics';
 
 export default function Home() {
   const { t, i18n } = useTranslation();
-  const isRTL = i18n.language === 'ar';
+  const resolvedLanguage = i18n.resolvedLanguage || i18n.language || 'en';
+  const isRTL = resolvedLanguage.startsWith('ar');
+
+  const seoTitle = t('seo.home.title');
+  const seoDescription = t('seo.home.description');
+  const organizationDescription = t('seo.organizationDescription');
+  const brandName = t('branding.name');
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -95,10 +101,10 @@ export default function Home() {
 
   // Organization and Website structured data
   const organizationSchema = generateOrganizationSchema({
-    name: 'PolySource Global',
+    name: brandName,
     url: 'https://polysource.global',
     logo: 'https://polysource.global/logo.png',
-    description: 'Dubai-based polymer supplier specializing in recycled and virgin polymers with global shipping',
+    description: organizationDescription,
     address: {
       addressLocality: 'Dubai',
       addressCountry: 'UAE'
@@ -110,16 +116,13 @@ export default function Home() {
     }
   });
 
-  const websiteSchema = generateWebSiteSchema('PolySource Global', 'https://polysource.global');
+  const websiteSchema = generateWebSiteSchema(brandName, 'https://polysource.global');
 
   return (
     <div className="min-h-screen">
       <SEO
-        title={isRTL ? 'مورد البوليمر المُعاد تدويره دبي | مواد PE، PP، HDPE البكر' : 'Recycled Polymer Supplier Dubai | Virgin PE, PP, HDPE Materials'}
-        description={isRTL 
-          ? 'PolySource Global - المورد الرائد للبوليمر B2B في دبي. بوليمرات معاد تدويرها من الدرجة التقنية PE، PP، rPET وبوليمرات بكر. نخدم أكثر من 18 دولة.'
-          : "PolySource Global - Dubai's leading B2B polymer supplier. Technical-grade recycled PE, PP, rPET and virgin polymers. Serving 18+ countries with batch traceability and 48hr quote turnaround."
-        }
+        title={seoTitle}
+        description={seoDescription}
         keywords="recycled polymers Dubai, virgin polymers UAE, PE supplier, PP supplier, HDPE materials, rPE, rPP, B2B polymer trading, plastic raw materials, polymer distributor MENA"
         structuredData={[organizationSchema, websiteSchema]}
       />
@@ -470,17 +473,17 @@ export default function Home() {
       {/* Resources / Blog Preview */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
+          <motion.div
             className="text-center mb-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-              {isRTL ? 'الموارد الفنية والرؤى' : 'Technical Resources & Insights'}
+              {t('home.resources.sectionTitle')}
             </h2>
             <p className="text-lg text-muted-foreground">
-              {isRTL ? 'أوراق بيانات المواد وأدلة المعالجة ورؤى الصناعة' : 'Material data sheets, processing guides, and industry insights'}
+              {t('home.resources.sectionSubtitle')}
             </p>
           </motion.div>
 
@@ -488,14 +491,14 @@ export default function Home() {
             <Card>
               <CardHeader className={isRTL ? 'text-right' : ''}>
                 <FileText className={cn("h-8 w-8 text-primary mb-3", isRTL && "mr-auto")} />
-                <CardTitle>{isRTL ? 'مكتبة TDS و SDS' : 'TDS & SDS Library'}</CardTitle>
+                <CardTitle>{t('home.resources.cards.libraryTitle')}</CardTitle>
                 <CardDescription>
-                  {isRTL ? 'قم بتنزيل أوراق البيانات الفنية وبيانات السلامة لجميع موادنا' : 'Download technical and safety data sheets for all our materials'}
+                  {t('home.resources.cards.libraryDescription')}
                 </CardDescription>
               </CardHeader>
               <CardContent className={isRTL ? 'text-right' : ''}>
                 <Button asChild variant="link" className="p-0">
-                  <Link to="/resources">{isRTL ? 'الوصول للموارد ←' : 'Access Resources →'}</Link>
+                  <Link to="/resources">{t('home.resources.cards.libraryCta')}</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -503,14 +506,14 @@ export default function Home() {
             <Card>
               <CardHeader className={isRTL ? 'text-right' : ''}>
                 <Package className={cn("h-8 w-8 text-primary mb-3", isRTL && "mr-auto")} />
-                <CardTitle>{isRTL ? 'إرشادات المعالجة' : 'Processing Guidelines'}</CardTitle>
+                <CardTitle>{t('home.resources.cards.guidesTitle')}</CardTitle>
                 <CardDescription>
-                  {isRTL ? 'ملفات درجات الحرارة وأوقات الدورة ونصائح التحسين' : 'Temperature profiles, cycle times, and optimization tips'}
+                  {t('home.resources.cards.guidesDescription')}
                 </CardDescription>
               </CardHeader>
               <CardContent className={isRTL ? 'text-right' : ''}>
                 <Button asChild variant="link" className="p-0">
-                  <Link to="/blog">{isRTL ? 'اقرأ الدليل ←' : 'Read Guide →'}</Link>
+                  <Link to="/blog">{t('home.resources.cards.guidesCta')}</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -518,14 +521,14 @@ export default function Home() {
             <Card>
               <CardHeader className={isRTL ? 'text-right' : ''}>
                 <Zap className={cn("h-8 w-8 text-primary mb-3", isRTL && "mr-auto")} />
-                <CardTitle>{isRTL ? 'أخبار الصناعة' : 'Industry News'}</CardTitle>
+                <CardTitle>{t('home.resources.cards.newsTitle')}</CardTitle>
                 <CardDescription>
-                  {isRTL ? 'آخر التحديثات حول أسواق البوليمر ولوائح الاستدامة' : 'Latest updates on polymer markets and sustainability regulations'}
+                  {t('home.resources.cards.newsDescription')}
                 </CardDescription>
               </CardHeader>
               <CardContent className={isRTL ? 'text-right' : ''}>
                 <Button asChild variant="link" className="p-0">
-                  <Link to="/blog">{isRTL ? 'عرض المدونة ←' : 'View Blog →'}</Link>
+                  <Link to="/blog">{t('home.resources.cards.newsCta')}</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -552,7 +555,7 @@ export default function Home() {
                 <Link to="/contact">{t('cta.button')}</Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
-                <Link to="/products">{isRTL ? 'تصفح الكتالوج' : 'Browse Catalog'}</Link>
+                <Link to="/products">{t('home.resources.browseCatalogCta')}</Link>
               </Button>
             </div>
           </motion.div>

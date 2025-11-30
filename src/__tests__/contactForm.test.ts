@@ -1,14 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { z } from 'zod';
-
-// Contact form validation schema
-const contactFormSchema = z.object({
-  name: z.string().min(1, 'Name is required'),
-  company: z.string().min(1, 'Company is required'),
-  email: z.string().email('Invalid email address'),
-  country: z.string().min(1, 'Country is required'),
-  quantity: z.string().min(1, 'Quantity is required'),
-});
+import { contactFormSchema } from '@/lib/validation/contactForm';
 
 describe('Contact Form Validation', () => {
   it('should fail validation with empty fields', () => {
