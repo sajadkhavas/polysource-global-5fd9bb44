@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useQuery } from '@tanstack/react-query';
 import { SEO } from '@/components/SEO';
 import { generateBreadcrumbSchema } from '@/lib/structured-data';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -24,9 +25,14 @@ export default function Blog() {
     queryFn: fetchBlogPosts,
   });
 
+  const breadcrumbItems = [
+    { labelKey: "breadcrumb.home", to: "/" },
+    { labelKey: "breadcrumb.blog", to: "/blog" }
+  ];
+
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: t('blogPage.breadcrumb.home'), url: 'https://polysource.global' },
-    { name: t('blogPage.breadcrumb.blog'), url: 'https://polysource.global/blog' }
+    { name: t('breadcrumb.home'), url: 'https://polysource.global' },
+    { name: t('breadcrumb.blog'), url: 'https://polysource.global/blog' }
   ]);
 
   const getTitle = (post: BlogPost) => (locale === 'ar' ? post.title_ar : post.title_en);
@@ -76,6 +82,7 @@ export default function Blog() {
       {/* Hero */}
       <section className="bg-muted/50 pt-32 pb-12 border-b border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumbs items={breadcrumbItems} />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

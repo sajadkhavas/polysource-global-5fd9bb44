@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { SEO } from '@/components/SEO';
 import { generateBreadcrumbSchema } from '@/lib/structured-data';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -145,9 +146,14 @@ export default function Products() {
     </div>
   );
 
+  const breadcrumbItems = [
+    { labelKey: "breadcrumb.home", to: "/" },
+    { labelKey: "breadcrumb.products", to: "/products" }
+  ];
+
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: 'Home', url: 'https://polysource.global' },
-    { name: 'Products', url: 'https://polysource.global/products' }
+    { name: t('breadcrumb.home'), url: 'https://polysource.global' },
+    { name: t('breadcrumb.products'), url: 'https://polysource.global/products' }
   ]);
 
   return (
@@ -161,6 +167,7 @@ export default function Products() {
       {/* Header */}
       <section className="bg-muted/50 pt-32 pb-12 border-b border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumbs items={breadcrumbItems} />
           <h1 className={cn("text-4xl font-bold mb-4 text-foreground", isRTL && "text-right")}>{t('products.heroTitle')}</h1>
           <p className={cn("text-lg text-muted-foreground max-w-3xl", isRTL && "text-right ml-auto")}>
             {t('products.heroSubtitle')}

@@ -13,6 +13,7 @@ import { MobileNav } from './MobileNav';
 import { DesktopDropdown } from './DesktopDropdown';
 import { ThemeToggle } from './ThemeToggle';
 import { LanguageSwitcher } from './LanguageSwitcher';
+import { GlobalSearch } from './GlobalSearch';
 
 export function Navigation() {
   const location = useLocation();
@@ -196,12 +197,10 @@ export function Navigation() {
             {/* Right: Actions */}
             <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-3" : "space-x-3")}>
 
-              {/* Browse Products Link */}
-              <Button variant="outline" size="sm" asChild className={cn(
-                isHomePage && !scrolled && "border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
-              )}>
-                <Link to="/products">{t('nav.browseProducts')}</Link>
-              </Button>
+              {/* Global Search */}
+              <GlobalSearch className={cn(
+                isHomePage && !scrolled && "border-primary-foreground/30 text-primary-foreground hover:border-primary-foreground/50"
+              )} />
 
               {/* Theme Toggle */}
               <ThemeToggle />
@@ -270,6 +269,9 @@ export function Navigation() {
 
           {/* Right: Controls */}
           <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-2" : "space-x-2")}>
+            {/* Global Search Mobile */}
+            <GlobalSearch />
+
             {/* Language Switcher */}
             <LanguageSwitcher variant="compact" />
 

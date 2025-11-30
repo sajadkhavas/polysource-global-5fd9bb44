@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { SEO } from '@/components/SEO';
 import { generateBreadcrumbSchema } from '@/lib/structured-data';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Leaf, CheckCircle2, Target, FileText, Users, Globe } from 'lucide-react';
@@ -20,6 +21,12 @@ interface InfoItem {
 export default function Sustainability() {
   const { t } = useTranslation();
   const { isRTL } = useDirection();
+
+  const breadcrumbItems = [
+    { labelKey: "breadcrumb.home", to: "/" },
+    { labelKey: "breadcrumb.sustainability", to: "/sustainability" }
+  ];
+
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: t('breadcrumb.home'), url: 'https://polysource.global' },
     { name: t('breadcrumb.sustainability'), url: 'https://polysource.global/sustainability' }
@@ -64,6 +71,7 @@ export default function Sustainability() {
       {/* Hero */}
       <section className="bg-gradient-to-br from-success/20 to-success/5 pt-32 pb-20 border-b border-success/20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumbs items={breadcrumbItems} />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

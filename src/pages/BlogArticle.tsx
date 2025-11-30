@@ -2,7 +2,8 @@ import { Link, useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { SEO } from '@/components/SEO';
-import { generateArticleSchema } from '@/lib/structured-data';
+import { generateArticleSchema, generateBreadcrumbSchema } from '@/lib/structured-data';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -83,6 +84,18 @@ export default function BlogArticle() {
     }
   });
 
+  const breadcrumbItems = [
+    { labelKey: "breadcrumb.home", to: "/" },
+    { labelKey: "breadcrumb.blog", to: "/blog" },
+    { label: article.title, to: `/blog/${id}` }
+  ];
+
+  const breadcrumbSchema = generateBreadcrumbSchema([
+    { name: t('breadcrumb.home'), url: 'https://polysource.global' },
+    { name: t('breadcrumb.blog'), url: 'https://polysource.global/blog' },
+    { name: article.title, url: `https://polysource.global/blog/${id}` }
+  ]);
+
   const BackArrow = isRTL ? ArrowRight : ArrowLeft;
 
   const formatDate = (dateStr: string) => {
@@ -108,17 +121,12 @@ export default function BlogArticle() {
           section: article.category,
           tags: ['MFI', 'polymer processing', 'technical guide']
         }}
-        structuredData={articleSchema}
+        structuredData={[articleSchema, breadcrumbSchema]}
       />
       {/* Back Button */}
       <section className="bg-muted/50 pt-28 pb-4 border-b border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <Button asChild variant="ghost" size="sm">
-            <Link to="/blog">
-              <BackArrow className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              {t('blogArticle.backToBlog')}
-            </Link>
-          </Button>
+          <Breadcrumbs items={breadcrumbItems} className="mb-0" />
         </div>
       </section>
 
