@@ -5,7 +5,8 @@ import { cn } from '@/lib/utils';
 
 export function Footer() {
   const { t, i18n } = useTranslation();
-  const isRTL = i18n.language === 'ar';
+  const resolvedLanguage = i18n.resolvedLanguage || i18n.language || 'en';
+  const isRTL = resolvedLanguage.startsWith('ar');
 
   return (
     <footer className="border-t border-border bg-card">
@@ -91,7 +92,7 @@ export function Footer() {
             <ul className="space-y-3">
               <li className={cn("flex items-start text-sm text-muted-foreground", isRTL && "flex-row-reverse text-right")}>
                 <MapPin className={cn("h-4 w-4 mt-0.5 flex-shrink-0", isRTL ? "ml-2" : "mr-2")} />
-                <span>{isRTL ? 'دبي، الإمارات' : 'Dubai, UAE'}</span>
+                <span>{t('footer.locationCityCountry')}</span>
               </li>
               <li className={cn("flex items-center text-sm text-muted-foreground", isRTL && "flex-row-reverse")}>
                 <Mail className={cn("h-4 w-4 flex-shrink-0", isRTL ? "ml-2" : "mr-2")} />

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { SEO } from '@/components/SEO';
 import { generateBreadcrumbSchema, generateLocalBusinessSchema } from '@/lib/structured-data';
 import { Button } from '@/components/ui/button';
@@ -13,8 +14,11 @@ import { Mail, MapPin, Phone, Clock, CheckCircle2, Upload, X } from 'lucide-reac
 import { useRFQ } from '@/contexts/RFQContext';
 import { useToast } from '@/hooks/use-toast';
 import { trackQuoteRequest, trackFormSubmission } from '@/lib/analytics';
+import { useDirection } from '@/hooks/useDirection';
 
 export default function Contact() {
+  const { t, i18n } = useTranslation();
+  const { isRTL } = useDirection();
   const { products, removeProduct, clearProducts } = useRFQ();
   const { toast } = useToast();
   const [showAdvanced, setShowAdvanced] = useState(false);
@@ -49,8 +53,8 @@ export default function Contact() {
     console.log('[Backend Simulation] Sending to API:', { endpoint: '/api/quotes', payload: submissionData });
     
     toast({
-      title: "Quote Request Submitted",
-      description: "We'll respond within 48 hours with a detailed quotation.",
+      title: t('contactPage.successToast.title'),
+      description: t('contactPage.successToast.description'),
     });
     // Clear form and RFQ basket
     setFormData({
@@ -89,8 +93,8 @@ export default function Contact() {
   return (
     <div className="min-h-screen bg-background">
       <SEO
-        title="Request a Quote - Contact PolySource Global"
-        description="Get a detailed polymer quotation within 48 hours. Professional RFQ process for recycled and virgin polymers. Contact Dubai's leading B2B polymer supplier for competitive pricing."
+        title={t('contactPage.seoTitle')}
+        description={t('contactPage.seoDescription')}
         keywords="polymer quote request, RFQ polymers, buy recycled polymers, polymer supplier contact, Dubai polymer trader"
         structuredData={[breadcrumbSchema, localBusinessSchema]}
       />
@@ -101,9 +105,9 @@ export default function Contact() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <h1 className="text-4xl font-bold mb-4 text-foreground">Request a Quote</h1>
+            <h1 className="text-4xl font-bold mb-4 text-foreground">{t('contactPage.heroTitle')}</h1>
             <p className="text-lg text-muted-foreground max-w-3xl">
-              Get a detailed quotation within 48 hours. No WhatsApp back-and-forth. Just clear pricing, lead times, and technical specifications.
+              {t('contactPage.heroSubtitle')}
             </p>
           </motion.div>
         </div>
@@ -115,11 +119,11 @@ export default function Contact() {
           <div className="grid lg:grid-cols-3 gap-8">
             {/* RFQ Form */}
             <div className="lg:col-span-2">
-              <Card>
+              <Card className={isRTL ? 'text-right' : ''}>
                 <CardHeader>
-                  <CardTitle>Quote Request Form</CardTitle>
+                  <CardTitle>{t('contactPage.form.title')}</CardTitle>
                   <CardDescription>
-                    All fields marked with * are required
+                    {t('contactPage.form.required')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -127,7 +131,7 @@ export default function Contact() {
                     {/* RFQ Basket Products */}
                     {products.length > 0 && (
                       <div>
-                        <Label>Selected Products ({products.length})</Label>
+                        <Label>{t('contactPage.form.selectedProducts', { count: products.length })}</Label>
                         <div className="mt-2 space-y-2">
                           {products.map(product => (
                             <div key={product.id} className="flex items-center justify-between p-3 bg-muted rounded-lg">

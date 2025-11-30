@@ -8,7 +8,9 @@
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "scan:hardcoded": "node scripts/find-hardcoded.js",
+    "i18n:export": "node scripts/export-translations.js"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
