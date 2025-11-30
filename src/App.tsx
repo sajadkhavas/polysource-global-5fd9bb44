@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { RFQProvider } from "./contexts/RFQContext";
 import { Navigation } from "./components/Navigation";
 import { Footer } from "./components/Footer";
@@ -35,7 +35,26 @@ const PageLoader = () => (
   </div>
 );
 
-const App = () => {
+// Component to handle URL-based language detection
+const LanguageDetector = ({ children }: { children: React.ReactNode }) => {
+  const location = useLocation();
+  const { i18n } = useTranslation();
+  
+  useEffect(() => {
+    const isArabicRoute = location.pathname.startsWith('/ar');
+    const currentLang = i18n.resolvedLanguage || i18n.language;
+    
+    if (isArabicRoute && !currentLang?.startsWith('ar')) {
+      i18n.changeLanguage('ar');
+    } else if (!isArabicRoute && currentLang?.startsWith('ar')) {
+      i18n.changeLanguage('en');
+    }
+  }, [location.pathname, i18n]);
+  
+  return <>{children}</>;
+};
+
+const AppContent = () => {
   const { dir } = useDirection();
   const { i18n } = useTranslation();
   const currentLanguage = i18n.resolvedLanguage || i18n.language;
@@ -52,37 +71,62 @@ const App = () => {
   }, [dir, currentLanguage]);
 
   return (
+    <>
+      <LanguageDetector>
+        <SkipToContent />
+        <div className="flex flex-col min-h-screen">
+          <Navigation />
+          <main id="main-content" className="flex-1">
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                {/* English routes */}
+                <Route path="/" element={<Home />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/products/:id" element={<ProductDetail />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/sustainability" element={<Sustainability />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/resources" element={<Resources />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/blog/:id" element={<BlogArticle />} />
+                <Route path="/faq" element={<FAQ />} />
+                <Route path="/services" element={<Services />} />
+                
+                {/* Arabic routes with /ar prefix */}
+                <Route path="/ar" element={<Home />} />
+                <Route path="/ar/products" element={<Products />} />
+                <Route path="/ar/products/:id" element={<ProductDetail />} />
+                <Route path="/ar/about" element={<About />} />
+                <Route path="/ar/sustainability" element={<Sustainability />} />
+                <Route path="/ar/contact" element={<Contact />} />
+                <Route path="/ar/resources" element={<Resources />} />
+                <Route path="/ar/blog" element={<Blog />} />
+                <Route path="/ar/blog/:id" element={<BlogArticle />} />
+                <Route path="/ar/faq" element={<FAQ />} />
+                <Route path="/ar/services" element={<Services />} />
+                
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </Suspense>
+          </main>
+          <Footer />
+          <WhatsAppButton />
+        </div>
+      </LanguageDetector>
+    </>
+  );
+};
+
+const App = () => {
+  return (
     <QueryClientProvider client={queryClient}>
       <RFQProvider>
         <TooltipProvider>
           <Toaster />
           <Sonner />
           <BrowserRouter>
-            <SkipToContent />
-            <div className="flex flex-col min-h-screen">
-              <Navigation />
-              <main id="main-content" className="flex-1">
-                <Suspense fallback={<PageLoader />}>
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/products" element={<Products />} />
-                    <Route path="/products/:id" element={<ProductDetail />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/sustainability" element={<Sustainability />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/resources" element={<Resources />} />
-                    <Route path="/blog" element={<Blog />} />
-                    <Route path="/blog/:id" element={<BlogArticle />} />
-                    <Route path="/faq" element={<FAQ />} />
-                    <Route path="/services" element={<Services />} />
-                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </Suspense>
-              </main>
-              <Footer />
-              <WhatsAppButton />
-            </div>
+            <AppContent />
           </BrowserRouter>
         </TooltipProvider>
       </RFQProvider>
