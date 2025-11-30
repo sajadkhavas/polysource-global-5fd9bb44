@@ -32,6 +32,7 @@ import industryConstruction from '@/assets/industries/industry-construction.jpg'
 import industryConsumer from '@/assets/industries/industry-consumer.jpg';
 import industryAgriculture from '@/assets/industries/industry-agriculture.jpg';
 import industryIndustrial from '@/assets/industries/industry-industrial.jpg';
+import sustainabilityHero from '@/assets/sustainability-hero.jpg';
 
 export default function Home() {
   const { t, i18n } = useTranslation();
@@ -493,13 +494,28 @@ export default function Home() {
               </Button>
             </motion.div>
             <motion.div
-              initial={{ opacity: 0, x: isRTL ? -20 : 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, x: isRTL ? -20 : 20, scale: 0.9 }}
+              whileInView={{ opacity: 1, x: 0, scale: 1 }}
               viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
               className={cn("relative", isRTL && "md:col-start-1 md:row-start-1")}
             >
-              <div className="aspect-square rounded-2xl bg-gradient-to-br from-success/20 to-success/5 flex items-center justify-center">
-                <Leaf className="h-32 w-32 text-success" />
+              <div className="aspect-square rounded-2xl overflow-hidden shadow-2xl group">
+                <motion.img 
+                  src={sustainabilityHero}
+                  alt="Sustainable polymer recycling"
+                  className="w-full h-full object-cover"
+                  initial={{ scale: 1.2 }}
+                  whileInView={{ scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, ease: "easeOut" }}
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-success/40 via-transparent to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4 flex items-center justify-center">
+                  <div className="bg-white/90 dark:bg-background/90 backdrop-blur-sm rounded-full p-3 shadow-lg">
+                    <Leaf className="h-8 w-8 text-success" />
+                  </div>
+                </div>
               </div>
             </motion.div>
           </div>
