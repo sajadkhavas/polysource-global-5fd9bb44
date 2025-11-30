@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { SEO } from '@/components/SEO';
 import { generateBreadcrumbSchema } from '@/lib/structured-data';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -126,9 +127,14 @@ export default function Resources() {
     }
   };
 
+  const breadcrumbItems = [
+    { labelKey: "breadcrumb.home", to: "/" },
+    { labelKey: "breadcrumb.resources", to: "/resources" }
+  ];
+
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: t('resourcesPage.breadcrumb.home'), url: 'https://polysource.global' },
-    { name: t('resourcesPage.breadcrumb.resources'), url: 'https://polysource.global/resources' }
+    { name: t('breadcrumb.home'), url: 'https://polysource.global' },
+    { name: t('breadcrumb.resources'), url: 'https://polysource.global/resources' }
   ]);
 
   const typeLabels: Record<Resource['type'], string> = {
@@ -150,6 +156,7 @@ export default function Resources() {
       {/* Hero */}
       <section className="bg-muted/50 pt-32 pb-12 border-b border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumbs items={breadcrumbItems} />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

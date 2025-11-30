@@ -534,9 +534,26 @@
     "home": "Home",
     "about": "About Us",
     "services": "Services",
-    "contact": "Contact",
+    "products": "Products",
+    "productDetail": "Product Detail",
+    "sustainability": "Sustainability",
+    "resources": "Resources",
+    "blog": "Blog",
+    "blogArticle": "Article",
     "faq": "FAQ",
-    "sustainability": "Sustainability"
+    "contact": "Contact",
+    "notFound": "Page Not Found"
+  },
+  "search": {
+    "placeholder": "Search products, resources, blog...",
+    "placeholderMobile": "Search...",
+    "dialogTitle": "Search the site",
+    "inputPlaceholder": "Search for a product, resource or article...",
+    "searching": "Searching...",
+    "noResults": "No results found",
+    "typeProduct": "Product",
+    "typeResource": "Resource",
+    "typeBlog": "Blog"
   },
   "productDetail": {
     "backToProducts": "Back to Products",

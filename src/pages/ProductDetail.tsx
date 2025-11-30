@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { SEO } from '@/components/SEO';
 import { generateProductSchema, generateBreadcrumbSchema, generateFAQSchema } from '@/lib/structured-data';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -112,9 +113,15 @@ export default function ProductDetail() {
     }
   });
 
+  const breadcrumbItems = [
+    { labelKey: "breadcrumb.home", to: "/" },
+    { labelKey: "breadcrumb.products", to: "/products" },
+    { label: product.name, to: `/products/${product.id}` }
+  ];
+
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: t('breadcrumb.home'), url: 'https://polysource.global' },
-    { name: t('nav.products'), url: 'https://polysource.global/products' },
+    { name: t('breadcrumb.products'), url: 'https://polysource.global/products' },
     { name: product.name, url: `https://polysource.global/products/${product.id}` }
   ]);
 
@@ -134,12 +141,7 @@ export default function ProductDetail() {
       {/* Breadcrumb */}
       <section className="bg-muted/50 py-4 border-b border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <Button asChild variant="ghost" size="sm">
-            <Link to="/products">
-              <BackArrow className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`} />
-              {t('productDetail.backToProducts')}
-            </Link>
-          </Button>
+          <Breadcrumbs items={breadcrumbItems} className="mb-0" />
         </div>
       </section>
 

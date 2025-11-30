@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { SEO } from '@/components/SEO';
 import { generateFAQSchema, generateBreadcrumbSchema } from '@/lib/structured-data';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
@@ -331,9 +332,15 @@ export default function FAQ() {
   const locale: 'en' | 'ar' = resolvedLanguage.startsWith('ar') ? 'ar' : 'en';
   const categories = faqContent[locale].categories;
   const faqSchema = generateFAQSchema(categories.flatMap(cat => cat.faqs));
+  
+  const breadcrumbItems = [
+    { labelKey: "breadcrumb.home", to: "/" },
+    { labelKey: "breadcrumb.faq", to: "/faq" }
+  ];
+
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: t('breadcrumb.home'), url: 'https://polysource.global' },
-    { name: faqContent[locale].heroTitle, url: 'https://polysource.global/faq' }
+    { name: t('breadcrumb.faq'), url: 'https://polysource.global/faq' }
   ]);
 
   return (
@@ -356,6 +363,7 @@ export default function FAQ() {
       {/* Hero */}
       <section className="bg-gradient-to-br from-[hsl(var(--hero-gradient-start))] to-[hsl(var(--hero-gradient-end))] text-primary-foreground pt-32 pb-16">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumbs items={breadcrumbItems} className="[&_a]:text-primary-foreground/70 [&_a:hover]:text-primary-foreground [&_span]:text-primary-foreground [&_svg]:text-primary-foreground/50" />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

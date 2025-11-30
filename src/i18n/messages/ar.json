@@ -540,9 +540,26 @@
     "home": "الرئيسية",
     "about": "من نحن",
     "services": "الخدمات",
-    "contact": "تواصل",
+    "products": "المنتجات",
+    "productDetail": "تفاصيل المنتج",
+    "sustainability": "الاستدامة",
+    "resources": "الموارد",
+    "blog": "المدونة",
+    "blogArticle": "المقالة",
     "faq": "الأسئلة الشائعة",
-    "sustainability": "الاستدامة"
+    "contact": "تواصل",
+    "notFound": "الصفحة غير موجودة"
+  },
+  "search": {
+    "placeholder": "ابحث عن المنتجات أو الموارد...",
+    "placeholderMobile": "بحث...",
+    "dialogTitle": "البحث في الموقع",
+    "inputPlaceholder": "ابحث عن منتج، مورد أو مقال...",
+    "searching": "جاري البحث...",
+    "noResults": "لا توجد نتائج",
+    "typeProduct": "منتج",
+    "typeResource": "مورد",
+    "typeBlog": "مقال"
   },
   "productDetail": {
     "backToProducts": "العودة للمنتجات",
