@@ -33,6 +33,7 @@ import industryConsumer from '@/assets/industries/industry-consumer.jpg';
 import industryAgriculture from '@/assets/industries/industry-agriculture.jpg';
 import industryIndustrial from '@/assets/industries/industry-industrial.jpg';
 import sustainabilityHero from '@/assets/sustainability-hero.jpg';
+import whyChooseUs from '@/assets/why-choose-us.jpg';
 
 export default function Home() {
   const { t, i18n } = useTranslation();
@@ -376,30 +377,54 @@ export default function Home() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-            {valueProps.map((prop, index) => (
-              <motion.div
-                key={prop.title}
-                initial={{ opacity: 0, x: index % 2 === 0 ? -20 : 20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-              >
-                <Card>
-                  <CardHeader>
-                    <div className={cn("flex items-start", isRTL && "flex-row-reverse")}>
-                      <div className={cn("p-2 bg-primary/10 rounded-lg", isRTL ? "ml-4" : "mr-4")}>
-                        <prop.icon className="h-6 w-6 text-primary" />
+          <div className={cn(
+            "grid lg:grid-cols-2 gap-12 max-w-6xl mx-auto items-center",
+            isRTL && "lg:grid-flow-dense"
+          )}>
+            {/* Image */}
+            <motion.div
+              initial={{ opacity: 0, x: isRTL ? 20 : -20, scale: 0.95 }}
+              whileInView={{ opacity: 1, x: 0, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6 }}
+              className={cn("relative", isRTL && "lg:col-start-2")}
+            >
+              <div className="rounded-2xl overflow-hidden shadow-2xl">
+                <img 
+                  src={whyChooseUs}
+                  alt="Business partnership"
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/20 via-transparent to-transparent" />
+              </div>
+            </motion.div>
+
+            {/* Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {valueProps.map((prop, index) => (
+                <motion.div
+                  key={prop.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <Card className="h-full">
+                    <CardHeader>
+                      <div className={cn("flex items-start", isRTL && "flex-row-reverse")}>
+                        <div className={cn("p-2 bg-primary/10 rounded-lg", isRTL ? "ml-4" : "mr-4")}>
+                          <prop.icon className="h-6 w-6 text-primary" />
+                        </div>
+                        <div className={isRTL ? 'text-right' : ''}>
+                          <CardTitle className="mb-2 text-base">{prop.title}</CardTitle>
+                          <CardDescription className="text-sm">{prop.description}</CardDescription>
+                        </div>
                       </div>
-                      <div className={isRTL ? 'text-right' : ''}>
-                        <CardTitle className="mb-2">{prop.title}</CardTitle>
-                        <CardDescription>{prop.description}</CardDescription>
-                      </div>
-                    </div>
-                  </CardHeader>
-                </Card>
-              </motion.div>
-            ))}
+                    </CardHeader>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
