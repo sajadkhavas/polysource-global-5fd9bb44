@@ -37,9 +37,18 @@ export default function Products() {
     queryFn: fetchMaterials,
   });
 
+  const locale = i18n.language === 'ar' ? 'ar' : 'en';
+
+  const getProductName = (product: PolymerMaterial) =>
+    locale === 'ar' ? product.name_ar : product.name_en;
+
   const filteredProducts = (materials || []).filter((product: PolymerMaterial) => {
-    const matchesSearch = product.name_en.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         product.grade.toLowerCase().includes(searchQuery.toLowerCase());
+    const searchValue = searchQuery.toLowerCase();
+    const matchesSearch =
+      product.name_en.toLowerCase().includes(searchValue) ||
+      product.name_ar.toLowerCase().includes(searchValue) ||
+      getProductName(product).toLowerCase().includes(searchValue) ||
+      product.grade.toLowerCase().includes(searchValue);
     const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
     const matchesRecycled = !showRecycledOnly || product.recycled_percentage > 0;
     const matchesStock = !showInStockOnly || product.inStock;
@@ -48,15 +57,16 @@ export default function Products() {
   });
 
   const handleAddToRFQ = (product: PolymerMaterial) => {
+    const localizedName = getProductName(product);
     addProduct({
       id: product.id,
-      name: product.name_en,
+      name: localizedName,
       type: product.category,
       grade: product.grade
     });
     toast({
       title: t('products.rfq.added'),
-      description: t('products.rfq.addedDescription', { name: product.name_en }),
+      description: t('products.rfq.addedDescription', { name: localizedName }),
     });
   };
 
@@ -235,7 +245,7 @@ export default function Products() {
                         <div className="aspect-[4/3] relative overflow-hidden bg-muted">
                           <LazyImage
                             src={product.image}
-                            alt={`${product.name_en} - ${product.category}`}
+                            alt={`${getProductName(product)} - ${product.category}`}
                             className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                           />
                           <div className={cn("absolute top-2 left-2 flex gap-1.5 flex-wrap", isRTL && "left-auto right-2 flex-row-reverse")}>
@@ -251,7 +261,7 @@ export default function Products() {
                           </div>
                         </div>
                         <CardHeader className="flex-1 pt-4">
-                          <CardTitle className={cn("text-lg", isRTL && "text-right")}>{product.name_en}</CardTitle>
+                          <CardTitle className={cn("text-lg", isRTL && "text-right")}>{getProductName(product)}</CardTitle>
                           <CardDescription>
                             <span className="font-mono text-xs">{product.grade}</span>
                           </CardDescription>
