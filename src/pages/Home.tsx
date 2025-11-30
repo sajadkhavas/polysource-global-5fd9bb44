@@ -45,25 +45,29 @@ export default function Home() {
       title: t('categories.recycled.title'),
       description: t('categories.recycled.description'),
       icon: Leaf,
-      link: '/products?category=recycled'
+      link: '/products?category=recycled',
+      image: '/images/products/recycled-granules.jpg'
     },
     {
       title: t('categories.virgin.title'),
       description: t('categories.virgin.description'),
       icon: Package,
-      link: '/products?category=virgin'
+      link: '/products?category=virgin',
+      image: '/images/products/petrochemical-pellets.jpg'
     },
     {
       title: t('categories.compounds.title'),
       description: t('categories.compounds.description'),
       icon: Target,
-      link: '/products?category=compounds'
+      link: '/products?category=compounds',
+      image: '/images/products/compounds-masterbatch.jpg'
     },
     {
       title: t('categories.parts.title'),
       description: t('categories.parts.description'),
       icon: Shield,
-      link: '/products?category=parts'
+      link: '/products?category=parts',
+      image: '/images/products/finished-parts.jpg'
     }
   ];
 
@@ -315,14 +319,27 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
               >
-                <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer group">
+                <Card className="h-full hover:shadow-xl transition-all duration-300 cursor-pointer group overflow-hidden">
                   <Link to={category.link}>
-                    <CardHeader className={isRTL ? 'text-right' : ''}>
-                      <category.icon className={cn("h-10 w-10 mb-4 text-primary", isRTL && "mr-auto")} />
-                      <CardTitle className="group-hover:text-primary transition-colors">
+                    <div className="relative h-40 overflow-hidden">
+                      <img 
+                        src={category.image} 
+                        alt={category.title}
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/20 to-transparent" />
+                      <div className={cn(
+                        "absolute bottom-3 p-2 bg-primary/90 rounded-lg",
+                        isRTL ? "right-3" : "left-3"
+                      )}>
+                        <category.icon className="h-5 w-5 text-primary-foreground" />
+                      </div>
+                    </div>
+                    <CardHeader className={cn("pt-4", isRTL ? 'text-right' : '')}>
+                      <CardTitle className="group-hover:text-primary transition-colors text-lg">
                         {category.title}
                       </CardTitle>
-                      <CardDescription>{category.description}</CardDescription>
+                      <CardDescription className="text-sm">{category.description}</CardDescription>
                     </CardHeader>
                   </Link>
                 </Card>
