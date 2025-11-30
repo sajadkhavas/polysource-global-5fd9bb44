@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
 import { SEO } from '@/components/SEO';
+import { Breadcrumbs } from '@/components/Breadcrumbs';
 import { generateOrganizationSchema, generateBreadcrumbSchema } from '@/lib/structured-data';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Globe, Target, Users, Award } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useDirection } from '@/hooks/useDirection';
-
 export default function About() {
   const { t, i18n } = useTranslation();
   const { isRTL } = useDirection();
@@ -161,6 +161,11 @@ export default function About() {
     }
   });
 
+  const breadcrumbItems = [
+    { labelKey: "breadcrumb.home", to: "/" },
+    { labelKey: "breadcrumb.about", to: "/about" }
+  ];
+
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: t('breadcrumb.home'), url: 'https://polysource.global' },
     { name: t('breadcrumb.about'), url: 'https://polysource.global/about' }
@@ -189,6 +194,7 @@ export default function About() {
       {/* Hero */}
       <section className="bg-gradient-to-br from-[hsl(var(--hero-gradient-start))] to-[hsl(var(--hero-gradient-end))] text-primary-foreground pt-32 pb-20">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <Breadcrumbs items={breadcrumbItems} className="[&_a]:text-primary-foreground/70 [&_a:hover]:text-primary-foreground [&_span]:text-primary-foreground [&_svg]:text-primary-foreground/50 bg-primary-foreground/10 border-primary-foreground/20" />
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
