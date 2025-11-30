@@ -85,6 +85,14 @@ export function Navigation() {
                 </div>
               </Link>
             </div>
+
+            {/* Center: Global Search */}
+            <div className="flex-1 max-w-md mx-8">
+              <GlobalSearch className={cn(
+                "w-full",
+                isHomePage && !scrolled && "bg-white/10 border-white/30 text-white placeholder:text-white/60 hover:bg-white/15 hover:border-white/50"
+              )} />
+            </div>
             
             <div className={cn(
               "flex items-center text-xs",
@@ -196,11 +204,6 @@ export function Navigation() {
 
             {/* Right: Actions */}
             <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-3" : "space-x-3")}>
-
-              {/* Global Search */}
-              <GlobalSearch className={cn(
-                isHomePage && !scrolled && "border-primary-foreground/30 text-primary-foreground hover:border-primary-foreground/50"
-              )} />
 
               {/* Theme Toggle */}
               <ThemeToggle />

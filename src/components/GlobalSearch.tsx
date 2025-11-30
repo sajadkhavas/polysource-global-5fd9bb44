@@ -75,17 +75,17 @@ export function GlobalSearch({ className }: GlobalSearchProps) {
       {/* Desktop trigger */}
       <div
         className={cn(
-          "hidden md:flex items-center gap-2 rounded-full border bg-background px-3 py-1.5 text-sm text-muted-foreground cursor-pointer hover:border-primary/60 transition-colors min-w-[200px]",
+          "hidden md:flex items-center gap-3 rounded-lg border bg-background/80 backdrop-blur-sm px-4 py-2.5 text-sm text-muted-foreground cursor-pointer hover:bg-background hover:border-primary/50 hover:shadow-sm transition-all duration-200",
           isRTL ? "flex-row-reverse" : "flex-row",
           className
         )}
         onClick={() => setOpen(true)}
       >
-        <Search className="h-4 w-4 opacity-60" />
-        <span className="text-xs md:text-sm flex-1">
+        <Search className="h-4 w-4 opacity-70" />
+        <span className="text-sm flex-1 font-medium">
           {t("search.placeholder")}
         </span>
-        <kbd className="hidden lg:inline-flex h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium text-muted-foreground">
+        <kbd className="hidden lg:inline-flex h-6 select-none items-center gap-1 rounded-md border border-border/50 bg-muted/50 px-2 font-mono text-[11px] font-medium text-muted-foreground">
           <span className="text-xs">⌘</span>K
         </kbd>
       </div>
