@@ -26,6 +26,12 @@ import { trackQuoteRequest } from '@/lib/analytics';
 import resourcesLibrary from '@/assets/resources-library.jpg';
 import resourcesProcessing from '@/assets/resources-processing.jpg';
 import resourcesNews from '@/assets/resources-news.jpg';
+import industryPackaging from '@/assets/industries/industry-packaging.jpg';
+import industryAutomotive from '@/assets/industries/industry-automotive.jpg';
+import industryConstruction from '@/assets/industries/industry-construction.jpg';
+import industryConsumer from '@/assets/industries/industry-consumer.jpg';
+import industryAgriculture from '@/assets/industries/industry-agriculture.jpg';
+import industryIndustrial from '@/assets/industries/industry-industrial.jpg';
 
 export default function Home() {
   const { t, i18n } = useTranslation();
@@ -98,12 +104,12 @@ export default function Home() {
   ];
 
   const industries = [
-    { name: t('industries.packaging'), icon: Package },
-    { name: t('industries.automotive'), icon: Truck },
-    { name: t('industries.construction'), icon: Shield },
-    { name: t('industries.consumer'), icon: Target },
-    { name: t('industries.agriculture'), icon: Leaf },
-    { name: t('industries.industrial'), icon: Zap }
+    { name: t('industries.packaging'), icon: Package, image: industryPackaging },
+    { name: t('industries.automotive'), icon: Truck, image: industryAutomotive },
+    { name: t('industries.construction'), icon: Shield, image: industryConstruction },
+    { name: t('industries.consumer'), icon: Target, image: industryConsumer },
+    { name: t('industries.agriculture'), icon: Leaf, image: industryAgriculture },
+    { name: t('industries.industrial'), icon: Zap, image: industryIndustrial }
   ];
 
   // Organization and Website structured data
@@ -423,9 +429,19 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.05 }}
               >
-                <Card className="text-center p-6 hover:shadow-lg transition-shadow">
-                  <industry.icon className="h-8 w-8 mx-auto mb-3 text-primary" />
-                  <p className="font-medium text-sm">{industry.name}</p>
+                <Card className="text-center overflow-hidden hover:shadow-lg transition-all group">
+                  <div className="relative h-32 overflow-hidden">
+                    <img 
+                      src={industry.image} 
+                      alt={industry.name}
+                      className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
+                    <div className="absolute bottom-0 left-0 right-0 p-3">
+                      <industry.icon className="h-6 w-6 mx-auto mb-1 text-white" />
+                      <p className="font-medium text-sm text-white">{industry.name}</p>
+                    </div>
+                  </div>
                 </Card>
               </motion.div>
             ))}
