@@ -26,7 +26,13 @@ import { trackQuoteRequest } from '@/lib/analytics';
 
 export default function Home() {
   const { t, i18n } = useTranslation();
-  const isRTL = i18n.language === 'ar';
+  const resolvedLanguage = i18n.resolvedLanguage || i18n.language || 'en';
+  const isRTL = resolvedLanguage.startsWith('ar');
+
+  const seoTitle = t('seo.home.title');
+  const seoDescription = t('seo.home.description');
+  const organizationDescription = t('seo.organizationDescription');
+  const brandName = t('branding.name');
 
   const fadeInUp = {
     initial: { opacity: 0, y: 20 },
@@ -95,10 +101,10 @@ export default function Home() {
 
   // Organization and Website structured data
   const organizationSchema = generateOrganizationSchema({
-    name: 'PolySource Global',
+    name: brandName,
     url: 'https://polysource.global',
     logo: 'https://polysource.global/logo.png',
-    description: 'Dubai-based polymer supplier specializing in recycled and virgin polymers with global shipping',
+    description: organizationDescription,
     address: {
       addressLocality: 'Dubai',
       addressCountry: 'UAE'
@@ -110,16 +116,13 @@ export default function Home() {
     }
   });
 
-  const websiteSchema = generateWebSiteSchema('PolySource Global', 'https://polysource.global');
+  const websiteSchema = generateWebSiteSchema(brandName, 'https://polysource.global');
 
   return (
     <div className="min-h-screen">
       <SEO
-        title={isRTL ? 'مورد البوليمر المُعاد تدويره دبي | مواد PE، PP، HDPE البكر' : 'Recycled Polymer Supplier Dubai | Virgin PE, PP, HDPE Materials'}
-        description={isRTL 
-          ? 'PolySource Global - المورد الرائد للبوليمر B2B في دبي. بوليمرات معاد تدويرها من الدرجة التقنية PE، PP، rPET وبوليمرات بكر. نخدم أكثر من 18 دولة.'
-          : "PolySource Global - Dubai's leading B2B polymer supplier. Technical-grade recycled PE, PP, rPET and virgin polymers. Serving 18+ countries with batch traceability and 48hr quote turnaround."
-        }
+        title={seoTitle}
+        description={seoDescription}
         keywords="recycled polymers Dubai, virgin polymers UAE, PE supplier, PP supplier, HDPE materials, rPE, rPP, B2B polymer trading, plastic raw materials, polymer distributor MENA"
         structuredData={[organizationSchema, websiteSchema]}
       />

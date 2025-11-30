@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 export function LoadingSpinner() {
+  const { t } = useTranslation();
+
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-background">
       <div className="text-center">
@@ -37,8 +40,8 @@ export function LoadingSpinner() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <h2 className="text-xl font-bold text-foreground mb-2">PolySource Global</h2>
-          <p className="text-sm text-muted-foreground">Loading...</p>
+          <h2 className="text-xl font-bold text-foreground mb-2">{t('branding.name')}</h2>
+          <p className="text-sm text-muted-foreground">{t('common.loading')}</p>
         </motion.div>
       </div>
     </div>
