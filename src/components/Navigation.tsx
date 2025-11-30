@@ -43,7 +43,9 @@ export function Navigation() {
   const brandTagline = t('branding.tagline');
 
   const isActive = (href: string) => {
-    return location.pathname === href || location.pathname.startsWith(href + '/');
+    if (!href || href === '#') return false;
+    const basePath = href.split('?')[0]; // Remove query params
+    return location.pathname === basePath || location.pathname.startsWith(basePath + '/');
   };
 
   return (

@@ -17,7 +17,9 @@ export function DesktopDropdown({ item, isOpen, onOpenChange, isActive, isTransp
   const resolvedLanguage = i18n.resolvedLanguage || i18n.language || 'en';
   const isRTL = resolvedLanguage.startsWith('ar');
   const getLabel = (navItem: NavigationItem) => (isRTL ? navItem.label.ar : navItem.label.en);
+  const isParentActive = isActive(item.href || '');
   const isAnyChildActive = item.children?.some(child => isActive(child.href || ''));
+  const isItemActive = isParentActive || isAnyChildActive;
 
   if (!item.children || item.children.length === 0) {
     return (
@@ -47,7 +49,7 @@ export function DesktopDropdown({ item, isOpen, onOpenChange, isActive, isTransp
         to={item.href || '#'}
         className={cn(
           'flex items-center text-sm font-semibold transition-colors px-4 py-2 rounded-md',
-          isAnyChildActive
+          isItemActive
             ? 'bg-primary/10 text-primary'
             : isTransparent
               ? 'text-white/90 hover:bg-white/10 hover:text-white'
