@@ -325,7 +325,7 @@ const faqContent = {
 };
 
 export default function FAQ() {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const { isRTL } = useDirection();
   const resolvedLanguage = i18n.resolvedLanguage || i18n.language || 'en';
   const locale: 'en' | 'ar' = resolvedLanguage.startsWith('ar') ? 'ar' : 'en';
