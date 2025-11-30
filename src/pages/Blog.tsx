@@ -6,14 +6,18 @@ import { generateBreadcrumbSchema } from '@/lib/structured-data';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Calendar, Clock, ArrowRight, AlertCircle } from 'lucide-react';
+import { Calendar, Clock, ArrowRight, ArrowLeft, AlertCircle } from 'lucide-react';
 import { fetchBlogPosts, type BlogPost } from '@/lib/mockData';
 import { useTranslation } from 'react-i18next';
+import { useDirection } from '@/hooks/useDirection';
+import { cn } from '@/lib/utils';
 
 export default function Blog() {
   const { t, i18n } = useTranslation();
+  const { isRTL } = useDirection();
   const resolvedLanguage = i18n.resolvedLanguage || i18n.language || 'en';
   const locale: 'en' | 'ar' = resolvedLanguage.startsWith('ar') ? 'ar' : 'en';
+  const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
 
   const { data: posts, isLoading, isError } = useQuery({
     queryKey: ['blogPosts'],
@@ -75,11 +79,12 @@ export default function Blog() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            className={isRTL ? 'text-right' : ''}
           >
             <h1 className="text-4xl font-bold mb-4 text-foreground">
               {t('blogPage.hero.title')}
             </h1>
-            <p className="text-lg text-muted-foreground max-w-3xl">
+            <p className={cn("text-lg text-muted-foreground max-w-3xl", isRTL && "ml-auto")}>
               {t('blogPage.hero.subtitle')}
             </p>
           </motion.div>
@@ -89,7 +94,7 @@ export default function Blog() {
       {/* Categories */}
       <section className="py-6 border-b border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap gap-2">
+          <div className={cn("flex flex-wrap gap-2", isRTL && "flex-row-reverse justify-end")}>
             <Badge variant="secondary">{t('blogPage.categories.all')}</Badge>
             <Badge variant="outline">{t('blogPage.categories.technical')}</Badge>
             <Badge variant="outline">{t('blogPage.categories.materialScience')}</Badge>
@@ -115,9 +120,9 @@ export default function Blog() {
                   transition={{ delay: index * 0.1 }}
                 >
                   <Link to={`/blog/${post.id}`}>
-                    <Card className="h-full hover:shadow-lg transition-shadow group">
+                    <Card className={cn("h-full hover:shadow-lg transition-shadow group", isRTL && "text-right")}>
                       <CardHeader>
-                        <div className="flex items-center gap-2 mb-3">
+                        <div className={cn("flex items-center gap-2 mb-3", isRTL && "flex-row-reverse justify-end")}>
                           <Badge variant="secondary">{getCategory(post)}</Badge>
                         </div>
                         <CardTitle className="group-hover:text-primary transition-colors line-clamp-2">
@@ -128,23 +133,23 @@ export default function Blog() {
                         </CardDescription>
                       </CardHeader>
                       <CardContent>
-                        <div className="flex items-center justify-between text-xs text-muted-foreground">
-                          <div className="flex items-center">
-                            <Calendar className="h-3 w-3 mr-1" />
+                        <div className={cn("flex items-center justify-between text-xs text-muted-foreground", isRTL && "flex-row-reverse")}>
+                          <div className={cn("flex items-center", isRTL && "flex-row-reverse")}>
+                            <Calendar className={cn("h-3 w-3", isRTL ? "ml-1" : "mr-1")} />
                             {new Date(post.date).toLocaleDateString(locale === 'ar' ? 'ar-EG' : 'en-US', {
                               month: 'short',
                               day: 'numeric',
                               year: 'numeric'
                             })}
                           </div>
-                          <div className="flex items-center">
-                            <Clock className="h-3 w-3 mr-1" />
+                          <div className={cn("flex items-center", isRTL && "flex-row-reverse")}>
+                            <Clock className={cn("h-3 w-3", isRTL ? "ml-1" : "mr-1")} />
                             {getReadTime(post)}
                           </div>
                         </div>
-                        <div className="mt-4 flex items-center text-sm text-primary font-medium">
+                        <div className={cn("mt-4 flex items-center text-sm text-primary font-medium", isRTL && "flex-row-reverse justify-end")}>
                           {t('blogPage.readArticle')}
-                          <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                          <ArrowIcon className={cn("h-4 w-4 transition-transform", isRTL ? "mr-2 group-hover:-translate-x-1" : "ml-2 group-hover:translate-x-1")} />
                         </div>
                       </CardContent>
                     </Card>
@@ -167,11 +172,12 @@ export default function Blog() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <form className="flex gap-2">
+                <form className={cn("flex gap-2", isRTL && "flex-row-reverse")}>
                   <input
                     type="email"
                     placeholder={t('blogPage.newsletter.placeholder')}
-                    className="flex-1 px-4 py-2 border border-border rounded-lg bg-background"
+                    className={cn("flex-1 px-4 py-2 border border-border rounded-lg bg-background", isRTL && "text-right")}
+                    dir={isRTL ? 'rtl' : 'ltr'}
                   />
                   <button
                     type="submit"

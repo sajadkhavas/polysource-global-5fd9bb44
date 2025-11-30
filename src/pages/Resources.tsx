@@ -153,9 +153,10 @@ export default function Resources() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
+            className={isRTL ? 'text-right' : ''}
           >
             <h1 className="text-4xl font-bold mb-4 text-foreground">{t('resourcesPage.hero.title')}</h1>
-            <p className="text-lg text-muted-foreground max-w-3xl">
+            <p className={`text-lg text-muted-foreground max-w-3xl ${isRTL ? 'ml-auto' : ''}`}>
               {t('resourcesPage.hero.subtitle')}
             </p>
           </motion.div>
@@ -183,27 +184,27 @@ export default function Resources() {
       <section className="py-12 bg-muted/30">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            <Card>
+            <Card className={isRTL ? 'text-right' : ''}>
               <CardHeader>
-                <FileText className="h-8 w-8 text-primary mb-3" />
+                <FileText className={`h-8 w-8 text-primary mb-3 ${isRTL ? 'mr-auto' : ''}`} />
                 <CardTitle className="text-lg">{t('resourcesPage.types.tds')}</CardTitle>
                 <CardDescription>
                   {t('resourcesPage.types.descriptions.tds')}
                 </CardDescription>
               </CardHeader>
             </Card>
-            <Card>
+            <Card className={isRTL ? 'text-right' : ''}>
               <CardHeader>
-                <Shield className="h-8 w-8 text-destructive mb-3" />
+                <Shield className={`h-8 w-8 text-destructive mb-3 ${isRTL ? 'mr-auto' : ''}`} />
                 <CardTitle className="text-lg">{t('resourcesPage.types.sds')}</CardTitle>
                 <CardDescription>
                   {t('resourcesPage.types.descriptions.sds')}
                 </CardDescription>
               </CardHeader>
             </Card>
-            <Card>
+            <Card className={isRTL ? 'text-right' : ''}>
               <CardHeader>
-                <FileText className="h-8 w-8 text-secondary mb-3" />
+                <FileText className={`h-8 w-8 text-secondary mb-3 ${isRTL ? 'mr-auto' : ''}`} />
                 <CardTitle className="text-lg">{t('resourcesPage.types.coa')}</CardTitle>
                 <CardDescription>
                   {t('resourcesPage.types.descriptions.coa')}
@@ -217,7 +218,7 @@ export default function Resources() {
       {/* Resources List */}
       <section className="py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mb-6">
+          <div className={`mb-6 ${isRTL ? 'text-right' : ''}`}>
             <p className="text-sm text-muted-foreground">
               {t('resourcesPage.list.count', { count: filteredResources.length })}
             </p>
@@ -233,9 +234,9 @@ export default function Resources() {
               >
                 <Card className="hover:shadow-md transition-shadow">
                   <CardContent className="p-6">
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
+                    <div className={`flex items-start justify-between ${isRTL ? 'flex-row-reverse' : ''}`}>
+                      <div className={`flex-1 ${isRTL ? 'text-right' : ''}`}>
+                        <div className={`flex items-center gap-2 mb-2 ${isRTL ? 'flex-row-reverse justify-end' : ''}`}>
                           <Badge variant={getTypeBadgeVariant(resource.type)}>
                             {getTypeIcon(resource.type)}
                             <span className={isRTL ? 'mr-1' : 'ml-1'}>{typeLabels[resource.type]}</span>
@@ -272,7 +273,7 @@ export default function Resources() {
       {/* Help Section */}
       <section className="py-12 bg-muted/50 border-t border-border">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <Card className="max-w-3xl mx-auto">
+          <Card className={`max-w-3xl mx-auto ${isRTL ? 'text-right' : ''}`}>
             <CardHeader>
               <CardTitle>{t('resourcesPage.help.title')}</CardTitle>
               <CardDescription>
@@ -280,9 +281,9 @@ export default function Resources() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <ul className="space-y-2 text-sm text-muted-foreground mb-6">
+              <ul className={`space-y-2 text-sm text-muted-foreground mb-6 ${isRTL ? 'text-right' : ''}`}>
                 {helpItems.map((item) => (
-                  <li key={item}>• {item}</li>
+                  <li key={item}>{isRTL ? `${item} •` : `• ${item}`}</li>
                 ))}
               </ul>
               <Button>{t('resourcesPage.help.cta')}</Button>
