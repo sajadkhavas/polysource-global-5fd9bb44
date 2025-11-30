@@ -126,6 +126,24 @@
     },
     "learnMore": "تعرف على نهجنا"
   },
+  "home": {
+    "resources": {
+      "sectionTitle": "الموارد الفنية والرؤى",
+      "sectionSubtitle": "أوراق بيانات المواد وأدلة المعالجة ورؤى الصناعة",
+      "cards": {
+        "libraryTitle": "مكتبة TDS و SDS",
+        "libraryDescription": "قم بتنزيل أوراق البيانات الفنية وبيانات السلامة لجميع موادنا",
+        "libraryCta": "الوصول للموارد ←",
+        "guidesTitle": "إرشادات المعالجة",
+        "guidesDescription": "ملفات درجات الحرارة وأوقات الدورة ونصائح التحسين",
+        "guidesCta": "اقرأ الدليل ←",
+        "newsTitle": "أخبار الصناعة",
+        "newsDescription": "آخر التحديثات حول أسواق البوليمر ولوائح الاستدامة",
+        "newsCta": "عرض المدونة ←"
+      },
+      "browseCatalogCta": "تصفح الكتالوج"
+    }
+  },
   "cta": {
     "title": "مستعد للتوريد بذكاء؟",
     "subtitle": "دعنا نناقش متطلبات المواد الخاصة بك. الاستشارة الفنية مشمولة.",
@@ -146,6 +164,7 @@
     "faq": "الأسئلة الشائعة",
     "requestQuote": "اطلب عرض أسعار",
     "contact": "اتصل بنا",
+    "locationCityCountry": "دبي، الإمارات",
     "copyright": "© {year} PolySource Global. جميع الحقوق محفوظة.",
     "privacyPolicy": "سياسة الخصوصية",
     "termsOfService": "شروط الخدمة",
@@ -399,11 +418,14 @@
   },
   "notFound": {
     "title": "الصفحة غير موجودة",
-    "description": "عذراً، الصفحة التي تبحث عنها غير موجودة.",
-    "backHome": "العودة للرئيسية"
+    "description": "الصفحة التي تبحث عنها غير موجودة. عد إلى الصفحة الرئيسية لـ PolySource Global.",
+    "body": "عذراً! لم يتم العثور على الصفحة",
+    "backHome": "العودة إلى الرئيسية"
   },
   "breadcrumb": {
-    "home": "الرئيسية"
+    "home": "الرئيسية",
+    "about": "من نحن",
+    "services": "الخدمات"
   },
   "productDetail": {
     "backToProducts": "العودة للمنتجات",
@@ -532,6 +554,9 @@
     "getStarted": "ابدأ الآن",
     "loading": "جارِ التحميل...",
     "error": "حدث خطأ ما",
-    "retry": "حاول مرة أخرى"
+    "retry": "حاول مرة أخرى",
+    "skipToContent": "الانتقال إلى المحتوى الرئيسي",
+    "whatsAppMessage": "مرحباً، أود معرفة المزيد عن منتجاتكم.",
+    "whatsAppAriaLabel": "تحدث معنا عبر واتساب"
   }
 }

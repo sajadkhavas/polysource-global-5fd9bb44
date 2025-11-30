@@ -12,7 +12,8 @@ import { useTranslation } from 'react-i18next';
 
 export default function Blog() {
   const { t, i18n } = useTranslation();
-  const locale = i18n.language === 'ar' ? 'ar' : 'en';
+  const resolvedLanguage = i18n.resolvedLanguage || i18n.language || 'en';
+  const locale: 'en' | 'ar' = resolvedLanguage.startsWith('ar') ? 'ar' : 'en';
 
   const { data: posts, isLoading, isError } = useQuery({
     queryKey: ['blogPosts'],

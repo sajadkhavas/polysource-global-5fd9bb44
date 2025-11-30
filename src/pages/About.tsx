@@ -7,9 +7,10 @@ import { useTranslation } from 'react-i18next';
 import { useDirection } from '@/hooks/useDirection';
 
 export default function About() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { isRTL } = useDirection();
-  const locale = i18n.language === 'ar' ? 'ar' : 'en';
+  const resolvedLanguage = i18n.resolvedLanguage || i18n.language || 'en';
+  const locale: 'en' | 'ar' = resolvedLanguage.startsWith('ar') ? 'ar' : 'en';
 
   const heroCopy = {
     en: {
@@ -161,8 +162,8 @@ export default function About() {
   });
 
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: locale === 'ar' ? 'الرئيسية' : 'Home', url: 'https://polysource.global' },
-    { name: locale === 'ar' ? 'من نحن' : 'About Us', url: 'https://polysource.global/about' }
+    { name: t('breadcrumb.home'), url: 'https://polysource.global' },
+    { name: t('breadcrumb.about'), url: 'https://polysource.global/about' }
   ]);
 
   return (

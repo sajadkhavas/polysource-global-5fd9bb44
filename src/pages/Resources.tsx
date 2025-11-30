@@ -85,8 +85,10 @@ const mockResources: Resource[] = [
 
 export default function Resources() {
   const { t, i18n } = useTranslation();
-  const isRTL = i18n.language === 'ar';
-  const locale = isRTL ? 'ar' : 'en';
+  const resolvedLanguage = i18n.resolvedLanguage || i18n.language || 'en';
+  const locale: 'en' | 'ar' = resolvedLanguage.startsWith('ar') ? 'ar' : 'en';
+  const isRTL = resolvedLanguage.startsWith('ar');
+  const dateLocale = locale === 'ar' ? 'ar-EG' : 'en-US';
   const [searchQuery, setSearchQuery] = useState('');
 
   const getLocalizedTitle = (resource: Resource) => (locale === 'ar' ? resource.title_ar : resource.title_en);
@@ -239,7 +241,7 @@ export default function Resources() {
                             <span className={isRTL ? 'mr-1' : 'ml-1'}>{typeLabels[resource.type]}</span>
                           </Badge>
                           <span className="text-xs text-muted-foreground">
-                            {t('resourcesPage.list.updated', { date: new Date(resource.lastUpdated).toLocaleDateString(locale === 'ar' ? 'ar-EG' : 'en-US') })}
+                          {t('resourcesPage.list.updated', { date: new Date(resource.lastUpdated).toLocaleDateString(dateLocale) })}
                           </span>
                         </div>
                         <h3 className="font-semibold text-lg mb-1">{getLocalizedTitle(resource)}</h3>

@@ -21,10 +21,12 @@ import { LazyImage } from '@/components/LazyImage';
 import { getProductAltText } from '@/data/product-images';
 import { fetchMaterials, type PolymerMaterial } from '@/lib/mockData';
 import { cn } from '@/lib/utils';
+import { useDirection } from '@/hooks/useDirection';
 
 export default function Products() {
   const { t, i18n } = useTranslation();
-  const isRTL = i18n.language === 'ar';
+  const { isRTL } = useDirection();
+  const resolvedLanguage = i18n.resolvedLanguage || i18n.language || 'en';
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [showRecycledOnly, setShowRecycledOnly] = useState(false);
@@ -37,7 +39,7 @@ export default function Products() {
     queryFn: fetchMaterials,
   });
 
-  const locale = i18n.language === 'ar' ? 'ar' : 'en';
+  const locale: 'en' | 'ar' = resolvedLanguage.startsWith('ar') ? 'ar' : 'en';
 
   const getProductName = (product: PolymerMaterial) =>
     locale === 'ar' ? product.name_ar : product.name_en;

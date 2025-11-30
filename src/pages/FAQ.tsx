@@ -327,7 +327,8 @@ const faqContent = {
 export default function FAQ() {
   const { i18n } = useTranslation();
   const { isRTL } = useDirection();
-  const locale = i18n.language === 'ar' ? 'ar' : 'en';
+  const resolvedLanguage = i18n.resolvedLanguage || i18n.language || 'en';
+  const locale: 'en' | 'ar' = resolvedLanguage.startsWith('ar') ? 'ar' : 'en';
   const categories = faqContent[locale].categories;
   const faqSchema = generateFAQSchema(categories.flatMap(cat => cat.faqs));
   const breadcrumbSchema = generateBreadcrumbSchema([

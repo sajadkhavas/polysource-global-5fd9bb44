@@ -473,17 +473,17 @@ export default function Home() {
       {/* Resources / Blog Preview */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div 
+          <motion.div
             className="text-center mb-12"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-4 text-foreground">
-              {isRTL ? 'الموارد الفنية والرؤى' : 'Technical Resources & Insights'}
+              {t('home.resources.sectionTitle')}
             </h2>
             <p className="text-lg text-muted-foreground">
-              {isRTL ? 'أوراق بيانات المواد وأدلة المعالجة ورؤى الصناعة' : 'Material data sheets, processing guides, and industry insights'}
+              {t('home.resources.sectionSubtitle')}
             </p>
           </motion.div>
 
@@ -491,14 +491,14 @@ export default function Home() {
             <Card>
               <CardHeader className={isRTL ? 'text-right' : ''}>
                 <FileText className={cn("h-8 w-8 text-primary mb-3", isRTL && "mr-auto")} />
-                <CardTitle>{isRTL ? 'مكتبة TDS و SDS' : 'TDS & SDS Library'}</CardTitle>
+                <CardTitle>{t('home.resources.cards.libraryTitle')}</CardTitle>
                 <CardDescription>
-                  {isRTL ? 'قم بتنزيل أوراق البيانات الفنية وبيانات السلامة لجميع موادنا' : 'Download technical and safety data sheets for all our materials'}
+                  {t('home.resources.cards.libraryDescription')}
                 </CardDescription>
               </CardHeader>
               <CardContent className={isRTL ? 'text-right' : ''}>
                 <Button asChild variant="link" className="p-0">
-                  <Link to="/resources">{isRTL ? 'الوصول للموارد ←' : 'Access Resources →'}</Link>
+                  <Link to="/resources">{t('home.resources.cards.libraryCta')}</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -506,14 +506,14 @@ export default function Home() {
             <Card>
               <CardHeader className={isRTL ? 'text-right' : ''}>
                 <Package className={cn("h-8 w-8 text-primary mb-3", isRTL && "mr-auto")} />
-                <CardTitle>{isRTL ? 'إرشادات المعالجة' : 'Processing Guidelines'}</CardTitle>
+                <CardTitle>{t('home.resources.cards.guidesTitle')}</CardTitle>
                 <CardDescription>
-                  {isRTL ? 'ملفات درجات الحرارة وأوقات الدورة ونصائح التحسين' : 'Temperature profiles, cycle times, and optimization tips'}
+                  {t('home.resources.cards.guidesDescription')}
                 </CardDescription>
               </CardHeader>
               <CardContent className={isRTL ? 'text-right' : ''}>
                 <Button asChild variant="link" className="p-0">
-                  <Link to="/blog">{isRTL ? 'اقرأ الدليل ←' : 'Read Guide →'}</Link>
+                  <Link to="/blog">{t('home.resources.cards.guidesCta')}</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -521,14 +521,14 @@ export default function Home() {
             <Card>
               <CardHeader className={isRTL ? 'text-right' : ''}>
                 <Zap className={cn("h-8 w-8 text-primary mb-3", isRTL && "mr-auto")} />
-                <CardTitle>{isRTL ? 'أخبار الصناعة' : 'Industry News'}</CardTitle>
+                <CardTitle>{t('home.resources.cards.newsTitle')}</CardTitle>
                 <CardDescription>
-                  {isRTL ? 'آخر التحديثات حول أسواق البوليمر ولوائح الاستدامة' : 'Latest updates on polymer markets and sustainability regulations'}
+                  {t('home.resources.cards.newsDescription')}
                 </CardDescription>
               </CardHeader>
               <CardContent className={isRTL ? 'text-right' : ''}>
                 <Button asChild variant="link" className="p-0">
-                  <Link to="/blog">{isRTL ? 'عرض المدونة ←' : 'View Blog →'}</Link>
+                  <Link to="/blog">{t('home.resources.cards.newsCta')}</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -555,7 +555,7 @@ export default function Home() {
                 <Link to="/contact">{t('cta.button')}</Link>
               </Button>
               <Button asChild size="lg" variant="outline" className="bg-transparent border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary">
-                <Link to="/products">{isRTL ? 'تصفح الكتالوج' : 'Browse Catalog'}</Link>
+                <Link to="/products">{t('home.resources.browseCatalogCta')}</Link>
               </Button>
             </div>
           </motion.div>

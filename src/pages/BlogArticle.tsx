@@ -86,7 +86,8 @@ export default function BlogArticle() {
   const BackArrow = isRTL ? ArrowRight : ArrowLeft;
 
   const formatDate = (dateStr: string) => {
-    const locale = i18n.language === 'ar' ? 'ar-SA' : 'en-US';
+    const resolved = i18n.resolvedLanguage || i18n.language || 'en';
+    const locale = resolved.startsWith('ar') ? 'ar-SA' : 'en-US';
     return new Date(dateStr).toLocaleDateString(locale, { 
       month: 'long', 
       day: 'numeric', 

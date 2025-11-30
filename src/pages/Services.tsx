@@ -308,15 +308,16 @@ const servicesContent = {
 };
 
 export default function Services() {
-  const { i18n } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { isRTL } = useDirection();
-  const locale = i18n.language === 'ar' ? 'ar' : 'en';
+  const resolvedLanguage = i18n.resolvedLanguage || i18n.language || 'en';
+  const locale: 'en' | 'ar' = resolvedLanguage.startsWith('ar') ? 'ar' : 'en';
   const content = servicesContent[locale];
   const ArrowIcon = isRTL ? ArrowLeft : ArrowRight;
 
   const breadcrumbSchema = generateBreadcrumbSchema([
-    { name: locale === 'ar' ? 'الرئيسية' : 'Home', url: 'https://polysource.global' },
-    { name: locale === 'ar' ? 'الخدمات' : 'Services', url: 'https://polysource.global/services' }
+    { name: t('breadcrumb.home'), url: 'https://polysource.global' },
+    { name: t('breadcrumb.services'), url: 'https://polysource.global/services' }
   ]);
 
   const organizationSchema = generateOrganizationSchema({

@@ -126,6 +126,24 @@
     },
     "learnMore": "Learn About Our Approach"
   },
+  "home": {
+    "resources": {
+      "sectionTitle": "Technical Resources & Insights",
+      "sectionSubtitle": "Material data sheets, processing guides, and industry insights",
+      "cards": {
+        "libraryTitle": "TDS & SDS Library",
+        "libraryDescription": "Download technical and safety data sheets for all our materials",
+        "libraryCta": "Access Resources →",
+        "guidesTitle": "Processing Guidelines",
+        "guidesDescription": "Temperature profiles, cycle times, and optimization tips",
+        "guidesCta": "Read Guide →",
+        "newsTitle": "Industry News",
+        "newsDescription": "Latest updates on polymer markets and sustainability regulations",
+        "newsCta": "View Blog →"
+      },
+      "browseCatalogCta": "Browse Catalog"
+    }
+  },
   "cta": {
     "title": "Ready to Source Smarter?",
     "subtitle": "Let's discuss your material requirements. Technical consultation included.",
@@ -146,6 +164,7 @@
     "faq": "FAQ",
     "requestQuote": "Request Quote",
     "contact": "Contact",
+    "locationCityCountry": "Dubai, UAE",
     "copyright": "© {year} PolySource Global. All rights reserved.",
     "privacyPolicy": "Privacy Policy",
     "termsOfService": "Terms of Service"
@@ -340,11 +359,14 @@
   },
   "notFound": {
     "title": "Page Not Found",
-    "description": "Sorry, the page you are looking for does not exist.",
-    "backHome": "Back to Home"
+    "description": "The page you're looking for doesn't exist. Return to PolySource Global homepage.",
+    "body": "Oops! Page not found",
+    "backHome": "Return to Home"
   },
   "breadcrumb": {
-    "home": "Home"
+    "home": "Home",
+    "about": "About Us",
+    "services": "Services"
   },
   "productDetail": {
     "backToProducts": "Back to Products",
@@ -562,6 +584,9 @@
     "getStarted": "Get Started",
     "loading": "Loading...",
     "error": "Something went wrong",
-    "retry": "Try Again"
+    "retry": "Try Again",
+    "skipToContent": "Skip to main content",
+    "whatsAppMessage": "Hi, I am interested in learning more about your products.",
+    "whatsAppAriaLabel": "Chat with us on WhatsApp"
   }
 }

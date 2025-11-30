@@ -14,10 +14,11 @@ import { Mail, MapPin, Phone, Clock, CheckCircle2, Upload, X } from 'lucide-reac
 import { useRFQ } from '@/contexts/RFQContext';
 import { useToast } from '@/hooks/use-toast';
 import { trackQuoteRequest, trackFormSubmission } from '@/lib/analytics';
+import { useDirection } from '@/hooks/useDirection';
 
 export default function Contact() {
   const { t, i18n } = useTranslation();
-  const isRTL = i18n.language === 'ar';
+  const { isRTL } = useDirection();
   const { products, removeProduct, clearProducts } = useRFQ();
   const { toast } = useToast();
   const [showAdvanced, setShowAdvanced] = useState(false);
