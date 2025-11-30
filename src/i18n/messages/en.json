@@ -660,6 +660,95 @@
       "button": "Contact Technical Support"
     }
   },
+  "blogPage": {
+    "breadcrumb": {
+      "home": "Home",
+      "blog": "Blog"
+    },
+    "seo": {
+      "title": "Polymer Industry Blog - Technical Guides & Market Insights",
+      "description": "Expert technical guides on polymer processing, MFI optimization, recycled vs virgin materials comparison, and industry regulations. Written by materials engineers for manufacturers.",
+      "keywords": "polymer processing guide, MFI melt flow index, recycled polymer processing, HDPE processing, injection molding tips, polymer industry news, plastic materials blog"
+    },
+    "hero": {
+      "title": "Technical Insights & Industry Updates",
+      "subtitle": "Practical guides, material science deep-dives, and industry analysis. Written by engineers, for engineers."
+    },
+    "categories": {
+      "all": "All Posts",
+      "technical": "Technical Guides",
+      "materialScience": "Material Science",
+      "regulations": "Regulations",
+      "processing": "Processing Tips",
+      "insights": "Industry Insights"
+    },
+    "errors": {
+      "loadTitle": "Error Loading Posts",
+      "loadBody": "Please try again later"
+    },
+    "readArticle": "Read Article",
+    "newsletter": {
+      "title": "Stay Updated",
+      "description": "Get monthly insights on polymer processing, material science, and industry regulations delivered to your inbox.",
+      "placeholder": "your@email.com",
+      "cta": "Subscribe",
+      "note": "No spam. Unsubscribe anytime."
+    }
+  },
+  "resourcesPage": {
+    "breadcrumb": {
+      "home": "Home",
+      "resources": "Resources"
+    },
+    "seo": {
+      "title": "Technical Resources - TDS, SDS & Polymer Documentation",
+      "description": "Download technical data sheets (TDS), safety data sheets (SDS), and certificates of analysis for recycled and virgin polymers. ISO compliant documentation for HDPE, LDPE, PP materials.",
+      "keywords": "polymer TDS download, polymer SDS, technical data sheet polymer, safety data sheet plastic, material certification, HDPE datasheet, LDPE specifications"
+    },
+    "hero": {
+      "title": "Technical Resources",
+      "subtitle": "Access technical data sheets (TDS), safety data sheets (SDS), and certificates of analysis (COA) for all our products. All documents are regularly updated and compliant with international standards."
+    },
+    "search": {
+      "placeholder": "Search by product name, grade, or document type..."
+    },
+    "types": {
+      "tds": "TDS",
+      "sds": "SDS",
+      "coa": "COA",
+      "labels": {
+        "tds": "TDS",
+        "sds": "SDS",
+        "coa": "COA"
+      },
+      "descriptions": {
+        "tds": "Technical Data Sheets with complete physical and mechanical properties",
+        "sds": "Safety Data Sheets with handling, storage, and emergency information",
+        "coa": "Certificates of Analysis for batch-specific quality verification"
+      }
+    },
+    "list": {
+      "count": "Showing {{count}} documents",
+      "updated": "Updated: {{date}}",
+      "download": "Download PDF"
+    },
+    "empty": {
+      "title": "No documents found",
+      "subtitle": "Try adjusting your search query"
+    },
+    "help": {
+      "title": "Need a Specific Document?",
+      "description": "Can't find what you're looking for? We can provide:",
+      "items": [
+        "Batch-specific Certificates of Analysis (COA)",
+        "Regulatory compliance certificates (FDA, REACH, RoHS)",
+        "Material passports with full traceability",
+        "Custom testing reports",
+        "Processing guidelines for specific applications"
+      ],
+      "cta": "Contact Technical Support"
+    }
+  },
   "common": {
     "learnMore": "Learn More",
     "getStarted": "Get Started",
