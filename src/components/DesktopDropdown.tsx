@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { NavigationItem } from '@/data/navigation';
 import { ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useTranslation } from 'react-i18next';
 
 interface DesktopDropdownProps {
   item: NavigationItem;
@@ -13,10 +12,6 @@ interface DesktopDropdownProps {
 }
 
 export function DesktopDropdown({ item, isOpen, onOpenChange, isActive, isTransparent = false }: DesktopDropdownProps) {
-  const { i18n } = useTranslation();
-  const resolvedLanguage = i18n.resolvedLanguage || i18n.language || 'en';
-  const isRTL = resolvedLanguage.startsWith('ar');
-  const getLabel = (navItem: NavigationItem) => (isRTL ? navItem.label.ar : navItem.label.en);
   const isParentActive = isActive(item.href || '');
   const isAnyChildActive = item.children?.some(child => isActive(child.href || ''));
   const isItemActive = isParentActive || isAnyChildActive;
@@ -34,17 +29,13 @@ export function DesktopDropdown({ item, isOpen, onOpenChange, isActive, isTransp
               : 'text-foreground/90 hover:bg-muted hover:text-primary'
         )}
       >
-        {getLabel(item)}
+        {item.label}
       </Link>
     );
   }
 
   return (
-    <div
-      className="relative"
-      onMouseEnter={() => onOpenChange(true)}
-      onMouseLeave={() => onOpenChange(false)}
-    >
+    <div className="relative" onMouseEnter={() => onOpenChange(true)} onMouseLeave={() => onOpenChange(false)}>
       <Link
         to={item.href || '#'}
         className={cn(
@@ -53,27 +44,15 @@ export function DesktopDropdown({ item, isOpen, onOpenChange, isActive, isTransp
             ? 'bg-primary/10 text-primary'
             : isTransparent
               ? 'text-white/90 hover:bg-white/10 hover:text-white'
-              : 'text-foreground/90 hover:bg-muted hover:text-primary',
-          isRTL && 'flex-row-reverse'
+              : 'text-foreground/90 hover:bg-muted hover:text-primary'
         )}
       >
-        {getLabel(item)}
-        <ChevronDown
-          className={cn(
-            'h-3.5 w-3.5 transition-transform',
-            isOpen && 'rotate-180',
-            isRTL ? 'mr-1 -scale-x-100' : 'ml-1'
-          )}
-        />
+        {item.label}
+        <ChevronDown className={cn('h-3.5 w-3.5 ml-1 transition-transform', isOpen && 'rotate-180')} />
       </Link>
 
       {isOpen && (
-        <div
-          className={cn(
-            'absolute top-full left-0 mt-1 min-w-[240px] bg-background border border-border shadow-xl rounded-lg z-[60] py-2',
-            isRTL && 'left-auto right-0 text-right'
-          )}
-        >
+        <div className="absolute top-full left-0 mt-1 min-w-[240px] bg-background border border-border shadow-xl rounded-lg z-[60] py-2">
           {item.children.map((child) => (
             <Link
               key={child.id}
@@ -81,7 +60,7 @@ export function DesktopDropdown({ item, isOpen, onOpenChange, isActive, isTransp
               onClick={() => onOpenChange(false)}
               className="block px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
             >
-              {getLabel(child)}
+              {child.label}
             </Link>
           ))}
         </div>
