@@ -2,12 +2,13 @@ import { MessageCircle } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useDirection } from "@/hooks/useDirection";
 import { cn } from "@/lib/utils";
+import { companyConfig } from '@/config/company';
 
 const WhatsAppButton = () => {
   const { t } = useTranslation();
   const { isRTL } = useDirection();
 
-  const phoneNumber = "11234567890"; // Replace with actual WhatsApp number
+  const phoneNumber = companyConfig.whatsappNumber;
   const message = encodeURIComponent(t("common.whatsAppMessage"));
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${message}`;
 
