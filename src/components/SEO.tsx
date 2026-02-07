@@ -40,7 +40,7 @@ export function SEO({
   const fullUrl = url || (typeof window !== 'undefined' ? window.location.href : siteUrl);
   const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
 
-  const matchedSEO = pageSEO.find((item) => item.path === pathname || item.path === '*');
+  const matchedSEO = pageSEO.find((item) => item.path === pathname) ?? pageSEO.find((item) => item.path === '*');
   const resolvedTitle =
     title || (matchedSEO ? (isArabic ? matchedSEO.title.ar : matchedSEO.title.en) : siteName);
   const resolvedDescription =
@@ -54,7 +54,7 @@ export function SEO({
     keywords ||
     (matchedSEO ? (isArabic ? matchedSEO.keywords.ar : matchedSEO.keywords.en) : undefined);
 
-  const fullTitle = `${resolvedTitle} | ${siteName}`;
+  const fullTitle = resolvedTitle.includes(siteName) ? resolvedTitle : `${resolvedTitle} | ${siteName}`;
 
   const renderStructuredData = () => {
     const resolvedStructuredData =

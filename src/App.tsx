@@ -26,7 +26,6 @@ const Services = lazy(() => import("./pages/Services"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const CategoryPage = lazy(() => import("./pages/CategoryPage"));
 
-
 // Loading fallback component
 const PageLoader = () => (
   <div className="flex items-center justify-center min-h-[50vh]">
@@ -52,41 +51,41 @@ const App = () => {
 
   return (
     <RFQProvider>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <SkipToContent />
-            <div className="flex flex-col min-h-screen">
-              <Navigation />
-              <main id="main-content" className="flex-1">
-                <Suspense fallback={<PageLoader />}>
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/products" element={<Products />} />
-                    <Route path="/products/:id" element={<ProductDetail />} />
-                    <Route path="/polymer-products" element={<Products />} />
-                    <Route path="/polymer-products/:categorySlug" element={<CategoryPage />} />
-                    <Route path="/polymer-products/:categorySlug/:subcategorySlug" element={<CategoryPage />} />
-                    <Route path="/polymer-products/:categorySlug/:subcategorySlug/:typeSlug" element={<CategoryPage />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/sustainability" element={<Sustainability />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/resources" element={<Resources />} />
-                    <Route path="/blog" element={<Blog />} />
-                    <Route path="/blog/:id" element={<BlogArticle />} />
-                    <Route path="/faq" element={<FAQ />} />
-                    <Route path="/services" element={<Services />} />
-                    {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </Suspense>
-              </main>
-              <Footer />
-              <WhatsAppButton />
-            </div>
-          </BrowserRouter>
-        </TooltipProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <SkipToContent />
+          <div className="flex flex-col min-h-screen">
+            <Navigation />
+            <main id="main-content" className="flex-1">
+              <Suspense fallback={<PageLoader />}>
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/products" element={<Products />} />
+                  <Route path="/products/:id" element={<ProductDetail />} />
+                  <Route path="/polymer-products" element={<Products />} />
+                  <Route path="/polymer-products/:categorySlug" element={<CategoryPage />} />
+                  <Route path="/polymer-products/:categorySlug/:subcategorySlug" element={<CategoryPage />} />
+                  <Route path="/polymer-products/:categorySlug/:subcategorySlug/:typeSlug" element={<CategoryPage />} />
+                  <Route path="/about" element={<About />} />
+                  <Route path="/sustainability" element={<Sustainability />} />
+                  <Route path="/contact" element={<Contact />} />
+                  <Route path="/resources" element={<Resources />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/:id" element={<BlogArticle />} />
+                  <Route path="/faq" element={<FAQ />} />
+                  <Route path="/services" element={<Services />} />
+                  {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </Suspense>
+            </main>
+            <Footer />
+            <WhatsAppButton />
+          </div>
+        </BrowserRouter>
+      </TooltipProvider>
     </RFQProvider>
   );
 };
