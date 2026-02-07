@@ -1,9 +1,10 @@
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
+import { pageSEO } from '@/data/pageSeo';
 
 interface SEOProps {
-  title: string;
-  description: string;
+  title?: string;
+  description?: string;
   keywords?: string;
   image?: string;
   url?: string;
@@ -28,23 +29,43 @@ export function SEO({
   type = 'website',
   article,
   structuredData,
-  noIndex = false
+  noIndex = false,
 }: SEOProps) {
   const { i18n } = useTranslation();
   const currentLang = i18n.resolvedLanguage || i18n.language;
   const isArabic = currentLang?.startsWith('ar');
 
   const siteName = i18n.t('branding.name');
-  const fullTitle = `${title} | ${siteName}`;
   const siteUrl = 'https://testwebs.lovable.app';
   const fullUrl = url || (typeof window !== 'undefined' ? window.location.href : siteUrl);
+  const pathname = typeof window !== 'undefined' ? window.location.pathname : '/';
 
-  // Handle multiple structured data schemas
+  const matchedSEO = pageSEO.find((item) => item.path === pathname) ?? pageSEO.find((item) => item.path === '*');
+  const resolvedTitle =
+    title || (matchedSEO ? (isArabic ? matchedSEO.title.ar : matchedSEO.title.en) : siteName);
+  const resolvedDescription =
+    description ||
+    (matchedSEO
+      ? isArabic
+        ? matchedSEO.metaDescription.ar
+        : matchedSEO.metaDescription.en
+      : i18n.t('home.seo.description', { defaultValue: 'PolySource Global polymer supplier.' }));
+  const resolvedKeywords =
+    keywords ||
+    (matchedSEO ? (isArabic ? matchedSEO.keywords.ar : matchedSEO.keywords.en) : undefined);
+
+  const fullTitle = resolvedTitle.includes(siteName) ? resolvedTitle : `${resolvedTitle} | ${siteName}`;
+
   const renderStructuredData = () => {
-    if (!structuredData) return null;
-    
-    const schemas = Array.isArray(structuredData) ? structuredData : [structuredData];
-    
+    const resolvedStructuredData =
+      structuredData || (matchedSEO ? (isArabic ? matchedSEO.structuredData.ar : matchedSEO.structuredData.en) : undefined);
+
+    if (!resolvedStructuredData) return null;
+
+    const schemas = Array.isArray(resolvedStructuredData)
+      ? resolvedStructuredData
+      : [resolvedStructuredData];
+
     return schemas.map((schema, index) => (
       <script key={index} type="application/ld+json">
         {JSON.stringify(schema)}
@@ -54,33 +75,27 @@ export function SEO({
 
   return (
     <Helmet>
-      {/* Language and Direction */}
       <html lang={currentLang} dir={isArabic ? 'rtl' : 'ltr'} />
-      
-      {/* Primary Meta Tags */}
+
       <title>{fullTitle}</title>
       <meta name="title" content={fullTitle} />
-      <meta name="description" content={description} />
-      {keywords && <meta name="keywords" content={keywords} />}
+      <meta name="description" content={resolvedDescription} />
+      {resolvedKeywords && <meta name="keywords" content={resolvedKeywords} />}
 
-      {/* Robots */}
       <meta name="robots" content={noIndex ? 'noindex, nofollow' : 'all'} />
 
-      {/* Hreflang for multilingual SEO */}
       <link rel="alternate" hrefLang="en" href={`${siteUrl}/`} />
       <link rel="alternate" hrefLang="ar" href={`${siteUrl}/ar`} />
       <link rel="alternate" hrefLang="x-default" href={`${siteUrl}/`} />
 
-      {/* Open Graph / Facebook */}
       <meta property="og:type" content={type} />
       <meta property="og:url" content={fullUrl} />
       <meta property="og:title" content={fullTitle} />
-      <meta property="og:description" content={description} />
+      <meta property="og:description" content={resolvedDescription} />
       <meta property="og:image" content={image} />
       <meta property="og:site_name" content={siteName} />
       <meta property="og:locale" content={isArabic ? 'ar_AE' : 'en_US'} />
 
-      {/* Article specific tags */}
       {type === 'article' && article && (
         <>
           {article.publishedTime && (
@@ -91,27 +106,21 @@ export function SEO({
           )}
           {article.author && <meta property="article:author" content={article.author} />}
           {article.section && <meta property="article:section" content={article.section} />}
-          {article.tags && article.tags.map(tag => (
-            <meta key={tag} property="article:tag" content={tag} />
-          ))}
+          {article.tags && article.tags.map((tag) => <meta key={tag} property="article:tag" content={tag} />)}
         </>
       )}
 
-      {/* Twitter */}
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:url" content={fullUrl} />
       <meta name="twitter:title" content={fullTitle} />
-      <meta name="twitter:description" content={description} />
+      <meta name="twitter:description" content={resolvedDescription} />
       <meta name="twitter:image" content={image} />
 
-      {/* Canonical URL */}
       <link rel="canonical" href={fullUrl} />
 
-      {/* Additional SEO tags */}
       <meta name="language" content={isArabic ? 'Arabic' : 'English'} />
       <meta name="revisit-after" content="7 days" />
 
-      {/* Structured Data */}
       {renderStructuredData()}
     </Helmet>
   );

@@ -17,6 +17,7 @@ import { useToast } from '@/hooks/use-toast';
 import { trackQuoteRequest, trackFormSubmission } from '@/lib/analytics';
 import { useDirection } from '@/hooks/useDirection';
 import { contactFormSchema, type ContactFormValues } from '@/lib/validation/contactForm';
+import { companyConfig } from '@/config/company';
 
 export default function Contact() {
   const { t } = useTranslation();
@@ -46,7 +47,7 @@ export default function Contact() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [privacyAccepted, setPrivacyAccepted] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     const validationResult = contactFormSchema.safeParse(formData);
@@ -93,11 +94,22 @@ export default function Contact() {
         submittedAt: new Date().toISOString(),
       };
 
-      console.log('[Form Submission] Contact Form Data:', submissionData);
-      console.log('[Backend Simulation] Sending to API:', {
-        endpoint: '/api/quotes',
-        payload: submissionData,
+      if (!companyConfig.contactFormEndpoint) {
+        throw new Error('Missing contact form endpoint. Set VITE_CONTACT_FORM_ENDPOINT.');
+      }
+
+      const response = await fetch(companyConfig.contactFormEndpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(submissionData),
       });
+
+      if (!response.ok) {
+        throw new Error(`Submission failed with status ${response.status}`);
+      }
 
       trackQuoteRequest('contact');
       trackFormSubmission('contact_form', submissionData);
@@ -121,6 +133,14 @@ export default function Contact() {
       });
       clearProducts();
       setPrivacyAccepted(false);
+    } catch {
+      toast({
+        variant: 'destructive',
+        title: t('contactPage.submitFailedTitle', { defaultValue: 'Submission failed' }),
+        description: t('contactPage.submitFailedDescription', {
+          defaultValue: 'We could not send your request right now. Please try again shortly.',
+        }),
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -145,8 +165,8 @@ export default function Contact() {
       addressLocality: 'Dubai',
       addressCountry: 'UAE'
     },
-    telephone: '+971 4 XXX XXXX',
-    email: 'hello@polysource.global',
+    telephone: companyConfig.phone,
+    email: companyConfig.email,
     openingHours: ['Su-Th 09:00-18:00']
   });
 
@@ -450,7 +470,7 @@ export default function Contact() {
                     )}
 
                     <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
-                      {t('contactPage.form.submit')}
+                      {isSubmitting ? t('contact.form.submitting', { defaultValue: 'Submitting...' }) : t('contactPage.form.submit')}
                     </Button>
 
                     <p className="text-xs text-center text-muted-foreground">
@@ -483,8 +503,8 @@ export default function Contact() {
                     <Mail className="h-5 w-5 text-primary mr-3 mt-0.5 flex-shrink-0" />
                     <div>
                       <p className="font-medium text-sm">{t('contactPage.sidebar.emailLabel')}</p>
-                      <a href="mailto:hello@polysource.global" className="text-sm text-primary hover:underline">
-                        hello@polysource.global
+                      <a href={`mailto:${companyConfig.email}`} className="text-sm text-primary hover:underline">
+                        {companyConfig.email}
                       </a>
                     </div>
                   </div>
@@ -493,7 +513,7 @@ export default function Contact() {
                     <div>
                       <p className="font-medium text-sm">{t('contactPage.sidebar.phoneLabel')}</p>
                       <p className="text-sm text-muted-foreground">
-                        +971 4 XXX XXXX
+                        {companyConfig.phone}
                       </p>
                     </div>
                   </div>
