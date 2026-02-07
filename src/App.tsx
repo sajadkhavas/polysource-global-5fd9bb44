@@ -25,6 +25,7 @@ const FAQ = lazy(() => import("./pages/FAQ"));
 const Services = lazy(() => import("./pages/Services"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const CategoryPage = lazy(() => import("./pages/CategoryPage"));
+const NavigationSection = lazy(() => import("./pages/NavigationSection"));
 
 // Loading fallback component
 const PageLoader = () => (
@@ -76,6 +77,10 @@ const App = () => {
                   <Route path="/blog/:id" element={<BlogArticle />} />
                   <Route path="/faq" element={<FAQ />} />
                   <Route path="/services" element={<Services />} />
+                  <Route path="/services/:sectionSlug" element={<NavigationSection />} />
+                  <Route path="/insights" element={<NavigationSection />} />
+                  <Route path="/insights/:sectionSlug" element={<NavigationSection />} />
+                  <Route path="/about/:sectionSlug" element={<NavigationSection />} />
                   {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                   <Route path="*" element={<NotFound />} />
                 </Routes>
