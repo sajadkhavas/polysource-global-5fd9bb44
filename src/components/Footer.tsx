@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { Mail, MapPin, Phone } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
+import { companyConfig } from '@/config/company';
 
 export function Footer() {
   const { t, i18n } = useTranslation();
@@ -92,17 +93,17 @@ export function Footer() {
             <ul className="space-y-3">
               <li className={cn("flex items-start text-sm text-muted-foreground", isRTL && "flex-row-reverse text-right")}>
                 <MapPin className={cn("h-4 w-4 mt-0.5 flex-shrink-0", isRTL ? "ml-2" : "mr-2")} />
-                <span>{t('footer.locationCityCountry')}</span>
+                <span>{companyConfig.locationCityCountry || t('footer.locationCityCountry')}</span>
               </li>
               <li className={cn("flex items-center text-sm text-muted-foreground", isRTL && "flex-row-reverse")}>
                 <Mail className={cn("h-4 w-4 flex-shrink-0", isRTL ? "ml-2" : "mr-2")} />
-                <a href="mailto:hello@polysource.global" className="hover:text-foreground transition-colors">
-                  hello@polysource.global
+                <a href={`mailto:${companyConfig.email}`} className="hover:text-foreground transition-colors">
+                  {companyConfig.email}
                 </a>
               </li>
               <li className={cn("flex items-center text-sm text-muted-foreground", isRTL && "flex-row-reverse")}>
                 <Phone className={cn("h-4 w-4 flex-shrink-0", isRTL ? "ml-2" : "mr-2")} />
-                <span>+971 4 XXX XXXX</span>
+                <span>{companyConfig.phone}</span>
               </li>
             </ul>
           </div>

@@ -2,7 +2,6 @@ import { lazy, Suspense, useEffect } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { RFQProvider } from "./contexts/RFQContext";
 import { Navigation } from "./components/Navigation";
@@ -25,8 +24,8 @@ const BlogArticle = lazy(() => import("./pages/BlogArticle"));
 const FAQ = lazy(() => import("./pages/FAQ"));
 const Services = lazy(() => import("./pages/Services"));
 const NotFound = lazy(() => import("./pages/NotFound"));
+const CategoryPage = lazy(() => import("./pages/CategoryPage"));
 
-const queryClient = new QueryClient();
 
 // Loading fallback component
 const PageLoader = () => (
@@ -52,8 +51,7 @@ const App = () => {
   }, [dir, currentLanguage]);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <RFQProvider>
+    <RFQProvider>
         <TooltipProvider>
           <Toaster />
           <Sonner />
@@ -67,6 +65,10 @@ const App = () => {
                     <Route path="/" element={<Home />} />
                     <Route path="/products" element={<Products />} />
                     <Route path="/products/:id" element={<ProductDetail />} />
+                    <Route path="/polymer-products" element={<Products />} />
+                    <Route path="/polymer-products/:categorySlug" element={<CategoryPage />} />
+                    <Route path="/polymer-products/:categorySlug/:subcategorySlug" element={<CategoryPage />} />
+                    <Route path="/polymer-products/:categorySlug/:subcategorySlug/:typeSlug" element={<CategoryPage />} />
                     <Route path="/about" element={<About />} />
                     <Route path="/sustainability" element={<Sustainability />} />
                     <Route path="/contact" element={<Contact />} />
@@ -85,8 +87,7 @@ const App = () => {
             </div>
           </BrowserRouter>
         </TooltipProvider>
-      </RFQProvider>
-    </QueryClientProvider>
+    </RFQProvider>
   );
 };
 
