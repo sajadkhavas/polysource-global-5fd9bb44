@@ -82,16 +82,16 @@ export function MegaMenu({ item, onClose }: MegaMenuProps) {
                           <ChevronRight className={cn('h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity', isRTL && '-scale-x-100')} />
                         </Link>
 
-                        {/* Subcategories (Third Level) - Smaller Muted */}
+                        {/* Subcategories (Third + Fourth Level) */}
                         {category.children && category.children.length > 0 && (
-                          <ul className="mt-2 grid grid-cols-2 gap-x-6 gap-y-1">
+                          <ul className="mt-2 grid grid-cols-2 gap-x-6 gap-y-2">
                             {category.children.map((subItem) => (
-                              <li key={subItem.id}>
+                              <li key={subItem.id} className="space-y-1">
                                 <Link
-                                  to={subItem.href || '#'}
+                                  to={subItem.href}
                                   onClick={onClose}
                                   className={cn(
-                                    'group inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all py-1 px-2 rounded-md -mx-2',
+                                    'group inline-flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-all py-1 px-2 rounded-md -mx-2',
                                     isRTL
                                       ? 'flex-row-reverse text-right group-hover:-translate-x-0.5'
                                       : 'group-hover:translate-x-0.5'
@@ -100,6 +100,26 @@ export function MegaMenu({ item, onClose }: MegaMenuProps) {
                                   <ChevronRight className={cn('h-3 w-3 text-border group-hover:text-primary transition-colors', isRTL && '-scale-x-100')} />
                                   <span>{getLabel(subItem)}</span>
                                 </Link>
+
+                                {subItem.children && subItem.children.length > 0 && (
+                                  <ul className={cn('space-y-1', isRTL ? 'mr-4' : 'ml-4')}>
+                                    {subItem.children.map((fourthItem) => (
+                                      <li key={fourthItem.id}>
+                                        <Link
+                                          to={fourthItem.href}
+                                          onClick={onClose}
+                                          className={cn(
+                                            'group inline-flex items-center gap-1.5 text-[11px] text-muted-foreground/90 hover:text-foreground transition-colors',
+                                            isRTL ? 'flex-row-reverse text-right' : ''
+                                          )}
+                                        >
+                                          <ChevronRight className={cn('h-2.5 w-2.5 text-border', isRTL && '-scale-x-100')} />
+                                          <span>{getLabel(fourthItem)}</span>
+                                        </Link>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                )}
                               </li>
                             ))}
                           </ul>
