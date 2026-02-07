@@ -2,10 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
-
 @layer base {
   :root {
     --background: 0 0% 98%;
@@ -53,51 +49,6 @@ All colors MUST be HSL.
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-
-  .dark {
-    --background: 210 75% 8%;
-    --foreground: 0 0% 98%;
-
-    --card: 210 70% 12%;
-    --card-foreground: 0 0% 98%;
-
-    --popover: 210 70% 12%;
-    --popover-foreground: 0 0% 98%;
-
-    --primary: 210 60% 55%;
-    --primary-foreground: 210 75% 8%;
-
-    --secondary: 210 40% 18%;
-    --secondary-foreground: 0 0% 98%;
-
-    --muted: 210 40% 15%;
-    --muted-foreground: 210 15% 65%;
-
-    --accent: 145 55% 50%;
-    --accent-foreground: 0 0% 100%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 210 40% 20%;
-    --input: 210 40% 20%;
-    --ring: 210 60% 55%;
-
-    --hero-gradient-start: 210 75% 15%;
-    --hero-gradient-end: 210 70% 22%;
-    
-    --success: 145 55% 50%;
-    --success-foreground: 0 0% 100%;
-
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
-  }
 }
 
 @layer base {
@@ -107,66 +58,6 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground font-sans;
-  }
-
-  /* Arabic font family */
-  html[lang="ar"] body {
-    font-family: 'Tajawal', sans-serif;
-  }
-
-  /* RTL specific styles */
-  html[dir="rtl"] {
-    direction: rtl;
-  }
-
-  html[dir="rtl"] .space-x-1 > :not([hidden]) ~ :not([hidden]) {
-    --tw-space-x-reverse: 1;
-  }
-
-  html[dir="rtl"] .space-x-2 > :not([hidden]) ~ :not([hidden]) {
-    --tw-space-x-reverse: 1;
-  }
-
-  html[dir="rtl"] .space-x-3 > :not([hidden]) ~ :not([hidden]) {
-    --tw-space-x-reverse: 1;
-  }
-
-  html[dir="rtl"] .space-x-4 > :not([hidden]) ~ :not([hidden]) {
-    --tw-space-x-reverse: 1;
-  }
-
-  html[dir="rtl"] .space-x-6 > :not([hidden]) ~ :not([hidden]) {
-    --tw-space-x-reverse: 1;
-  }
-
-  html[dir="rtl"] .ml-2 {
-    margin-left: 0;
-    margin-right: 0.5rem;
-  }
-
-  html[dir="rtl"] .mr-2 {
-    margin-right: 0;
-    margin-left: 0.5rem;
-  }
-
-  html[dir="rtl"] .ml-3 {
-    margin-left: 0;
-    margin-right: 0.75rem;
-  }
-
-  html[dir="rtl"] .mr-3 {
-    margin-right: 0;
-    margin-left: 0.75rem;
-  }
-
-  html[dir="rtl"] .ml-4 {
-    margin-left: 0;
-    margin-right: 1rem;
-  }
-
-  html[dir="rtl"] .mr-4 {
-    margin-right: 0;
-    margin-left: 1rem;
   }
 
   /* Custom scrollbar for mega menu */
@@ -181,9 +72,4 @@ All colors MUST be HSL.
   .custom-scrollbar::-webkit-scrollbar-thumb {
     @apply bg-border rounded hover:bg-border/80;
   }
-}
-
-/* Arabic font utility class */
-.font-arabic {
-  font-family: 'Tajawal', sans-serif;
 }

@@ -1,43 +1,32 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ShoppingCart } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
-import { useRFQ } from '@/contexts/RFQContext';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { Badge } from '@/components/ui/badge';
 import { navigationData } from '@/data/navigation';
 import { MegaMenu } from './MegaMenu';
 import { MobileNav } from './MobileNav';
 import { DesktopDropdown } from './DesktopDropdown';
-import { ThemeToggle } from './ThemeToggle';
-import { LanguageSwitcher } from './LanguageSwitcher';
 import { GlobalSearch } from './GlobalSearch';
 
 export function Navigation() {
   const location = useLocation();
-  const { t, i18n } = useTranslation();
-  const resolvedLanguage = i18n.resolvedLanguage || i18n.language || 'en';
-  const isRTL = resolvedLanguage.startsWith('ar');
+  const { t } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState<string | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
-  const { products } = useRFQ();
   const [scrolled, setScrolled] = useState(false);
-  const isHomePage = location.pathname === '/' || location.pathname === '/ar';
+  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const polymerProductsItem = navigationData.find(item => item.id === 'polymer-products');
   const servicesItem = navigationData.find(item => item.id === 'services');
-  const newsItem = navigationData.find(item => item.id === 'insights');
   const aboutItem = navigationData.find(item => item.id === 'about');
   const brandName = t('branding.name');
   const shortBrand = t('branding.shortName');
@@ -45,7 +34,7 @@ export function Navigation() {
 
   const isActive = (href: string) => {
     if (!href || href === '#') return false;
-    const basePath = href.split('?')[0]; // Remove query params
+    const basePath = href.split('?')[0];
     return location.pathname === basePath || location.pathname.startsWith(basePath + '/');
   };
 
@@ -62,11 +51,10 @@ export function Navigation() {
           {/* Top layer: Brand + Trust signals */}
           <div className={cn(
             "flex items-center justify-between py-3 border-b",
-            isHomePage && !scrolled ? "border-white/20" : "border-border/50",
-            isRTL && "flex-row-reverse"
+            isHomePage && !scrolled ? "border-white/20" : "border-border/50"
           )}>
-            <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-4" : "space-x-4")}>
-              <Link to="/" className={cn("flex items-center", isRTL ? "space-x-reverse space-x-2.5" : "space-x-2.5")}>
+            <div className="flex items-center space-x-4">
+              <Link to="/" className="flex items-center space-x-2.5">
                 <div className={cn(
                   "h-9 w-9 rounded-lg",
                   isHomePage && !scrolled ? "bg-white" : "bg-primary"
@@ -79,9 +67,7 @@ export function Navigation() {
                   <span className={cn(
                     "text-xs block mt-0.5",
                     isHomePage && !scrolled ? "text-white/70" : "text-muted-foreground"
-                  )}>
-                    {brandTagline}
-                  </span>
+                  )}>{brandTagline}</span>
                 </div>
               </Link>
             </div>
@@ -95,39 +81,24 @@ export function Navigation() {
             </div>
             
             <div className={cn(
-              "flex items-center text-xs",
-              isHomePage && !scrolled ? "text-white/70" : "text-muted-foreground",
-              isRTL ? "space-x-reverse space-x-6" : "space-x-6"
+              "flex items-center text-xs space-x-6",
+              isHomePage && !scrolled ? "text-white/70" : "text-muted-foreground"
             )}>
-              <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-1.5" : "space-x-1.5")}>
-                <span className={cn(
-                  "font-semibold",
-                  isHomePage && !scrolled ? "text-white" : "text-foreground"
-                )}>18+</span>
+              <div className="flex items-center space-x-1.5">
+                <span className={cn("font-semibold", isHomePage && !scrolled ? "text-white" : "text-foreground")}>18+</span>
                 <span>{t('nav.trustBadge.countries')}</span>
               </div>
-              <div className={cn(
-                "h-3 w-px",
-                isHomePage && !scrolled ? "bg-white/30" : "bg-border"
-              )} />
-              <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-1.5" : "space-x-1.5")}>
-                <span className={cn(
-                  "font-semibold",
-                  isHomePage && !scrolled ? "text-white" : "text-foreground"
-                )}>12,500+</span>
+              <div className={cn("h-3 w-px", isHomePage && !scrolled ? "bg-white/30" : "bg-border")} />
+              <div className="flex items-center space-x-1.5">
+                <span className={cn("font-semibold", isHomePage && !scrolled ? "text-white" : "text-foreground")}>12,500+</span>
                 <span>{t('nav.trustBadge.tonnes')}</span>
               </div>
             </div>
           </div>
 
           {/* Bottom layer: Navigation + Actions */}
-          <div className={cn(
-            "relative flex items-center justify-between h-14",
-            isRTL && "flex-row-reverse"
-          )}>
-            {/* Center: Main Navigation */}
-            <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-1" : "space-x-1")}>
-              {/* Polymer Products with Mega Menu */}
+          <div className="relative flex items-center justify-between h-14">
+            <div className="flex items-center space-x-1">
               {polymerProductsItem && (
                 <div
                   onMouseEnter={() => setMegaMenuOpen('polymer-products')}
@@ -144,12 +115,11 @@ export function Navigation() {
                           : 'text-foreground/90 hover:bg-muted hover:text-primary'
                     )}
                   >
-                    {isRTL ? polymerProductsItem.label.ar : polymerProductsItem.label.en}
+                    {polymerProductsItem.label}
                   </Link>
                 </div>
               )}
               
-              {/* MegaMenu positioned relative to entire nav container */}
               {megaMenuOpen === 'polymer-products' && polymerProductsItem && (
                 <div
                   onMouseEnter={() => setMegaMenuOpen('polymer-products')}
@@ -159,21 +129,11 @@ export function Navigation() {
                 </div>
               )}
 
-              {/* Other Nav Items with Dropdowns */}
               {servicesItem && (
                 <DesktopDropdown
                   item={servicesItem}
                   isOpen={dropdownOpen === 'services'}
                   onOpenChange={(open) => setDropdownOpen(open ? 'services' : null)}
-                  isActive={isActive}
-                  isTransparent={isHomePage && !scrolled}
-                />
-              )}
-              {newsItem && (
-                <DesktopDropdown
-                  item={newsItem}
-                  isOpen={dropdownOpen === 'news'}
-                  onOpenChange={(open) => setDropdownOpen(open ? 'news' : null)}
                   isActive={isActive}
                   isTransparent={isHomePage && !scrolled}
                 />
@@ -202,56 +162,7 @@ export function Navigation() {
               </Link>
             </div>
 
-            {/* Right: Actions */}
-            <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-3" : "space-x-3")}>
-
-              {/* Theme Toggle */}
-              <ThemeToggle />
-
-              {/* Language Switcher */}
-              <LanguageSwitcher variant="compact" className={cn(
-                isHomePage && !scrolled && "[&_button]:text-primary-foreground [&_button]:hover:bg-primary-foreground/10"
-              )} />
-
-              {/* RFQ Basket */}
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant="outline" size="sm" className="relative">
-                    <ShoppingCart className="h-4 w-4" />
-                    {products.length > 0 && (
-                      <Badge className="absolute -right-2 -top-2 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-accent">
-                        {products.length}
-                      </Badge>
-                    )}
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side={isRTL ? 'left' : 'right'}>
-                  <SheetHeader>
-                    <SheetTitle>{t('nav.rfqBasket')}</SheetTitle>
-                  </SheetHeader>
-                  <div className="mt-4 space-y-4">
-                    {products.length === 0 ? (
-                      <p className="text-sm text-muted-foreground">{t('nav.noProductsAdded')}</p>
-                    ) : (
-                      <>
-                        {products.map((product) => (
-                          <div key={product.id} className="flex items-start justify-between p-3 border border-border rounded-lg">
-                            <div>
-                              <p className="font-medium text-sm">{product.name}</p>
-                              <p className="text-xs text-muted-foreground">{product.type}</p>
-                            </div>
-                          </div>
-                        ))}
-                        <Button asChild className="w-full">
-                          <Link to="/contact">{t('nav.requestQuote')}</Link>
-                        </Button>
-                      </>
-                    )}
-                  </div>
-                </SheetContent>
-              </Sheet>
-
-              {/* Request Quote CTA */}
+            <div className="flex items-center space-x-3">
               <Button asChild>
                 <Link to="/contact">{t('nav.requestQuote')}</Link>
               </Button>
@@ -260,68 +171,15 @@ export function Navigation() {
         </div>
 
         {/* Mobile: Single row header */}
-        <div className={cn(
-          "flex lg:hidden h-16 items-center justify-between",
-          isRTL && "flex-row-reverse"
-        )}>
-          {/* Left: Brand */}
-          <Link to="/" className={cn("flex items-center", isRTL ? "space-x-reverse space-x-2" : "space-x-2")}>
+        <div className="flex lg:hidden h-16 items-center justify-between">
+          <Link to="/" className="flex items-center space-x-2">
             <div className="h-8 w-8 rounded bg-primary" aria-hidden="true" />
             <span className="text-lg font-bold text-foreground">{shortBrand}</span>
           </Link>
 
-          {/* Right: Controls */}
-          <div className={cn("flex items-center", isRTL ? "space-x-reverse space-x-2" : "space-x-2")}>
-            {/* Global Search Mobile */}
+          <div className="flex items-center space-x-2">
             <GlobalSearch />
-
-            {/* Language Switcher */}
-            <LanguageSwitcher variant="compact" />
-
-            {/* RFQ Basket */}
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline" size="sm" className="relative">
-                  <ShoppingCart className="h-4 w-4" />
-                  {products.length > 0 && (
-                    <Badge className="absolute -right-2 -top-2 h-5 w-5 rounded-full p-0 flex items-center justify-center bg-accent">
-                      {products.length}
-                    </Badge>
-                  )}
-                </Button>
-              </SheetTrigger>
-              <SheetContent side={isRTL ? 'left' : 'right'}>
-                <SheetHeader>
-                  <SheetTitle>{t('nav.rfqBasket')}</SheetTitle>
-                </SheetHeader>
-                <div className="mt-4 space-y-4">
-                  {products.length === 0 ? (
-                    <p className="text-sm text-muted-foreground">{t('nav.noProductsAdded')}</p>
-                  ) : (
-                    <>
-                      {products.map((product) => (
-                        <div key={product.id} className="flex items-start justify-between p-3 border border-border rounded-lg">
-                          <div>
-                            <p className="font-medium text-sm">{product.name}</p>
-                            <p className="text-xs text-muted-foreground">{product.type}</p>
-                          </div>
-                        </div>
-                      ))}
-                      <Button asChild className="w-full">
-                        <Link to="/contact">{t('nav.requestQuote')}</Link>
-                      </Button>
-                    </>
-                  )}
-                </div>
-              </SheetContent>
-            </Sheet>
-
-            {/* Mobile menu button */}
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
+            <Button variant="ghost" size="sm" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
           </div>
